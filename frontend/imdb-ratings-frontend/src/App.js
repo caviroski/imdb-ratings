@@ -1,0 +1,41 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import Upload from './pages/Upload';
+import Compare from './pages/Compare';
+import YearWatch from './pages/YearWatch';
+import RatingStatistics from './pages/RatingStatistics';
+
+function App() {
+  return (
+    <Router>
+      <div>
+        <nav
+          style={{
+            width: '100%',
+            height: '60px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: '#f5f5f5',
+            gap: '1rem',
+          }}
+        >
+          <Link to="/upload">Upload File</Link> | 
+          <Link to="/compare">Choose dates to compare</Link> | 
+          <Link to="/year">Year Watch</Link> | 
+          <Link to="/rating-statistics">Rating Statistics</Link>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<Navigate to="/upload" />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/compare" element={<Compare />} />
+          <Route path="/year" element={<YearWatch />} />
+          <Route path="/rating-statistics" element={<RatingStatistics />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
+
+export default App;
