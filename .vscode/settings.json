@@ -1,0 +1,21 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default",
+                "enableSsl": "Disabled"
+            },
+            "previewLimit": 10000,
+            "server": "localhost",
+            "port": 3306,
+            "driver": "MySQL",
+            "database": "imdb",
+            "username": "root",
+            "name": "aaa",
+            "password": ""
+        }
+    ],
+    "sqltools.results.limit": 10000
+}

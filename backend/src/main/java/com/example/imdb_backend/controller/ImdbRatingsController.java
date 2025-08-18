@@ -1,0 +1,229 @@
+package com.example.imdb_backend.controller;
+import com.example.imdb_backend.model.ImdbRating;
+import com.example.imdb_backend.repository.ImdbRatingRepository;
+import com.example.imdb_backend.service.ImdbCsvImporter;
+
+import com.example.imdb_backend.dto.ComparisonDTO;
+
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+@RestController
+@RequestMapping("/api/imdb-ratings")
+@CrossOrigin(origins = "http://localhost:3000")
+public class ImdbRatingsController {
+
+    @Autowired
+    private ImdbCsvImporter imdbCsvImporter;
+
+    @Autowired
+    private ImdbRatingRepository imdbRatingRepository;
+
+    @PostMapping
+    public ResponseEntity<String> postExample(@RequestBody Map<String, Object> payload) {
+        String name = (String) payload.get("name");
+        return ResponseEntity.ok("Received name: " + name);
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+        if (file.isEmpty()) {
+            return ResponseEntity.badRequest().body("No file uploaded");
+        }
+
+        String originalFilename = file.getOriginalFilename();
+        System.out.println("Uploaded file: " + originalFilename);
+
+        String result = imdbCsvImporter.importCsv(file);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/file-names")
+    public ResponseEntity<List<String>> getAllFileNames() {
+        List<ImdbRating> allRatings = imdbRatingRepository.findAll();
+        Set<String> uniqueFileNames = new HashSet<>();
+
+        for (ImdbRating rating : allRatings) {
+            if (rating.getContains() != null) {
+                uniqueFileNames.addAll(rating.getContains());
+            }
+        }
+
+        List<String> sortedList = new ArrayList<>(uniqueFileNames);
+        Collections.sort(sortedList);
+
+        return ResponseEntity.ok(sortedList);
+    }
+
+    @GetMapping("/compare")
+    public ResponseEntity<List<ComparisonDTO>> compareVotes(
+            @RequestParam String from,
+            @RequestParam String to,
+            @RequestParam(required = false) String search) {
+
+        List<ImdbRating> allRatings = imdbRatingRepository.findAll();
+        List<ComparisonDTO> result = new ArrayList<>();
+        int idCounter = 1;
+
+        for (ImdbRating rating : allRatings) {
+            boolean matchesSearch = true;
+
+            if (search != null && !search.isBlank()) {
+                String lowerSearch = search.toLowerCase();
+                matchesSearch =
+                    (rating.getTitle() != null && rating.getTitle().toLowerCase().contains(lowerSearch)) ||
+                    (rating.getOriginalTitle() != null && rating.getOriginalTitle().toLowerCase().contains(lowerSearch)) ||
+                    (rating.getImdbConst() != null && rating.getImdbConst().toLowerCase().contains(lowerSearch)) ||
+                    (rating.getTitleType() != null && rating.getTitleType().toLowerCase().contains(lowerSearch)) ||
+                    (rating.getDirectors() != null && rating.getDirectors().toLowerCase().contains(lowerSearch)) ||
+                    (rating.getGenres() != null && rating.getGenres().toLowerCase().contains(lowerSearch));
+            }
+
+
+            if (matchesSearch && rating.getNumVotes().containsKey(from) && rating.getNumVotes().containsKey(to)) {
+                Integer fromVotes = rating.getNumVotes().get(from);
+                Integer toVotes = rating.getNumVotes().get(to);
+                int difference = toVotes - fromVotes;
+
+                ComparisonDTO dto = new ComparisonDTO();
+                dto.setId(idCounter++);
+                dto.setDateRatd(rating.getDateRated());
+                dto.setName(rating.getOriginalTitle());
+                dto.setFirstDate(fromVotes);
+                dto.setSecondDate(toVotes);
+                dto.setDifference(difference);
+
+                result.add(dto);
+            }
+        }
+
+        // Only return the last 100 rows, preserving original order
+        // int fromIndex = Math.max(result.size() - 200, 0);
+        // List<ComparisonDTO> last100 = result.subList(fromIndex, result.size());
+
+        // return ResponseEntity.ok(last100);
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/year-count")
+    public ResponseEntity<?> getYearCount(@RequestParam(required = false) String fromDate) {
+        List<Object[]> results;
+        if (fromDate != null && !fromDate.isEmpty()) {
+            try {
+                results = imdbRatingRepository.findYearCountsFromDate(fromDate);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
+            }
+        } else {
+            results = imdbRatingRepository.findYearCounts();
+        }
+
+        Map<Integer, Long> countsMap = results.stream()
+            .collect(Collectors.toMap(
+                row -> (Integer) row[0],
+                row -> ((Number) row[1]).longValue()
+            ));
+
+        List<Map<String, Object>> mapped = IntStream.rangeClosed(1874, 2025)
+            .mapToObj(year -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("year", year);
+                m.put("itemsNum", countsMap.getOrDefault(year, 0L));
+                return m;
+            }).toList();
+
+        return ResponseEntity.ok(mapped);
+    }
+
+    @GetMapping("/yearly-average")
+    public ResponseEntity<?> getYearlyAverage(@RequestParam(required = false) String cutoffDate) {
+        List<Object[]> results;
+        if (cutoffDate != null && !cutoffDate.isEmpty()) {
+            try {
+                results = imdbRatingRepository.findYearAverageUntil(cutoffDate);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
+            }
+        } else {
+            results = imdbRatingRepository.findYearAverage();
+        }
+
+        List<Map<String, Object>> mapped = results.stream()
+            .map(row -> {
+                Map<String, Object> m = new HashMap<>();
+                Integer year = ((Number) row[0]).intValue();
+                Long itemsNum = ((Number) row[1]).longValue();
+                Double avgRating = row[2] != null ? ((Number) row[2]).doubleValue() : 0.0;
+
+                m.put("id", year);
+                m.put("year", year);
+                m.put("itemsNum", itemsNum);
+                m.put("avgRating", avgRating);
+                return m;
+            })
+            .filter(m -> (Long) m.get("itemsNum") > 0)
+            .toList();
+
+        return ResponseEntity.ok(mapped);
+    }
+
+    @DeleteMapping("/delete-by-file/{fileName}")
+    public ResponseEntity<String> removeFileData(@PathVariable String fileName) {
+        List<ImdbRating> affected = imdbRatingRepository.findByContainsContaining(fileName);
+
+        if (affected.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No entries found containing file: " + fileName);
+        }
+
+        int updatedCount = 0;
+
+        for (ImdbRating rating : affected) {
+            boolean modified = false;
+
+            // Remove file name from contains list
+            if (rating.getContains() != null && rating.getContains().remove(fileName)) {
+                modified = true;
+            }
+
+            // Remove entry from numVotes map
+            if (rating.getNumVotes() != null && rating.getNumVotes().remove(fileName) != null) {
+                modified = true;
+            }
+
+            // Remove entry from imdbRatings map
+            if (rating.getImdbRatings() != null && rating.getImdbRatings().remove(fileName) != null) {
+                modified = true;
+            }
+
+            if (modified) {
+                imdbRatingRepository.save(rating);
+                updatedCount++;
+            }
+        }
+
+        return ResponseEntity.ok("Cleaned file data from " + updatedCount + " entries for file: " + fileName);
+    }
+
+}
