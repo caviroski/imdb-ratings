@@ -16,3 +16,10 @@ New features comming.
 3.Year Watch
 <img width="1898" height="524" alt="Screenshot 2025-08-18 135340" src="https://github.com/user-attachments/assets/46ef34cd-597a-4939-8dca-78c8ad589d34" />
 
+Tech Stack
+    Java
+    Spring Boot
+    React.js
+    MUI
+    HTML
+    CSS
