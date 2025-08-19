@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -26,6 +28,7 @@ import java.util.Map;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -160,14 +163,16 @@ public class ImdbRatingsController {
     @GetMapping("/yearly-average")
     public ResponseEntity<?> getYearlyAverage(@RequestParam(required = false) String cutoffDate) {
         List<Object[]> results;
-        if (cutoffDate != null && !cutoffDate.isEmpty()) {
-            try {
-                results = imdbRatingRepository.findYearAverageUntil(cutoffDate);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
-            }
-        } else {
-            results = imdbRatingRepository.findYearAverage();
+
+        if (cutoffDate == null || cutoffDate.isEmpty()) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            cutoffDate = LocalDate.now().format(formatter);
+        }
+
+        try {
+            results = imdbRatingRepository.findYearAverageUntil(cutoffDate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
         }
 
         List<Map<String, Object>> mapped = results.stream()
@@ -177,14 +182,14 @@ public class ImdbRatingsController {
                 Long itemsNum = ((Number) row[1]).longValue();
                 Double avgRating = row[2] != null ? ((Number) row[2]).doubleValue() : 0.0;
 
+                String avgRatingStr = String.format(Locale.US, "%.2f", avgRating);
+
                 m.put("id", year);
                 m.put("year", year);
                 m.put("itemsNum", itemsNum);
-                m.put("avgRating", avgRating);
+                m.put("avgRating", avgRatingStr);
                 return m;
-            })
-            .filter(m -> (Long) m.get("itemsNum") > 0)
-            .toList();
+            }).filter(m -> (Long) m.get("itemsNum") > 0).toList();
 
         return ResponseEntity.ok(mapped);
     }
