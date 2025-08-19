@@ -11,6 +11,7 @@ export default function YearWatch() {
   const [date, setDate] = useState([]);
   const [options, setOptions] = useState([]);
   const [yearRows, setYearRows] = useState([]);
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
     fetchDates(setDate);
@@ -33,6 +34,7 @@ export default function YearWatch() {
 
   const handleChange = (event) => {
     const selectedDate = event.target.value;
+    setSelectedDate(selectedDate);
     fetchYearlyAverage(setYearRows, selectedDate);
   };
 
@@ -49,10 +51,11 @@ export default function YearWatch() {
           display: 'flex',
           justifyContent: 'space-evenly',
           gap: '2rem',
+          marginTop: '20px'
         }}
       >
         <SelectDate
-          value={""}
+          value={selectedDate}
           onChange={handleChange}
           label="Pick Date"
           options={options}
