@@ -27,9 +27,9 @@ export default function YearWatch() {
   }));
 
   const columns = [
-    { field: 'year', headerName: 'Year', width: 150 },
-    { field: 'avgRating', headerName: 'Average Rating', width: 500 },
-    { field: 'itemsNum', headerName: 'Count', width: 125 }
+    { field: 'year', headerName: 'Year', width: 80 },
+    { field: 'avgRating', headerName: 'Average Rating', width: 150 },
+    { field: 'itemsNum', headerName: 'Count', width: 90 }
   ];
 
   const handleChange = (event) => {
@@ -62,8 +62,8 @@ export default function YearWatch() {
         />
       </div>
 
-      <div style={{ width: 1100, margin: '50px auto 0 auto' }}>
-        <Paper sx={{ height: 400, width: '100%' }}>
+      <div style={{ width: 400, margin: '50px auto 0 auto' }}>
+        <Paper sx={{ height: 590, width: '100%' }}>
           <DataGrid
             rows={yearRows}
             columns={columns}

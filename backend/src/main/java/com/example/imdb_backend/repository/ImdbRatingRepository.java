@@ -26,11 +26,11 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
         "GROUP BY r.year " +
         "ORDER BY r.year")
     List<Object[]> findYearCountsFromDate(@Param("fromDate") String fromDate);
-    
+
     @Query(value = """
         SELECT year, COUNT(id) AS movie_count, AVG(your_rating) AS avg_rating
         FROM imdb_ratings
-        WHERE date_rated <= STR_TO_DATE('01.07.2025', '%d.%m.%Y')
+        WHERE date_rated <= STR_TO_DATE(:cutoffDate, '%d.%m.%Y')
         GROUP BY year
         ORDER BY year
         """, nativeQuery = true)
