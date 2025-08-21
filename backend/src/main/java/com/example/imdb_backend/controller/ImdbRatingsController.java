@@ -133,14 +133,15 @@ public class ImdbRatingsController {
     @GetMapping("/year-count")
     public ResponseEntity<?> getYearCount(@RequestParam(required = false) String fromDate) {
         List<Object[]> results;
-        if (fromDate != null && !fromDate.isEmpty()) {
-            try {
-                results = imdbRatingRepository.findYearCountsFromDate(fromDate);
-            } catch (Exception e) {
-                return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
-            }
-        } else {
-            results = imdbRatingRepository.findYearCounts();
+        
+        try {
+            String effectiveDate = (fromDate != null && !fromDate.isEmpty())
+                    ? fromDate
+                    : LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+            results = imdbRatingRepository.findYearCountsFromDate(effectiveDate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
         }
 
         Map<Integer, Long> countsMap = results.stream()
