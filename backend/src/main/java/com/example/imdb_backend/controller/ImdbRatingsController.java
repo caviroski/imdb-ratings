@@ -113,7 +113,7 @@ public class ImdbRatingsController {
                 ComparisonDTO dto = new ComparisonDTO();
                 dto.setId(idCounter++);
                 dto.setDateRatd(rating.getDateRated());
-                dto.setName(rating.getOriginalTitle());
+                dto.setName(rating.getOriginalTitle() + " (" + rating.getYear() + ")");
                 dto.setFirstDate(fromVotes);
                 dto.setSecondDate(toVotes);
                 dto.setDifference(difference);
