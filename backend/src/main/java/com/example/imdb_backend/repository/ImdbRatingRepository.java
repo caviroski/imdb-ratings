@@ -14,6 +14,8 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
 
     List<ImdbRating> findByContainsContaining(String fileName);
 
+    List<ImdbRating> findByCountryOfOriginIsNull();
+
     @Query("SELECT r.year, COUNT(r) " +
         "FROM ImdbRating r JOIN r.contains c " +
         "WHERE c LIKE %:fromDate% " +

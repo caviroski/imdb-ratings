@@ -66,6 +66,9 @@ public class ImdbRating {
     @Column(name = "directors", length = 2500)
     private String directors;
 
+    @Column(name = "country_of_origin")
+    private String countryOfOrigin;
+
     // Getters and setters
 
     public int getId() {
@@ -192,5 +195,13 @@ public class ImdbRating {
 
     public void setDirectors(String directors) {
         this.directors = directors;
+    }
+
+    public String getCountryOfOrigin() {
+        return countryOfOrigin;
+    }
+
+    public void setCountryOfOrigin(String countryOfOrigin) {
+        this.countryOfOrigin = countryOfOrigin;
     }
 }

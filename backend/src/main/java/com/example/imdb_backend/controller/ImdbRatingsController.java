@@ -1,9 +1,17 @@
 package com.example.imdb_backend.controller;
-import com.example.imdb_backend.model.ImdbRating;
-import com.example.imdb_backend.repository.ImdbRatingRepository;
-import com.example.imdb_backend.service.ImdbCsvImporter;
 
-import com.example.imdb_backend.dto.ComparisonDTO;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,19 +27,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import com.example.imdb_backend.model.ImdbRating;
+import com.example.imdb_backend.repository.ImdbRatingRepository;
+import com.example.imdb_backend.service.ImdbCsvImporter;
+import com.example.imdb_backend.dto.ComparisonDTO;
+import com.example.imdb_backend.service.CountryFillService;
 
 @RestController
 @RequestMapping("/api/imdb-ratings")
@@ -43,6 +43,9 @@ public class ImdbRatingsController {
 
     @Autowired
     private ImdbRatingRepository imdbRatingRepository;
+
+    @Autowired
+    private CountryFillService countryFillService;
 
     @PostMapping
     public ResponseEntity<String> postExample(@RequestBody Map<String, Object> payload) {
@@ -79,6 +82,13 @@ public class ImdbRatingsController {
 
         return ResponseEntity.ok(sortedList);
     }
+
+    @PostMapping("/fill-missing-countries")
+    public ResponseEntity<String> fillMissingCountries() {
+        countryFillService.fillMissingCountries();
+        return ResponseEntity.ok("Batch update finished.");
+    }
+
 
     @GetMapping("/compare")
     public ResponseEntity<List<ComparisonDTO>> compareVotes(
