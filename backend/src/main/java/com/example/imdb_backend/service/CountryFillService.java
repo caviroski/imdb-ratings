@@ -1,10 +1,12 @@
 package com.example.imdb_backend.service;
 
-import com.example.imdb_backend.model.ImdbRating;
-import com.example.imdb_backend.repository.ImdbRatingRepository;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.example.imdb_backend.model.ImdbRating;
+import com.example.imdb_backend.repository.ImdbRatingRepository;
 
 @Service
 public class CountryFillService {
