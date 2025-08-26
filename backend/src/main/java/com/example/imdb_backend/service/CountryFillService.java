@@ -22,7 +22,7 @@ public class CountryFillService {
 
         for (ImdbRating movie : missing) {
             try {
-                Optional<String> countryOpt = wikidataService.getCountryOfOrigin(movie.getTitle(), movie.getYear());
+                Optional<String> countryOpt = wikidataService.getCountryOfOrigin(movie.getTitle());
 
                 if (countryOpt.isPresent()) {
                     movie.setCountryOfOrigin(countryOpt.get());
@@ -33,8 +33,8 @@ public class CountryFillService {
                     System.out.printf("⚠️ No country found for %s (%d)%n", movie.getTitle(), movie.getYear());
                 }
 
-                // ⏳ Add delay of 5 seconds before next request
-                Thread.sleep(5000);
+                // ⏳ Add delay of 1 second before next request
+                Thread.sleep(1000);
 
             } catch (Exception e) {
                 System.err.printf("❌ Error updating %s (%d): %s%n",

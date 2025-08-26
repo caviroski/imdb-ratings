@@ -17,10 +17,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class WikidataService {
 
     private static final String WIKIDATA_SEARCH_URL =
-            "https://www.wikidata.org/w/api.php?action=wbsearchentities&language=en&format=json&type=item&search=%s";
+            "https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&search=%s";
 
     private static final String WIKIDATA_ENTITY_URL =
             "https://www.wikidata.org/wiki/Special:EntityData/%s.json";
+
+    private static final String WIKIDATA_COUNTRY_PROPERTY = 
+            "https://www.wikidata.org/w/api.php?action=wbgetentities&ids=%s&props=labels&languages=en&format=json";
 
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -32,11 +35,11 @@ public class WikidataService {
         headers.set("User-Agent", "https://github.com/caviroski/imdb-ratings");
     }
 
-    public Optional<String> getCountryOfOrigin(String title, int year) {
+    public Optional<String> getCountryOfOrigin(String title) {
         try {
             // 1. Search Wikidata for the movie by title
             String searchUrl = String.format(WIKIDATA_SEARCH_URL,
-                    URLEncoder.encode(title + " " + year, StandardCharsets.UTF_8));
+                    URLEncoder.encode(title, StandardCharsets.UTF_8));
 
             ResponseEntity<String> searchResponse = restTemplate.exchange(
                     searchUrl,
@@ -77,8 +80,18 @@ public class WikidataService {
             String countryId = claims.get(0)
                     .get("mainsnak").get("datavalue").get("value").get("id").asText();
 
-            // Fetch the country label
-            String countryLabel = entityJson.at("/entities/" + countryId + "/labels/en/value").asText();
+            // 3. Fetch country label
+            String countryUrl = String.format(WIKIDATA_COUNTRY_PROPERTY, countryId);
+            ResponseEntity<String> countryResponse = restTemplate.exchange(
+                    countryUrl,
+                    org.springframework.http.HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class
+            );
+
+            JsonNode countryJson = objectMapper.readTree(countryResponse.getBody());
+            JsonNode countryLabelNode = countryJson.at("/entities/" + countryId + "/labels/en/value");
+            String countryLabel = countryLabelNode.isMissingNode() ? null : countryLabelNode.asText();
 
             return Optional.ofNullable(countryLabel);
 
