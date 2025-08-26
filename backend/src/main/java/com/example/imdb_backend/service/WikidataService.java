@@ -4,6 +4,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,17 +25,27 @@ public class WikidataService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    /**
-     * Fetch country of origin for a movie from Wikidata
-     */
+    private final HttpHeaders headers;
+
+    public WikidataService() {
+        headers = new HttpHeaders();
+        headers.set("User-Agent", "https://github.com/caviroski/imdb-ratings");
+    }
+
     public Optional<String> getCountryOfOrigin(String title, int year) {
         try {
             // 1. Search Wikidata for the movie by title
             String searchUrl = String.format(WIKIDATA_SEARCH_URL,
                     URLEncoder.encode(title + " " + year, StandardCharsets.UTF_8));
 
-            String searchResponse = restTemplate.getForObject(searchUrl, String.class);
-            JsonNode searchJson = objectMapper.readTree(searchResponse);
+            ResponseEntity<String> searchResponse = restTemplate.exchange(
+                    searchUrl,
+                    org.springframework.http.HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class
+            );
+
+            JsonNode searchJson = objectMapper.readTree(searchResponse.getBody());
 
             if (!searchJson.has("search") || searchJson.get("search").isEmpty()) {
                 return Optional.empty();
@@ -43,8 +56,15 @@ public class WikidataService {
 
             // 2. Fetch full entity data
             String entityUrl = String.format(WIKIDATA_ENTITY_URL, entityId);
-            String entityResponse = restTemplate.getForObject(entityUrl, String.class);
-            JsonNode entityJson = objectMapper.readTree(entityResponse);
+
+            ResponseEntity<String> entityResponse = restTemplate.exchange(
+                    entityUrl,
+                    org.springframework.http.HttpMethod.GET,
+                    new HttpEntity<>(headers),
+                    String.class
+            );
+
+            JsonNode entityJson = objectMapper.readTree(entityResponse.getBody());
 
             // Navigate JSON → claims → P495 (country of origin)
             JsonNode claims = entityJson.at("/entities/" + entityId + "/claims/P495");
@@ -53,7 +73,7 @@ public class WikidataService {
                 return Optional.empty();
             }
 
-            // Get the first country reference
+            // Get the first country reference (Q-ID)
             String countryId = claims.get(0)
                     .get("mainsnak").get("datavalue").get("value").get("id").asText();
 
