@@ -35,11 +35,10 @@ public class WikidataService {
         headers.set("User-Agent", "https://github.com/caviroski/imdb-ratings");
     }
 
-    public Optional<String> getCountryOfOrigin(String title) {
+    public Optional<String> getCountryFromWeb(String title) {
         try {
             // 1. Search Wikidata for the movie by title
-            String searchUrl = String.format(WIKIDATA_SEARCH_URL,
-                    URLEncoder.encode(title, StandardCharsets.UTF_8));
+            String searchUrl = String.format(WIKIDATA_SEARCH_URL, URLEncoder.encode(title, StandardCharsets.UTF_8));
 
             ResponseEntity<String> searchResponse = restTemplate.exchange(
                     searchUrl,
@@ -54,10 +53,30 @@ public class WikidataService {
                 return Optional.empty();
             }
 
-            // Take the first search result (best match)
-            String entityId = searchJson.get("search").get(0).get("id").asText();
+            String entityId = "";
 
-            // 2. Fetch full entity data
+            int nodeIndex = 0;
+            int total = searchJson.get("search").size();
+            boolean found = false;
+            while (nodeIndex < total) {
+                JsonNode descriptionNode = searchJson.get("search").get(nodeIndex).get("description");
+                String description = descriptionNode != null && !descriptionNode.isMissingNode() ? descriptionNode.asText() : null;
+                if (description != null && 
+                        (description.toLowerCase().contains(" film by ") ||
+                         description.toLowerCase().contains(" film directed by "))
+                    ) {
+                    entityId = searchJson.get("search").get(nodeIndex).get("id").asText();
+                    found = true;
+                    break;
+                }
+
+                nodeIndex++;
+            }
+
+            if (!found) {
+                return Optional.empty();
+            }
+
             String entityUrl = String.format(WIKIDATA_ENTITY_URL, entityId);
 
             ResponseEntity<String> entityResponse = restTemplate.exchange(

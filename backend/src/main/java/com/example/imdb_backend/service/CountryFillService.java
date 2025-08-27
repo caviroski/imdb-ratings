@@ -24,7 +24,7 @@ public class CountryFillService {
 
         for (ImdbRating movie : missing) {
             try {
-                Optional<String> countryOpt = wikidataService.getCountryOfOrigin(movie.getTitle());
+                Optional<String> countryOpt = wikidataService.getCountryFromWeb(movie.getTitle());
 
                 if (countryOpt.isPresent()) {
                     movie.setCountryOfOrigin(countryOpt.get());
