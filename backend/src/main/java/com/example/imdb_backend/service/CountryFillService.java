@@ -30,9 +30,9 @@ public class CountryFillService {
                     movie.setCountryOfOrigin(countryOpt.get());
                     // ✅ Save each movie individually (committed immediately)
                     ratingRepository.saveAndFlush(movie);
-                    System.out.printf("✅ Updated %s (%d) → %s%n", movie.getTitle(), movie.getYear(), countryOpt.get());
+                    System.out.printf("Updated %s (%d) --- %s%n", movie.getTitle(), movie.getYear(), countryOpt.get());
                 } else {
-                    System.out.printf("⚠️ No country found for %s (%d)%n", movie.getTitle(), movie.getYear());
+                    System.out.printf("No country found for %s (%d)%n", movie.getTitle(), movie.getYear());
                 }
 
                 // ⏳ Add delay of 1 second before next request

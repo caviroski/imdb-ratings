@@ -1,23 +1,23 @@
 package com.example.imdb_backend.service;
 
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Collections;
+
 @Service
 public class WikidataService {
-
-    private static final String WIKIDATA_SEARCH_URL =
-            "https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&search=%s";
 
     private static final String WIKIDATA_ENTITY_URL =
             "https://www.wikidata.org/wiki/Special:EntityData/%s.json";
@@ -32,19 +32,27 @@ public class WikidataService {
 
     public WikidataService() {
         headers = new HttpHeaders();
-        headers.set("User-Agent", "https://github.com/caviroski/imdb-ratings");
+        headers.set("User-Agent", "MovieDatabaseApp/1.0 (https://github.com/caviroski/imdb-ratings)");
+        headers.set("Accept", "application/json");
+        headers.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
     }
 
     public Optional<String> getCountryFromWeb(String title, int year) {
         try {
-            // 1. Search Wikidata for the movie by title
-            String searchUrl = String.format(WIKIDATA_SEARCH_URL, URLEncoder.encode(title, StandardCharsets.UTF_8));
+            String searchUrl = UriComponentsBuilder
+                .fromUriString("https://www.wikidata.org/w/api.php")
+                .queryParam("action", "wbsearchentities")
+                .queryParam("format", "json")
+                .queryParam("language", "en")
+                .queryParam("search", title)
+                .build()
+                .toUriString();
 
             ResponseEntity<String> searchResponse = restTemplate.exchange(
-                    searchUrl,
-                    org.springframework.http.HttpMethod.GET,
-                    new HttpEntity<>(headers),
-                    String.class
+                searchUrl,
+                HttpMethod.GET,
+                new HttpEntity<>(headers),
+                String.class
             );
 
             JsonNode searchJson = objectMapper.readTree(searchResponse.getBody());
