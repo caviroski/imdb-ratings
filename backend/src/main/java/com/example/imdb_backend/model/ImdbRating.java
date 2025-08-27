@@ -1,9 +1,9 @@
 package com.example.imdb_backend.model;
 
-import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.*;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "imdb_ratings")
