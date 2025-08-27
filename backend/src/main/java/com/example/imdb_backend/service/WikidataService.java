@@ -35,7 +35,7 @@ public class WikidataService {
         headers.set("User-Agent", "https://github.com/caviroski/imdb-ratings");
     }
 
-    public Optional<String> getCountryFromWeb(String title) {
+    public Optional<String> getCountryFromWeb(String title, int year) {
         try {
             // 1. Search Wikidata for the movie by title
             String searchUrl = String.format(WIKIDATA_SEARCH_URL, URLEncoder.encode(title, StandardCharsets.UTF_8));
@@ -64,6 +64,7 @@ public class WikidataService {
                 if (description != null && 
                         (description.toLowerCase().contains(" film by ") ||
                          description.toLowerCase().contains(" film directed by "))
+                        && description.contains(String.valueOf(year))
                     ) {
                     entityId = searchJson.get("search").get(nodeIndex).get("id").asText();
                     found = true;
