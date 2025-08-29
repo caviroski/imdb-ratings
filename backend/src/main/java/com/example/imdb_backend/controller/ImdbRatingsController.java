@@ -89,6 +89,11 @@ public class ImdbRatingsController {
         return ResponseEntity.ok("Batch update finished.");
     }
 
+    @PostMapping("/stop-filling-missing-countries")
+    public ResponseEntity<String> stopFill() {
+        countryFillService.requestStop();
+        return ResponseEntity.ok("Stop requested.");
+    }
 
     @GetMapping("/compare")
     public ResponseEntity<List<ComparisonDTO>> compareVotes(

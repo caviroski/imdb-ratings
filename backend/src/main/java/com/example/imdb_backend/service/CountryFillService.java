@@ -14,6 +14,8 @@ public class CountryFillService {
     private final ImdbRatingRepository ratingRepository;
     private final WikidataService wikidataService;
 
+    private volatile boolean stopRequested = false;
+
     public CountryFillService(ImdbRatingRepository ratingRepository, WikidataService wikidataService) {
         this.ratingRepository = ratingRepository;
         this.wikidataService = wikidataService;
@@ -21,8 +23,14 @@ public class CountryFillService {
 
     public void fillMissingCountries() {
         List<ImdbRating> missing = ratingRepository.findByCountryOfOriginIsNull();
+        stopRequested = false;
 
         for (ImdbRating movie : missing) {
+            if (stopRequested) {
+                System.out.println("Stopping batch update early...");
+                break;
+            }
+
             try {
                 Optional<String> countryOpt = wikidataService.getCountryFromWeb(movie.getTitle(), movie.getYear());
 
@@ -43,6 +51,10 @@ public class CountryFillService {
                     movie.getTitle(), movie.getYear(), e.getMessage());
             }
         }
+    }
+
+    public void requestStop() {
+        stopRequested = true;
     }
 }
 

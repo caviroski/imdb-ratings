@@ -63,7 +63,7 @@ export default function Upload() {
           <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
         </Box>
         <Stack direction="row" spacing={2} sx={{ flex: 1, justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={handleFillCountries}>
+          <Button variant="contained" onClick={handleFillCountries} disabled={filling}>
             {filling ? "Filling..." : "Fill Missing Countries"}
           </Button>
           <Button variant="contained" onClick={handleStopFillCountries}>
