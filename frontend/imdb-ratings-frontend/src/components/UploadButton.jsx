@@ -90,7 +90,6 @@ const UploadButton = ({ onUploadSuccess }) => {
       style={{
         display: 'flex',
         justifyContent: 'space-evenly',
-        paddingTop: '50px'
       }}
     >
       <Button variant="contained" onClick={onButtonClick}>

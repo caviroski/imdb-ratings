@@ -6,6 +6,8 @@ import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
 
 import UploadButton from '../components/UploadButton';
 import { fetchDates } from '../api/fetchDates';
@@ -55,21 +57,26 @@ export default function Upload() {
 
   return (
     <div>
-      <div>
-        <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
-        <Button variant="contained" onClick={handleFillCountries}>
-          {filling ? "Filling..." : "Fill Missing Countries"}
-        </Button>
-        <Button variant="contained" onClick={handleStopFillCountries}>
-          Stop filling countries
-        </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '35px' }}>
+        <Box sx={{ flex: 1 }} /> {/* Left spacer */}
+        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+          <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
+        </Box>
+        <Stack direction="row" spacing={2} sx={{ flex: 1, justifyContent: 'flex-end' }}>
+          <Button variant="contained" onClick={handleFillCountries}>
+            {filling ? "Filling..." : "Fill Missing Countries"}
+          </Button>
+          <Button variant="contained" onClick={handleStopFillCountries}>
+            Stop filling countries
+          </Button>
+        </Stack>
+      </Box>
 
       {message && (
         <p className="mt-4 text-gray-800">
           {message}
         </p>
       )}
-      </div>
       
 
       <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
