@@ -1,8 +1,6 @@
 export const fetchFillCountries = async (setMessage) => {
   try {
-    const response = await fetch("http://localhost:8080/api/imdb-ratings/fill-missing-countries", {
-      method: "POST", // or "GET" depending on your controller mapping
-    });
+    const response = await fetch("http://localhost:8080/api/imdb-ratings/fill-missing-countries", { method: "POST" });
 
     if (response.ok) {
       const text = await response.text();
@@ -14,4 +12,9 @@ export const fetchFillCountries = async (setMessage) => {
     console.error("Error filling countries:", error);
     setMessage("Failed to connect to backend.");
   }
+};
+
+export const stopFillCountries = async () => {
+  const response = await fetch("http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries", { method: "POST" });
+  console.log(await response.text());
 };

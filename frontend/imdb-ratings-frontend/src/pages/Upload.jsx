@@ -5,14 +5,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import Button from '@mui/material/Button';
 
 import UploadButton from '../components/UploadButton';
 import { fetchDates } from '../api/fetchDates';
-import { fetchFillCountries } from '../api/fetchFillCountries';
+import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
 
 export default function Upload() {
   const [sortedDates, setSortedDates] = useState([]);
   const [message, setMessage] = useState("");
+  const [filling, setFilling] = useState(false);
 
   useEffect(() => {
     fetchDates(setSortedDates);
@@ -34,7 +36,6 @@ export default function Upload() {
       console.log('Deleted:', msg);
       alert(msg); // or use a snackbar
 
-      // ✅ Refresh the list of dates after deletion
       fetchDates(setSortedDates);
     }).catch((err) => {
       console.error('Error deleting:', err);
@@ -43,27 +44,33 @@ export default function Upload() {
   };
 
   const handleFillCountries = () => {
+    setFilling(true);
     fetchFillCountries(setMessage);
+  };
+
+  const handleStopFillCountries = () => {
+    setFilling(false);
+    stopFillCountries(setMessage);
   };
 
   return (
     <div>
-      <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
-
-        <div className="p-4">
-      <button
-        onClick={handleFillCountries}
-        className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-      >
-        {"Fill Missing Countries"}
-      </button>
+      <div>
+        <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
+        <Button variant="contained" onClick={handleFillCountries}>
+          {filling ? "Filling..." : "Fill Missing Countries"}
+        </Button>
+        <Button variant="contained" onClick={handleStopFillCountries}>
+          Stop filling countries
+        </Button>
 
       {message && (
         <p className="mt-4 text-gray-800">
           {message}
         </p>
       )}
-    </div>
+      </div>
+      
 
       <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
         {sortedDates.map((value) => (
