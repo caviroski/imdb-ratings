@@ -13,6 +13,7 @@ export default function AlertDialog({ open, onClose, onConfirm, title, message }
       onClose={onClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
+      closeAfterTransition={false}
     >
       <DialogTitle id="alert-dialog-title">
         { title }
