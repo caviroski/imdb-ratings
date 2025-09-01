@@ -10,6 +10,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 
 import UploadButton from '../components/UploadButton';
+import AlertDialog from '../components/AlertDialog';
 import { fetchDates } from '../api/fetchDates';
 import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
 
@@ -17,17 +18,24 @@ export default function Upload() {
   const [sortedDates, setSortedDates] = useState([]);
   const [message, setMessage] = useState("");
   const [filling, setFilling] = useState(false);
+  const [fileName, setFileName] = useState("");
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
 
   useEffect(() => {
     fetchDates(setSortedDates);
   }, []);
 
-  const clickDeleteButton = (fileName) => {
-    console.log('Delete button clicked ', fileName);
+  const clickDeleteButton = (value) => {
+    console.log('Delete button clicked ', value);
 
-    if (!window.confirm(`Are you sure you want to delete entries from ${fileName}?`)) return;
+    setFileName(value);
+    setAlertDialogOpen(true);
 
-    fetch(`http://localhost:8080/api/imdb-ratings/delete-by-file/${fileName}`, {
+    return
+
+    if (!window.confirm(`Are you sure you want to delete entries from ${value}?`)) return;
+
+    fetch(`http://localhost:8080/api/imdb-ratings/delete-by-file/${value}`, {
       method: 'DELETE'
     }).then((res) => {
       if (!res.ok) {
@@ -58,7 +66,7 @@ export default function Upload() {
   return (
     <div>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '35px' }}>
-        <Box sx={{ flex: 1 }} /> {/* Left spacer */}
+        <Box sx={{ flex: 1 }} />
         <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
           <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
         </Box>
@@ -77,7 +85,6 @@ export default function Upload() {
           {message}
         </p>
       )}
-      
 
       <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
         {sortedDates.map((value) => (
@@ -94,6 +101,14 @@ export default function Upload() {
           </ListItem>
         ))}
       </List>
+
+      <AlertDialog
+        open={alertDialogOpen}
+        onClose={() => {}}
+        onConfirm={() => {}}
+        title="Confirm Deletion"
+        message={ `Are you sure you want to delete all the entries from ${fileName}?` }
+      />
     </div>
   )
 }
