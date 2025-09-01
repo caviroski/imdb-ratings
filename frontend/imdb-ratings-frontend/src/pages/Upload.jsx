@@ -13,6 +13,7 @@ import UploadButton from '../components/UploadButton';
 import AlertDialog from '../components/AlertDialog';
 import { fetchDates } from '../api/fetchDates';
 import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
+import { fetchDeleteFile } from '../api/fetchDeleteFile';
 
 export default function Upload() {
   const [sortedDates, setSortedDates] = useState([]);
@@ -30,28 +31,17 @@ export default function Upload() {
 
     setFileName(value);
     setAlertDialogOpen(true);
-
-    return
-
-    if (!window.confirm(`Are you sure you want to delete entries from ${value}?`)) return;
-
-    fetch(`http://localhost:8080/api/imdb-ratings/delete-by-file/${value}`, {
-      method: 'DELETE'
-    }).then((res) => {
-      if (!res.ok) {
-        throw new Error('Failed to delete');
-      }
-        return res.text();
-    }).then((msg) => {
-      console.log('Deleted:', msg);
-      alert(msg); // or use a snackbar
-
-      fetchDates(setSortedDates);
-    }).catch((err) => {
-      console.error('Error deleting:', err);
-      alert('Failed to delete entry.');
-    });
   };
+
+  const deleteFile = async () => {
+    try {
+      const msg = await deleteFile(fileName);
+      console.log(msg);
+      fetchDates(setSortedDates);
+    } catch (err) {
+      console.log('Failed to delete entry.');
+    }
+  }
 
   const handleFillCountries = () => {
     setFilling(true);
@@ -62,6 +52,15 @@ export default function Upload() {
     setFilling(false);
     stopFillCountries(setMessage);
   };
+
+  const handleAlertDialogClose = () => {
+    setAlertDialogOpen(false);
+  }
+
+  const handleAlertDialogConfirm = () => {
+    setAlertDialogOpen(false);
+    deleteFile();
+  }
 
   return (
     <div>
@@ -104,10 +103,10 @@ export default function Upload() {
 
       <AlertDialog
         open={alertDialogOpen}
-        onClose={() => {}}
-        onConfirm={() => {}}
+        onClose={() => {handleAlertDialogClose()}}
+        onConfirm={() => {handleAlertDialogConfirm()}}
         title="Confirm Deletion"
-        message={ `Are you sure you want to delete all the entries from ${fileName}?` }
+        message={`Are you sure you want to delete all the entries from ${fileName}?`}
       />
     </div>
   )
