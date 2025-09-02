@@ -35,7 +35,7 @@ export default function Upload() {
 
   const deleteFile = async () => {
     try {
-      const msg = await deleteFile(fileName);
+      const msg = await fetchDeleteFile(fileName);
       console.log(msg);
       fetchDates(setSortedDates);
     } catch (err) {
