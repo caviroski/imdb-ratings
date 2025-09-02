@@ -35,7 +35,7 @@ export default function Upload() {
   const deleteFile = async () => {
     try {
       const msg = await fetchDeleteFile(fileName);
-      console.log(msg);
+      setSnack({ open: true, message: msg, color: '#44bd32', duration: 15000 });
       fetchDates(setSortedDates);
     } catch (err) {
       setSnack({ open: true, message: 'Failed to delete entry.', color: '#e84118' });
@@ -106,7 +106,13 @@ export default function Upload() {
         message={`Are you sure you want to delete all the entries from ${fileName}?`}
       />
 
-      <SnackbarMessage open={snack.open} message={snack.message} onClose={handleClose} backgroundColor={snack.color} />
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleClose}
+        backgroundColor={snack.color}
+        duration={snack.duration}
+      />
     </div>
   )
 }
