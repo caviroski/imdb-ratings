@@ -1,6 +1,6 @@
 import { API_BASE_URL } from '../config/api';
 
-export const fetchFillCountries = async () => {
+export const fillCountries = async () => {
   console.log("Starting to fill missing countries...");
   try {
     const response = await fetch(`${API_BASE_URL}/fill-missing-countries`, { method: "POST" });

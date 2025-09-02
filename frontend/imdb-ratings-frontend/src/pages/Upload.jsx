@@ -13,7 +13,7 @@ import UploadButton from '../components/UploadButton';
 import AlertDialog from '../components/AlertDialog';
 import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
-import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
+import { fillCountries, stopFillCountries } from '../api/fillCountries';
 import { deleteFileByName } from '../api/deleteFileByName';
 
 export default function Upload() {
@@ -44,7 +44,7 @@ export default function Upload() {
 
   const handleFillCountries = () => {
     setFilling(true);
-    fetchFillCountries();
+    fillCountries();
   };
 
   const handleStopFillCountries = () => {

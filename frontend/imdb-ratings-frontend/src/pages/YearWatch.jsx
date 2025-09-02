@@ -9,10 +9,11 @@ import { fetchYearCount } from '../api/fetchYearCount';
 export default function YearWatch() {
   const [date, setDate] = useState([]);
   const [dataset, setDataset] = useState([]);
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
     fetchDates(setDate);
-    fetchYearCount(setDataset, '');
+    fetchYearCount(setDataset, setTotal, '');
   }, []);
 
   useEffect(() => {
@@ -30,13 +31,16 @@ export default function YearWatch() {
   const handleChange = (event) => {
     const selectedDate = event.target.value;
     setFromDate(selectedDate);
-    fetchYearCount(setDataset, selectedDate);
+    fetchYearCount(setDataset, setTotal, selectedDate);
   };
 
   return (
     <div>
-      <p style={{ marginBottom: '50px', textAlign: 'center' }}>
+      <p style={{ textAlign: 'center' }}>
         How many enteries are watched from every year shown in linear graph.
+      </p>
+      <p style={{ marginBottom: '50px', textAlign: 'center' }}>
+        Total watched: { total } items
       </p>
 
       <div

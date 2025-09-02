@@ -173,7 +173,15 @@ public class ImdbRatingsController {
                 return m;
             }).toList();
 
-        return ResponseEntity.ok(mapped);
+        long totalItems = mapped.stream()
+            .mapToLong(m -> (Long) m.get("itemsNum"))
+            .sum();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalItems", totalItems);
+        response.put("years", mapped);
+
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/yearly-average")
