@@ -1,17 +1,16 @@
-export const fetchFillCountries = async (setMessage) => {
+export const fetchFillCountries = async () => {
   console.log("Starting to fill missing countries...");
   try {
     const response = await fetch("http://localhost:8080/api/imdb-ratings/fill-missing-countries", { method: "POST" });
 
     if (response.ok) {
       const text = await response.text();
-      setMessage(text || "Countries filled successfully!");
+      console.log(text || "Countries filled successfully!");
     } else {
-      setMessage("Error: " + response.status);
+      console.log("Error: " + response.status);
     }
   } catch (error) {
     console.error("Error filling countries:", error);
-    setMessage("Failed to connect to backend.");
   }
 };
 

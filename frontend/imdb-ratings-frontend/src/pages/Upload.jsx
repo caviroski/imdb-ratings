@@ -17,7 +17,6 @@ import { fetchDeleteFile } from '../api/fetchDeleteFile';
 
 export default function Upload() {
   const [sortedDates, setSortedDates] = useState([]);
-  const [message, setMessage] = useState("");
   const [filling, setFilling] = useState(false);
   const [fileName, setFileName] = useState("");
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
@@ -27,8 +26,6 @@ export default function Upload() {
   }, []);
 
   const clickDeleteButton = (value) => {
-    console.log('Delete button clicked ', value);
-
     setFileName(value);
     setAlertDialogOpen(true);
   };
@@ -45,12 +42,12 @@ export default function Upload() {
 
   const handleFillCountries = () => {
     setFilling(true);
-    fetchFillCountries(setMessage);
+    fetchFillCountries();
   };
 
   const handleStopFillCountries = () => {
     setFilling(false);
-    stopFillCountries(setMessage);
+    stopFillCountries();
   };
 
   const handleAlertDialogClose = () => {
@@ -78,12 +75,6 @@ export default function Upload() {
           </Button>
         </Stack>
       </Box>
-
-      {message && (
-        <p className="mt-4 text-gray-800">
-          {message}
-        </p>
-      )}
 
       <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
         {sortedDates.map((value) => (
