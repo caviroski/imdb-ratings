@@ -61,7 +61,7 @@ export default function Upload() {
     deleteFile();
   }
 
-  const handleClose = () => {
+  const handleCloseSnackbar = () => {
     setSnack({ ...snack, open: false });
   };
 
@@ -76,7 +76,7 @@ export default function Upload() {
           <Button variant="contained" onClick={handleFillCountries} disabled={filling}>
             {filling ? "Filling..." : "Fill Missing Countries"}
           </Button>
-          <Button variant="contained" onClick={handleStopFillCountries}>
+          <Button variant="contained" onClick={handleStopFillCountries} style={{ marginRight: '15px' }}>
             Stop filling countries
           </Button>
         </Stack>
@@ -109,7 +109,7 @@ export default function Upload() {
       <SnackbarMessage
         open={snack.open}
         message={snack.message}
-        onClose={handleClose}
+        onClose={handleCloseSnackbar}
         backgroundColor={snack.color}
         duration={snack.duration}
       />
