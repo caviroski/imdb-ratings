@@ -17,7 +17,6 @@ const UploadButton = ({ onUploadSuccess }) => {
   };
 
   const onButtonClick = () => {
-    // Trigger the hidden file input
     fileInputRef.current.click();
   };
 

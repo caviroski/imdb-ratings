@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 
 import UploadButton from '../components/UploadButton';
 import AlertDialog from '../components/AlertDialog';
+import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
 import { fetchDeleteFile } from '../api/fetchDeleteFile';
@@ -20,6 +21,7 @@ export default function Upload() {
   const [filling, setFilling] = useState(false);
   const [fileName, setFileName] = useState("");
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
     fetchDates(setSortedDates);
@@ -36,7 +38,7 @@ export default function Upload() {
       console.log(msg);
       fetchDates(setSortedDates);
     } catch (err) {
-      console.log('Failed to delete entry.');
+      setSnack({ open: true, message: 'Failed to delete entry.', color: '#e84118' });
     }
   }
 
@@ -58,6 +60,10 @@ export default function Upload() {
     setAlertDialogOpen(false);
     deleteFile();
   }
+
+  const handleClose = () => {
+    setSnack({ ...snack, open: false });
+  };
 
   return (
     <div>
@@ -99,6 +105,8 @@ export default function Upload() {
         title="Confirm Deletion"
         message={`Are you sure you want to delete all the entries from ${fileName}?`}
       />
+
+      <SnackbarMessage open={snack.open} message={snack.message} onClose={handleClose} backgroundColor={snack.color} />
     </div>
   )
 }
