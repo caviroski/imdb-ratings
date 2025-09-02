@@ -1,6 +1,8 @@
+import { API_BASE_URL } from '../config/api';
+
 export const fetchDates = async (setSortedDates) => {
   try {
-    const response = await fetch('http://localhost:8080/api/imdb-ratings/file-names');
+    const response = await fetch(`${API_BASE_URL}/file-names`);
     const data = await response.json();
     setSortedDates(data.sort((a, b) => {
       const [dayA, monthA, yearA] = a.split('.').map(Number);

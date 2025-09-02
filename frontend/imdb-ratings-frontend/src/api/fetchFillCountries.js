@@ -1,7 +1,9 @@
+import { API_BASE_URL } from '../config/api';
+
 export const fetchFillCountries = async () => {
   console.log("Starting to fill missing countries...");
   try {
-    const response = await fetch("http://localhost:8080/api/imdb-ratings/fill-missing-countries", { method: "POST" });
+    const response = await fetch(`${API_BASE_URL}/fill-missing-countries`, { method: "POST" });
 
     if (response.ok) {
       const text = await response.text();
@@ -15,6 +17,6 @@ export const fetchFillCountries = async () => {
 };
 
 export const stopFillCountries = async () => {
-  const response = await fetch("http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries", { method: "POST" });
+  const response = await fetch(`${API_BASE_URL}/stop-filling-missing-countries`, { method: "POST" });
   console.log(await response.text());
 };

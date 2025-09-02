@@ -1,6 +1,8 @@
-export const fetchDeleteFile = async (fileName) => {
+import { API_BASE_URL } from '../config/api';
+
+export const deleteFileByName = async (fileName) => {
   try {
-    const res = await fetch(`http://localhost:8080/api/imdb-ratings/delete-by-file/${fileName}`, {
+    const res = await fetch(`${API_BASE_URL}/delete-by-file/${fileName}`, {
       method: 'DELETE'
     });
 

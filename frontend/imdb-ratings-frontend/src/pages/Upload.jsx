@@ -14,7 +14,7 @@ import AlertDialog from '../components/AlertDialog';
 import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchFillCountries, stopFillCountries } from '../api/fetchFillCountries';
-import { fetchDeleteFile } from '../api/fetchDeleteFile';
+import { deleteFileByName } from '../api/deleteFileByName';
 
 export default function Upload() {
   const [sortedDates, setSortedDates] = useState([]);
@@ -34,7 +34,7 @@ export default function Upload() {
 
   const deleteFile = async () => {
     try {
-      const msg = await fetchDeleteFile(fileName);
+      const msg = await deleteFileByName(fileName);
       setSnack({ open: true, message: msg, color: '#44bd32', duration: 15000 });
       fetchDates(setSortedDates);
     } catch (err) {
@@ -85,7 +85,7 @@ export default function Upload() {
       <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
         {sortedDates.map((value) => (
           <ListItem
-          style={{ borderBottom: '1px solid #ccc' }}
+            style={{ borderBottom: '1px solid #ccc' }}
             key={value}
             secondaryAction={
               <IconButton aria-label="delete" onClick={() => clickDeleteButton(value)}>
