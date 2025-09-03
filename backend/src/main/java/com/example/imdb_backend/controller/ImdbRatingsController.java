@@ -218,6 +218,32 @@ public class ImdbRatingsController {
         return ResponseEntity.ok(mapped);
     }
 
+    @GetMapping("/title-type-count")
+    public ResponseEntity<?> getTitleTypeCount(@RequestParam(required = false) String fromDate) {
+        List<Object[]> results;
+
+        try {
+            String effectiveDate = (fromDate != null && !fromDate.isEmpty())
+                    ? fromDate
+                    : LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+            results = imdbRatingRepository.findTitleTypeCountsFromDate(effectiveDate);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
+        }
+
+        List<Map<String, Object>> mapped = results.stream()
+                .map(row -> {
+                    Map<String, Object> m = new HashMap<>();
+                    m.put("id", (String) row[0]);
+                    m.put("titleType", (String) row[0]);
+                    m.put("count", ((Number) row[1]).longValue());
+                    return m;
+                }).toList();
+
+        return ResponseEntity.ok(mapped);
+    }
+
     @DeleteMapping("/delete-by-file/{fileName}")
     public ResponseEntity<String> removeFileData(@PathVariable String fileName) {
         List<ImdbRating> affected = imdbRatingRepository.findByContainsContaining(fileName);

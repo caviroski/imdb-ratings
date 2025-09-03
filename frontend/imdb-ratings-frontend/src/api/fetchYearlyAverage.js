@@ -1,6 +1,7 @@
 import { API_BASE_URL } from '../config/api';
 
 export const fetchYearlyAverage = async (setDataset, cutoffDate = '') => {
+  console.log("Fetching yearly average ratings until date:", cutoffDate);
   try {
     const response = await fetch(
       `${API_BASE_URL}/yearly-average?cutoffDate=${encodeURIComponent(cutoffDate)}`
