@@ -30,7 +30,7 @@ export default function Statistics() {
   ];
 
   const columnsTitleType = [
-    { field: 'titleType', headerName: 'Title Type', width: 110 },
+    { field: 'titleType', headerName: 'Title Type', width: 180 },
     { field: 'count', headerName: 'Count', width: 90 }
   ];
 
@@ -84,7 +84,7 @@ export default function Statistics() {
             />
           </Paper>
         </div>
-        <div style={{ width: 220 }}>
+        <div style={{ width: 290 }}>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={titleTypeRows}
