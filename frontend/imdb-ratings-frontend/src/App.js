@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-ro
 import Upload from './pages/Upload';
 import Compare from './pages/Compare';
 import YearWatch from './pages/YearWatch';
-import RatingStatistics from './pages/RatingStatistics';
+import Statistics from './pages/Statistics';
 
 function App() {
   return (
@@ -31,7 +31,7 @@ function App() {
           <Route path="/upload" element={<Upload />} />
           <Route path="/compare" element={<Compare />} />
           <Route path="/year" element={<YearWatch />} />
-          <Route path="/rating-statistics" element={<RatingStatistics />} />
+          <Route path="/rating-statistics" element={<Statistics />} />
         </Routes>
       </div>
     </Router>

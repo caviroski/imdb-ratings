@@ -7,7 +7,7 @@ import SelectDate from '../components/SelectDate';
 import { fetchDates } from '../api/fetchDates';
 import { fetchYearlyAverage } from '../api/fetchYearlyAverage';
 
-export default function YearWatch() {
+export default function Statistics() {
   const [date, setDate] = useState([]);
   const [options, setOptions] = useState([]);
   const [yearRows, setYearRows] = useState([]);
@@ -20,11 +20,6 @@ export default function YearWatch() {
   useEffect(() => {
     setOptions(date.map(d => ({ label: d, value: d })));
   }, [date]);
-
-  const optionsBackend = date.map(d => ({
-    label: d,
-    value: d
-  }));
 
   const columns = [
     { field: 'year', headerName: 'Year', width: 80 },
