@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
@@ -25,18 +25,18 @@ export default function Statistics() {
     setOptions(date.map(d => ({ label: d, value: d })));
   }, [date]);
 
-  const columns = [
+  const yearColumns = [
     { field: 'year', headerName: 'Year', width: 80 },
     { field: 'avgRating', headerName: 'Average Rating', width: 150 },
     { field: 'itemsNum', headerName: 'Count', width: 90 }
   ];
 
-  const columnsTitleType = [
+  const titleTypeColumns = [
     { field: 'titleType', headerName: 'Title Type', width: 180 },
     { field: 'count', headerName: 'Count', width: 90 }
   ];
 
-  const columnsGenre = [
+  const genreColumns = [
     { field: 'genre', headerName: 'Genre', width: 120 },
     { field: 'count', headerName: 'Count', width: 90 },
     { field: 'avgRating', headerName: 'Average Rating', width: 150 }
@@ -87,7 +87,7 @@ export default function Statistics() {
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={yearRows}
-              columns={columns}
+              columns={yearColumns}
               sx={{ border: 0 }}
               disableColumnMenu={true}
             />
@@ -97,7 +97,7 @@ export default function Statistics() {
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={titleTypeRows}
-              columns={columnsTitleType}
+              columns={titleTypeColumns}
               sx={{ border: 0 }}
               disableColumnMenu={true}
             />
@@ -107,7 +107,7 @@ export default function Statistics() {
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={genreRows}
-              columns={columnsGenre}
+              columns={genreColumns}
               sx={{ border: 0 }}
               disableColumnMenu={true}
             />
