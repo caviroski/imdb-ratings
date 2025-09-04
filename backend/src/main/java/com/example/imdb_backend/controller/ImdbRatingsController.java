@@ -265,10 +265,10 @@ public class ImdbRatingsController {
 
                     m.put("id", genre);
                     m.put("genre", genre);
-                    m.put("total", total);
+                    m.put("count", total);
                     m.put("avgRating", avgRating);
                     return m;
-                }).filter(m -> (Long) m.get("total") > 0)
+                }).filter(m -> (Long) m.get("count") > 0)
                   .toList();
 
             return ResponseEntity.ok(mapped);
