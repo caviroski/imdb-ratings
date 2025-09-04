@@ -7,12 +7,14 @@ import SelectDate from '../components/SelectDate';
 import { fetchDates } from '../api/fetchDates';
 import { fetchYearlyAverage } from '../api/fetchYearlyAverage';
 import { fetchTitleTypeCounts } from '../api/fetchTitleTypeCounts';
+import { fetchGenreStats } from '../api/fetchGenreStats';
 
 export default function Statistics() {
   const [date, setDate] = useState([]);
   const [options, setOptions] = useState([]);
   const [yearRows, setYearRows] = useState([]);
   const [titleTypeRows, setTitleTypeRows] = useState([]);
+  const [genreRows, setGenreRows] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
@@ -34,11 +36,18 @@ export default function Statistics() {
     { field: 'count', headerName: 'Count', width: 90 }
   ];
 
-  const handleChange = (event) => {
+  const columnsGenre = [
+    { field: 'genre', headerName: 'Genre', width: 180 },
+    { field: 'count', headerName: 'Count', width: 90 },
+    { field: 'avgRating', headerName: 'Average Rating', width: 150 }
+  ];
+
+  const pickDate = (event) => {
     const selectedDate = event.target.value;
     setSelectedDate(selectedDate);
     fetchYearlyAverage(setYearRows, selectedDate);
     fetchTitleTypeCounts(setTitleTypeRows, selectedDate);
+    fetchGenreStats(setGenreRows, selectedDate);
   };
 
   return (
@@ -59,7 +68,7 @@ export default function Statistics() {
       >
         <SelectDate
           value={selectedDate}
-          onChange={handleChange}
+          onChange={pickDate}
           label="Pick Date"
           options={options}
         />
@@ -70,7 +79,7 @@ export default function Statistics() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          gap: '200px',
+          gap: '100px',
           marginTop: '50px'
         }}
       >
@@ -89,6 +98,16 @@ export default function Statistics() {
             <DataGrid
               rows={titleTypeRows}
               columns={columnsTitleType}
+              sx={{ border: 0 }}
+              disableColumnMenu={true}
+            />
+          </Paper>
+        </div>
+        <div style={{ width: 290 }}>
+          <Paper sx={{ height: 590, width: '100%' }}>
+            <DataGrid
+              rows={genreRows}
+              columns={columnsGenre}
               sx={{ border: 0 }}
               disableColumnMenu={true}
             />
