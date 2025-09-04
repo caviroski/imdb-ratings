@@ -37,7 +37,7 @@ export default function Statistics() {
   ];
 
   const columnsGenre = [
-    { field: 'genre', headerName: 'Genre', width: 180 },
+    { field: 'genre', headerName: 'Genre', width: 120 },
     { field: 'count', headerName: 'Count', width: 90 },
     { field: 'avgRating', headerName: 'Average Rating', width: 150 }
   ];
@@ -103,7 +103,7 @@ export default function Statistics() {
             />
           </Paper>
         </div>
-        <div style={{ width: 290 }}>
+        <div style={{ width: 380 }}>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={genreRows}

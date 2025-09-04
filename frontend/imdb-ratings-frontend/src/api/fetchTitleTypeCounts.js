@@ -1,8 +1,6 @@
 import { API_BASE_URL } from '../config/api';
 
 export const fetchTitleTypeCounts = async (setDataset, fromDate) => {
-
-    console.log("Fetching title type counts from date:", fromDate);
   try {
     const url = fromDate
       ? `${API_BASE_URL}/title-type-count?fromDate=${encodeURIComponent(fromDate)}`
