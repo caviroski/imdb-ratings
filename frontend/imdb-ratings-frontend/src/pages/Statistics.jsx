@@ -84,6 +84,7 @@ export default function Statistics() {
         }}
       >
         <div style={{ width: 400 }}>
+          <p style={{ textAlign: 'center' }}>Every years items average rating</p>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={yearRows}
@@ -94,6 +95,7 @@ export default function Statistics() {
           </Paper>
         </div>
         <div style={{ width: 290 }}>
+          <p style={{ textAlign: 'center' }}>How many items are from every type</p>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={titleTypeRows}
@@ -104,6 +106,7 @@ export default function Statistics() {
           </Paper>
         </div>
         <div style={{ width: 380 }}>
+          <p style={{ textAlign: 'center' }}>Every genre average rating</p>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
               rows={genreRows}
