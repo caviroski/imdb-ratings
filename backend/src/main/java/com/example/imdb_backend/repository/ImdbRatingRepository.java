@@ -40,4 +40,16 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
        GROUP BY title_type
        """, nativeQuery = true)
     List<Object[]> findTitleTypeCountsFromDate(@Param("fromDate") String fromDate);
+
+    @Query(value = """
+       SELECT 
+           TRIM(SUBSTRING_INDEX(genres, ',', 1)) AS main_genre,
+           COUNT(id) AS total,
+           AVG(your_rating) AS avg_rating
+       FROM imdb_ratings
+       WHERE date_rated <= STR_TO_DATE(:cutoffDate, '%d.%m.%Y')
+       GROUP BY main_genre
+       ORDER BY total DESC
+       """, nativeQuery = true)
+    List<Object[]> findGenreStatsUntil(@Param("cutoffDate") String cutoffDate);
 }

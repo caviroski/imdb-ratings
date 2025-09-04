@@ -244,6 +244,40 @@ public class ImdbRatingsController {
         return ResponseEntity.ok(mapped);
     }
 
+    @GetMapping("/genre-stats")
+    public ResponseEntity<?> getGenreStats(@RequestParam(required = false) String cutoffDate) {
+        try {
+            String effectiveDate = (cutoffDate != null && !cutoffDate.isEmpty())
+                    ? cutoffDate
+                    : LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+
+            List<Object[]> results = imdbRatingRepository.findGenreStatsUntil(effectiveDate);
+
+            List<Map<String, Object>> mapped = results.stream()
+                .map(row -> {
+                    Map<String, Object> m = new HashMap<>();
+                    String genre = (String) row[0];
+                    Long total = ((Number) row[1]).longValue();
+                    Double avgRating = row[2] != null ? ((Number) row[2]).doubleValue() : 0.0;
+
+                    // Force 2 decimals with dot
+                    avgRating = Math.round(avgRating * 100.0) / 100.0;
+
+                    m.put("id", genre);
+                    m.put("genre", genre);
+                    m.put("total", total);
+                    m.put("avgRating", avgRating);
+                    return m;
+                }).filter(m -> (Long) m.get("total") > 0)
+                  .toList();
+
+            return ResponseEntity.ok(mapped);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Expected dd.MM.yyyy");
+        }
+    }
+
+
     @DeleteMapping("/delete-by-file/{fileName}")
     public ResponseEntity<String> removeFileData(@PathVariable String fileName) {
         List<ImdbRating> affected = imdbRatingRepository.findByContainsContaining(fileName);
