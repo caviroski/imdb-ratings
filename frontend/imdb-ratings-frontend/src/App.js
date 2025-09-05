@@ -20,7 +20,7 @@ function App() {
           }}
         >
           <Link to="/upload">Upload File</Link> | 
-          <Link to="/compare">Choose dates to compare</Link> | 
+          <Link to="/compare">Compare Dates</Link> | 
           <Link to="/year">Year Watch</Link> | 
           <Link to="/rating-statistics">Statistics</Link>
         </nav>
