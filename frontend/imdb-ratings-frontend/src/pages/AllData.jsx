@@ -22,20 +22,20 @@ export default function AllData() {
   }, [date]);
 
   const dataColumns = [
-    { field: 'const', headerName: 'Const', width: 80 },
-    { field: 'yourRating', headerName: 'Your Rating', width: 80 },
-    { field: 'dateRated', headerName: 'Date Rated', width: 80 },
-    { field: 'title', headerName: 'Title', width: 80 },
-    { field: 'originalTitle', headerName: 'Original Title', width: 80 },
-    { field: 'url', headerName: 'URL', width: 80 },
-    { field: 'titleType', headerName: 'Title Type', width: 80 },
-    { field: 'imdbRating', headerName: 'IMDb Rating', width: 80 },
-    { field: 'runtime', headerName: 'Runtime (mins)', width: 80 },
-    { field: 'year', headerName: 'Year', width: 80 },
+    { field: 'const', headerName: 'Const', width: 90 },
+    { field: 'yourRating', headerName: 'Your Rating', width: 100 },
+    { field: 'dateRated', headerName: 'Date Rated', width: 100 },
+    { field: 'title', headerName: 'Title', width: 220 },
+    { field: 'originalTitle', headerName: 'Original Title', width: 220 },
+    { field: 'url', headerName: 'URL', width: 260 },
+    { field: 'titleType', headerName: 'Title Type', width: 120 },
+    { field: 'imdbRating', headerName: 'IMDb Rating', width: 100 },
+    { field: 'runtime', headerName: 'Runtime (mins)', width: 120 },
+    { field: 'year', headerName: 'Year', width: 60 },
     { field: 'genres', headerName: 'Genres', width: 80 },
-    { field: 'numVotes', headerName: 'Num Votes', width: 80 },
-    { field: 'releaseDate', headerName: 'Release Date', width: 80 },
-    { field: 'directors', headerName: 'Directors', width: 80 }
+    { field: 'numVotes', headerName: 'Num Votes', width: 120 },
+    { field: 'releaseDate', headerName: 'Release Date', width: 120 },
+    { field: 'directors', headerName: 'Directors', width: 150 }
   ];
 
   const pickDate = (event) => {
@@ -67,7 +67,7 @@ export default function AllData() {
           options={options}
         />
       </div>
-        <div style={{ width: 1400 }}>
+        <div style={{ width: 1900 }}>
           <p style={{ textAlign: 'center' }}>All the data from the export</p>
           <Paper sx={{ height: 590, width: '100%' }}>
             <DataGrid
