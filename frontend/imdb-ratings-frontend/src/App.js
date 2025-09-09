@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+
 import Upload from './pages/Upload';
 import Compare from './pages/Compare';
 import YearWatch from './pages/YearWatch';
 import Statistics from './pages/Statistics';
+import AllData from './pages/AllData';
 
 function App() {
   return (
@@ -22,7 +24,8 @@ function App() {
           <Link to="/upload">Upload File</Link> | 
           <Link to="/compare">Compare Dates</Link> | 
           <Link to="/year">Year Watch</Link> | 
-          <Link to="/rating-statistics">Statistics</Link>
+          <Link to="/rating-statistics">Statistics</Link> |
+          <Link to="/all-data">All Data</Link>
         </nav>
 
         <Routes>
@@ -31,6 +34,7 @@ function App() {
           <Route path="/compare" element={<Compare />} />
           <Route path="/year" element={<YearWatch />} />
           <Route path="/rating-statistics" element={<Statistics />} />
+          <Route path="/all-data" element={<AllData />} />
         </Routes>
       </div>
     </Router>
