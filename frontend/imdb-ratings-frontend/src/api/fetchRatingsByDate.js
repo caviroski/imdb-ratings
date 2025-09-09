@@ -1,7 +1,6 @@
 import { API_BASE_URL } from '../config/api';
 
 export const fetchRatingsByDate = async (setDataset, date) => {
-  console.log('Fetching ratings for date:', date);
   try {
     const response = await fetch(`${API_BASE_URL}/ratings-by-date?date=${encodeURIComponent(date)}`);
 
