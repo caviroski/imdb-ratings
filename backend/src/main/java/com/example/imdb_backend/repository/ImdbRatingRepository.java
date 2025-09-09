@@ -1,5 +1,6 @@
 package com.example.imdb_backend.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -52,4 +53,27 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
        ORDER BY total DESC
        """, nativeQuery = true)
     List<Object[]> findGenreStatsUntil(@Param("cutoffDate") String cutoffDate);
+
+    @Query(value = """
+        SELECT r.imdb_const,
+            rm.your_rating,
+            rm.date_rated,
+            r.title,
+            r.original_title,
+            r.url,
+            r.title_type,
+            rm.imdb_rating,
+            r.runtime,
+            r.year,
+            r.genres,
+            nv.num_votes,
+            r.release_date,
+            r.directors
+        FROM imdb_ratings r
+        JOIN imdb_contains c ON r.imdb_const = c.imdb_const
+        JOIN imdb_ratings_map rm ON r.imdb_const = rm.imdb_const
+        JOIN imdb_num_votes nv ON r.imdb_const = nv.imdb_const
+        WHERE rm.date_rated <= STR_TO_DATE(:date, '%d.%m.%Y')
+        """, nativeQuery = true)
+    List<Object[]> findRatingsByDate(@Param("date") LocalDate date);
 }

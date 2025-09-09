@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 
 import SelectDate from '../components/SelectDate';
 import { fetchDates } from '../api/fetchDates';
+import { fetchRatingsByDate } from '../api/fetchRatingsByDate';
 
 export default function AllData() {
   const [date, setDate] = useState([]);
@@ -40,6 +41,7 @@ export default function AllData() {
   const pickDate = (event) => {
     const selectedDate = event.target.value;
     setSelectedDate(selectedDate);
+    fetchRatingsByDate(setDataRows, selectedDate);
   };
 
   return (
