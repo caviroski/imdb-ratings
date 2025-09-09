@@ -69,12 +69,11 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
             r.release_date,
             r.directors
         FROM imdb_ratings r
-        JOIN imdb_contains c ON r.id = c.imdb_const
         JOIN imdb_ratings_map rm ON r.id = rm.imdb_const 
             AND rm.file_date = :date
         JOIN imdb_num_votes nv ON r.id = nv.imdb_const 
             AND nv.file_date = rm.file_date
-        WHERE rm.file_date <= STR_TO_DATE(:date, '%d.%m.%Y')
+        WHERE rm.file_date = :date
         """, nativeQuery = true)
     List<Object[]> findRatingsByDate(@Param("date") String date);
 }
