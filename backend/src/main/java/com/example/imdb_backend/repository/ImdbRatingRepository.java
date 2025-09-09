@@ -56,24 +56,26 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
 
     @Query(value = """
         SELECT r.imdb_const,
-            rm.your_rating,
-            rm.date_rated,
             r.title,
             r.original_title,
             r.url,
             r.title_type,
             rm.imdb_rating,
-            r.runtime,
+            r.runtime_minutes,
             r.year,
+            r.your_rating,
+            r.date_rated,
             r.genres,
             nv.num_votes,
             r.release_date,
             r.directors
         FROM imdb_ratings r
-        JOIN imdb_contains c ON r.imdb_const = c.imdb_const
-        JOIN imdb_ratings_map rm ON r.imdb_const = rm.imdb_const
-        JOIN imdb_num_votes nv ON r.imdb_const = nv.imdb_const
-        WHERE rm.date_rated <= STR_TO_DATE(:date, '%d.%m.%Y')
+        JOIN imdb_contains c ON r.id = c.imdb_const
+        JOIN imdb_ratings_map rm ON r.id = rm.imdb_const 
+            AND rm.file_date = :date
+        JOIN imdb_num_votes nv ON r.id = nv.imdb_const 
+            AND nv.file_date = rm.file_date
+        WHERE rm.file_date <= STR_TO_DATE(:date, '%d.%m.%Y')
         """, nativeQuery = true)
-    List<Object[]> findRatingsByDate(@Param("date") LocalDate date);
+    List<Object[]> findRatingsByDate(@Param("date") String date);
 }

@@ -278,26 +278,27 @@ public class ImdbRatingsController {
     }
 
     @GetMapping("/ratings-by-date")
-    public ResponseEntity<?> getRatingsByDate(@RequestParam(required = false) String cutoffDate) {
+    public ResponseEntity<?> getRatingsByDate(@RequestParam(required = false) String date) {
         try {
-            String effectiveDate = (cutoffDate != null && !cutoffDate.isEmpty())
-                    ? cutoffDate
+            String effectiveDate = (date != null && !date.isEmpty())
+                    ? date
                     : LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
 
-            List<Object[]> results = imdbRatingRepository.findGenreStatsUntil(effectiveDate);
+            List<Object[]> results = imdbRatingRepository.findRatingsByDate(effectiveDate);
 
             List<Map<String, Object>> mapped = results.stream().map(row -> {
                 Map<String, Object> m = new HashMap<>();
+                m.put("id", row[0]);
                 m.put("const", row[0]);
-                m.put("yourRating", row[1]);
-                m.put("dateRated", row[2]);
-                m.put("title", row[3]);
-                m.put("originalTitle", row[4]);
-                m.put("url", row[5]);
-                m.put("titleType", row[6]);
-                m.put("imdbRating", row[7]);
-                m.put("runtime", row[8]);
-                m.put("year", row[9]);
+                m.put("yourRating", row[8]);
+                m.put("dateRated", row[9]);
+                m.put("title", row[1]);
+                m.put("originalTitle", row[2]);
+                m.put("url", row[3]);
+                m.put("titleType", row[4]);
+                m.put("imdbRating", row[5]);
+                m.put("runtime", row[6]);
+                m.put("year", row[7]);
                 m.put("genres", row[10]);
                 m.put("numVotes", row[11]);
                 m.put("releaseDate", row[12]);
