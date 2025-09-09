@@ -290,8 +290,6 @@ public class ImdbRatingsController {
                 Map<String, Object> m = new HashMap<>();
                 m.put("id", row[0]);
                 m.put("const", row[0]);
-                m.put("yourRating", row[8]);
-                m.put("dateRated", row[9]);
                 m.put("title", row[1]);
                 m.put("originalTitle", row[2]);
                 m.put("url", row[3]);
@@ -299,6 +297,8 @@ public class ImdbRatingsController {
                 m.put("imdbRating", row[5]);
                 m.put("runtime", row[6]);
                 m.put("year", row[7]);
+                m.put("yourRating", row[8]);
+                m.put("dateRated", row[9]);
                 m.put("genres", row[10]);
                 m.put("numVotes", row[11]);
                 m.put("releaseDate", row[12]);
