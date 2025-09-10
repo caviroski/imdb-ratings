@@ -82,13 +82,13 @@ export default function WorldMap() {
         data={data}
         features={worldFeatures.features}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        domain={[0, 100]}  // range of values for your colors
+        domain={[0, 30]}
         unknownColor="#fff"
         label="properties.name"
         projectionScale={150}
         projectionTranslation={[0.5, 0.5]}
         projectionRotation={[0, 0, 0]}
-        colors="blues"        // built-in color scheme
+        colors="blues"
         borderWidth={1.5}
         borderColor="#333"
       />
