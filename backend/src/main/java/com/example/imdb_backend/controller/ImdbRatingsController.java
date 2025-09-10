@@ -313,6 +313,20 @@ public class ImdbRatingsController {
         }
     }
 
+    @GetMapping("/country-counts")
+    public ResponseEntity<?> getCountryCounts() {
+        List<Object[]> results = imdbRatingRepository.findMovieCountsByCountry();
+
+        List<Map<String, Object>> mapped = results.stream()
+            .map(row -> {
+                Map<String, Object> m = new HashMap<>();
+                m.put("country", (String) row[0]);
+                m.put("count", ((Number) row[1]).intValue());
+                return m;
+            }).toList();
+
+        return ResponseEntity.ok(mapped);
+    }
 
     @DeleteMapping("/delete-by-file/{fileName}")
     public ResponseEntity<String> removeFileData(@PathVariable String fileName) {

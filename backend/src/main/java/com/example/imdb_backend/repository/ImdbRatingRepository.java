@@ -75,4 +75,10 @@ public interface ImdbRatingRepository extends JpaRepository<ImdbRating, Integer>
             AND nv.file_date = rm.file_date
         """, nativeQuery = true)
     List<Object[]> findRatingsByDate(@Param("date") String date);
+
+    @Query("SELECT r.countryOfOrigin, COUNT(r) " +
+        "FROM ImdbRating r " +
+        "WHERE r.countryOfOrigin IS NOT NULL AND r.countryOfOrigin <> '' " +
+        "GROUP BY r.countryOfOrigin")
+    List<Object[]> findMovieCountsByCountry();
 }
