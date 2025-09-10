@@ -5,6 +5,7 @@ import Compare from './pages/Compare';
 import YearWatch from './pages/YearWatch';
 import Statistics from './pages/Statistics';
 import AllData from './pages/AllData';
+import WorldMap from './pages/WorldMap';
 
 function App() {
   return (
@@ -25,7 +26,8 @@ function App() {
           <Link to="/compare">Compare Dates</Link> | 
           <Link to="/year">Year Watch</Link> | 
           <Link to="/rating-statistics">Statistics</Link> |
-          <Link to="/all-data">All Data</Link>
+          <Link to="/all-data">All Data</Link> |
+          <Link to="/world-map">World Map</Link>
         </nav>
 
         <Routes>
@@ -35,6 +37,7 @@ function App() {
           <Route path="/year" element={<YearWatch />} />
           <Route path="/rating-statistics" element={<Statistics />} />
           <Route path="/all-data" element={<AllData />} />
+          <Route path="/world-map" element={<WorldMap />} />
         </Routes>
       </div>
     </Router>
