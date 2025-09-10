@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { ResponsiveChoropleth } from '@nivo/geo';
 
 import worldFeatures from '../data/world_countries.json';
-
 import { fetchCountryCounts } from '../api/fetchCountryCounts';
 
 export const countryMapping = {
@@ -60,21 +59,20 @@ export const countryMapping = {
     'German Reich': 'DEU',
     'Socialist Republic of Macedonia': 'MKD',
     "People's Republic of China": 'CHN',
-    'Hong Kong': 'CHN' // Note: Special Administrative Region of China
+    'Hong Kong': 'CHN'
   };
 
-export default function WorldMapChoropleth() {
+export default function WorldMap() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     fetchCountryCounts()
       .then((arr) => {
         const formatted = arr.map((item) => ({
-          id: countryMapping[item.country] || item.country, // Use mapping or fallback to original
-          value: item.count,
+          id: countryMapping[item.country] || item.country,
+          value: item.count
         }));
         setData(formatted);
-        console.log('Formatted data:', formatted); // Debug output
       }).catch(console.error);
   }, []);
 
@@ -84,17 +82,15 @@ export default function WorldMapChoropleth() {
         data={data}
         features={worldFeatures.features}
         margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
-        domain={['auto', 'auto']}
-        unknownColor="#be2828ff"
+        domain={[0, 100]}  // range of values for your colors
+        unknownColor="#fff"
         label="properties.name"
         projectionScale={150}
         projectionTranslation={[0.5, 0.5]}
         projectionRotation={[0, 0, 0]}
-        fillColor={(feature) => {
-          const d = data.find(d => d.id === feature.properties.name);
-          return d ? `rgba(0, 122, 204, ${0.2 + (d.value / 100)})` : '#000000ff';
-        }}
-        borderColor="#000"
+        colors="blues"        // built-in color scheme
+        borderWidth={1.5}
+        borderColor="#333"
       />
     </div>
   );
