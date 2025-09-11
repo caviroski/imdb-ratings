@@ -13,7 +13,6 @@ export default function Compare() {
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState("");
 
-
   useEffect(() => {
     fetchDates(setSortedDates);
   }, []);

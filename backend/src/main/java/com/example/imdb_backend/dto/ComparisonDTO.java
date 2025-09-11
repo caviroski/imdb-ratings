@@ -9,6 +9,7 @@ public class ComparisonDTO {
     private int firstDate;
     private int secondDate;
     private int difference;
+    private String link;
 
     // Getters and setters
     public int getId() { return id; }
@@ -28,4 +29,7 @@ public class ComparisonDTO {
 
     public int getDifference() { return difference; }
     public void setDifference(int difference) { this.difference = difference; }
+
+    public String getLink() { return link; }
+    public void setLink(String link) { this.link = link; }
 }

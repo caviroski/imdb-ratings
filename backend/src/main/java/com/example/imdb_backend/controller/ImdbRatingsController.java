@@ -119,7 +119,6 @@ public class ImdbRatingsController {
                     (rating.getGenres() != null && rating.getGenres().toLowerCase().contains(lowerSearch));
             }
 
-
             if (matchesSearch && rating.getNumVotes().containsKey(from) && rating.getNumVotes().containsKey(to)) {
                 Integer fromVotes = rating.getNumVotes().get(from);
                 Integer toVotes = rating.getNumVotes().get(to);
@@ -132,6 +131,7 @@ public class ImdbRatingsController {
                 dto.setFirstDate(fromVotes);
                 dto.setSecondDate(toVotes);
                 dto.setDifference(difference);
+                dto.setLink(rating.getUrl());
 
                 result.add(dto);
             }
