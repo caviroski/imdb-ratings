@@ -63,7 +63,21 @@ export default function Compare() {
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
     { field: 'dateRated', headerName: 'Date Rated', width: 150 },
-    { field: 'name', headerName: 'Title Name', width: 500 },
+    {
+      field: 'name',
+      headerName: 'Title Name',
+      width: 500,
+      renderCell: (params) => (
+        <a
+          href={params.row.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: '#1976d2', textDecoration: 'none' }}
+        >
+          {params.value}
+        </a>
+      )
+    },
     { field: 'firstDate', headerName: firstColumnHeader, width: 125 },
     { field: 'secondDate', headerName: secondColumnHeader, width: 125 },
     { field: 'difference', headerName: 'Difference', width: 115 }
