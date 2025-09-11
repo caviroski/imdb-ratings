@@ -11,6 +11,6 @@ export const fetchComparison = (from, to, search, setRows) => {
       setRows(data);
     }).catch((err) => {
       console.error('Error fetching comparison:', err);
-      setRows([]); // Optional: reset rows on error
+      setRows([]);
     });
 };

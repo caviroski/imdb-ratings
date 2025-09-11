@@ -62,7 +62,7 @@ export default function Compare() {
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'dateRatd', headerName: 'Date Rated', width: 150 },
+    { field: 'dateRated', headerName: 'Date Rated', width: 150 },
     { field: 'name', headerName: 'Title Name', width: 500 },
     { field: 'firstDate', headerName: firstColumnHeader, width: 125 },
     { field: 'secondDate', headerName: secondColumnHeader, width: 125 },

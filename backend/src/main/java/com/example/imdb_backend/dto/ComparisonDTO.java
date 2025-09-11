@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class ComparisonDTO {
     private int id;
-    private LocalDate dateRatd;
+    private LocalDate dateRated;
     private String name;
     private int firstDate;
     private int secondDate;
@@ -15,8 +15,8 @@ public class ComparisonDTO {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public LocalDate getDateRatd() { return dateRatd; }
-    public void setDateRatd(LocalDate dateRatd) { this.dateRatd = dateRatd; }
+    public LocalDate getDateRated() { return dateRated; }
+    public void setDateRated(LocalDate dateRated) { this.dateRated = dateRated; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
