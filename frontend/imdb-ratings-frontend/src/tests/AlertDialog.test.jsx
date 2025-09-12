@@ -46,11 +46,10 @@ describe('AlertDialog', () => {
       );
     });
 
+    const cancelButton = screen.getByText(/cancel/i);
+
     await act(async () => {
-      const cancelButton = screen.getByText(/cancel/i);
       fireEvent.click(cancelButton);
-      
-      await new Promise(resolve => setTimeout(resolve, 0));
     });
 
     expect(onClose).toHaveBeenCalledTimes(1);
