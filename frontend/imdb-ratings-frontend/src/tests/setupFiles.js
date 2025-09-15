@@ -1,10 +1,6 @@
 // test/setupFiles.js
 import { TextEncoder, TextDecoder } from 'text-encoding';
+import 'jest-localstorage-mock';
 
-if (!global.TextEncoder) {
-  global.TextEncoder = TextEncoder;
-}
-
-if (!global.TextDecoder) {
-  global.TextDecoder = TextDecoder;
-}
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;

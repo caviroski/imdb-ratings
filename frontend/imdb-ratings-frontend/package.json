@@ -14,6 +14,7 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "jest-localstorage-mock": "^2.4.26",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.9.0",
@@ -49,7 +50,10 @@
     "testMatch": [
       "<rootDir>/src/**/*.{spec,test}.{js,jsx}"
     ],
-    "setupFiles": ["<rootDir>/tests/setupFiles.js"]
+    "setupFiles": [
+      "<rootDir>/src/tests/setupFiles.js"
+    ],
+    "resetMocks": false
   },
   "devDependencies": {
     "@types/text-encoding": "^0.0.40"
