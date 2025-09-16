@@ -1,7 +1,7 @@
 import Snackbar from '@mui/material/Snackbar';
 import SnackbarContent from '@mui/material/SnackbarContent';
 
-export default function SnackbarMessage({ open, message, onClose, backgroundColor = '#143ceeff', duration = 3000 }) {
+export default function SnackbarMessage({ open, message, onClose, backgroundColor = '#143ceeff', duration = 3000, ...props }) {
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
@@ -9,6 +9,7 @@ export default function SnackbarMessage({ open, message, onClose, backgroundColo
       onClose={onClose}
       autoHideDuration={duration}
       key="top-center"
+      {...props}
     >
       <SnackbarContent
         message={message}

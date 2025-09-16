@@ -100,8 +100,15 @@ const UploadButton = ({ onUploadSuccess }) => {
         accept=".csv"
         onChange={handleFileChange}
         style={{ display: 'none' }}
+        data-testid="file-input"
       />
-      <SnackbarMessage open={snack.open} message={snack.message} onClose={handleClose} backgroundColor={snack.color} />
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleClose}
+        backgroundColor={snack.color}
+        data-testid="snackbar"
+      />
     </div>
   );
 };
