@@ -84,4 +84,18 @@ describe("SelectDate", () => {
     const selectedOption = within(combobox).getByText("February 1, 2023");
     expect(selectedOption).toBeInTheDocument();
   });
+
+  test("renders with custom label", () => {
+    const customLabel = "Choose a Date";
+    render(
+      <SelectDate
+        value=""
+        onChange={() => {}}
+        label={customLabel}
+        options={[]}
+      />
+    );
+
+    expect(screen.getByLabelText(customLabel)).toBeInTheDocument();
+  });
 });
