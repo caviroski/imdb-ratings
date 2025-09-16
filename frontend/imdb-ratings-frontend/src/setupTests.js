@@ -5,8 +5,6 @@
 import '@testing-library/jest-dom';
 import { TextEncoder, TextDecoder } from 'util';
 
-console.log('Setting up test environment...');
-
 global.TextEncoder = TextEncoder;
 global.TextDecoder = TextDecoder;
 
