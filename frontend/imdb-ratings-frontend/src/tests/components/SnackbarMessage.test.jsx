@@ -1,6 +1,6 @@
 import { render, screen, act } from "@testing-library/react";
 
-import SnackbarMessage from "../components/SnackbarMessage";
+import SnackbarMessage from "../../components/SnackbarMessage";
 
 describe("SnackbarMessage", () => {
   test("renders SnackbarMessage component when open", async () => {

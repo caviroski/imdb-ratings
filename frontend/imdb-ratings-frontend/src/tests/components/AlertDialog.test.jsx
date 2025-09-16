@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 
-import AlertDialog from '../components/AlertDialog';
+import AlertDialog from '../../components/AlertDialog';
 
 describe('AlertDialog', () => {
   const title = 'Test Title';

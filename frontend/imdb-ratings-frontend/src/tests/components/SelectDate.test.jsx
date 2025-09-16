@@ -2,7 +2,7 @@ import { render, screen, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { within } from "@testing-library/dom";
 
-import SelectDate from "../components/SelectDate";
+import SelectDate from "../../components/SelectDate";
 
 describe("SelectDate", () => { 
   test("renders SelectDate component", () => {
