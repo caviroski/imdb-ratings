@@ -79,7 +79,7 @@ describe("UploadButton", () => {
   test("shows snackbar on upload failure", async () => {
     global.fetch = jest.fn(() =>
       Promise.resolve({
-        ok: false,
+        ok: false
       })
     );
 
@@ -92,5 +92,22 @@ describe("UploadButton", () => {
     fireEvent.change(fileInput);
     const snackbar = await waitFor(() => screen.getByTestId('snackbar'));
     expect(snackbar).toHaveTextContent('Upload failed.');
+  });
+
+  test("shows snackbar on fetch error", async () => {
+    global.fetch = jest.fn(() => Promise.reject('API is down'));
+    await act(async () => {
+      render(<UploadButton onUploadSuccess={() => {}} />);
+    });
+    const fileInput = screen.getByTestId('file-input');
+    const goodFile = new File(['name,date\nMovie,2023-01-01'], '15.08.2023.csv', { type: 'text/csv' });
+    Object.defineProperty(fileInput, 'files', {value: [goodFile], writable: false});
+    fireEvent.change(fileInput);
+    const snackbar = await waitFor(() => screen.getByTestId('snackbar'));
+    expect(snackbar).toHaveTextContent('Upload failed.');
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 });
