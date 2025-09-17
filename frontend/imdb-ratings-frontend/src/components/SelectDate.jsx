@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectDate({ value = "", onChange, label = "Select Date", options = [] }) {
+export default function SelectDate({ value = "", onChange, label = "Select Date", options = [], ...props }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -15,6 +15,7 @@ export default function SelectDate({ value = "", onChange, label = "Select Date"
           value={value}
           label={label}
           onChange={onChange}
+          {...props}
         >
           {options.map((opt) => (
             <MenuItem key={opt.value} value={opt.value}>

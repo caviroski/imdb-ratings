@@ -6,7 +6,7 @@ import SelectDate from "../../components/SelectDate";
 
 describe("SelectDate", () => { 
   test("renders SelectDate component", () => {
-    render(<SelectDate selectedDate={new Date()} onDateChange={() => {}} />);
+    render(<SelectDate />);
 
     expect(screen.getByLabelText(/select date/i)).toBeInTheDocument();
   });
