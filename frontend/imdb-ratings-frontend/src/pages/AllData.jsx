@@ -65,7 +65,6 @@ export default function AllData() {
           onChange={pickDate}
           label="Pick Date"
           options={options}
-          data-testid="select-date"
         />
       </div>
         <div style={{ width: 1900 }}>

@@ -15,6 +15,7 @@ export default function SelectDate({ value = "", onChange, label = "Select Date"
           value={value}
           label={label}
           onChange={onChange}
+          inputProps={{ 'data-testid': 'test-select-date' }}
           {...props}
         >
           {options.map((opt) => (

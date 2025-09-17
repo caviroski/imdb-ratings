@@ -8,6 +8,14 @@ describe("AllData", () => {
       render(<AllData />);
     });
     expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
-    expect(screen.getByTestId("select-date")).toBeInTheDocument();
+    expect(screen.getByTestId("test-select-date")).toBeInTheDocument();
+  });
+
+  test("select date dropdown works", async () => {
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    expect(screen.getByTestId("test-select-date")).toHaveValue('');
   });
 });
