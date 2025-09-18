@@ -18,4 +18,11 @@ describe("AllData", () => {
 
     expect(screen.getByTestId("test-select-date")).toHaveValue('');
   });
+
+  test("data grid is in the document", async () => {
+    await act(async () => {
+      render(<AllData />);
+    });
+    expect(screen.getByRole("grid")).toBeInTheDocument();
+  });
 });
