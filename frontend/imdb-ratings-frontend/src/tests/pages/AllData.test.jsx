@@ -101,4 +101,16 @@ describe("AllData", () => {
       expect(screen.getByText(/No rows/i)).toBeInTheDocument()
     );
   });
+
+  test("handles fetchDates error", async () => {
+    fetchDates.mockImplementationOnce(() => Promise.reject(new Error("Failed to fetch dates")));
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toHaveTextContent('No rows');
+  });
 });

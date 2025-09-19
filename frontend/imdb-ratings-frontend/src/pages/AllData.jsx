@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
 import SelectDate from '../components/SelectDate';
+import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchRatingsByDate } from '../api/fetchRatingsByDate';
 
@@ -12,9 +13,18 @@ export default function AllData() {
   const [options, setOptions] = useState([]);
   const [dataRows, setDataRows] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
+  const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetchDates(setDate);
+    const loadDates = async () => {
+      try {
+        await fetchDates(setDate);
+      } catch (err) {
+        setSnack({ open: true, message: err.message, color: '#e84118' });
+        setDate([]);
+      }
+    };
+    loadDates();
   }, []);
   
   useEffect(() => {
@@ -44,6 +54,10 @@ export default function AllData() {
     fetchRatingsByDate(setDataRows, selectedDate);
   };
 
+  const handleCloseSnackbar = () => {
+    setSnack({ ...snack, open: false });
+  };
+
   return (
     <div
       style={{
@@ -67,17 +81,24 @@ export default function AllData() {
           options={options}
         />
       </div>
-        <div style={{ width: 1900 }}>
-          <p style={{ textAlign: 'center' }}>All the data from the export</p>
-          <Paper sx={{ height: 590, width: '100%' }}>
-            <DataGrid
-              rows={dataRows}
-              columns={dataColumns}
-              sx={{ border: 0 }}
-              disableColumnMenu={true}
-            />
-          </Paper>
-        </div>
+      <div style={{ width: 1900 }}>
+        <p style={{ textAlign: 'center' }}>All the data from the export</p>
+        <Paper sx={{ height: 590, width: '100%' }}>
+          <DataGrid
+            rows={dataRows}
+            columns={dataColumns}
+            sx={{ border: 0 }}
+            disableColumnMenu={true}
+          />
+        </Paper>
+      </div>
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleCloseSnackbar}
+        backgroundColor={snack.color}
+        duration={snack.duration}
+      />
     </div>
   );
 }
