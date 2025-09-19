@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 import Button from '@mui/material/Button';
 
@@ -7,14 +7,6 @@ import SnackbarMessage from './SnackbarMessage';
 const UploadButton = ({ onUploadSuccess }) => {
   const fileInputRef = useRef(null);
   const [snack, setSnack] = useState({ open: false, message: '' });
-
-  const showSnack = (message, color) => {
-    setSnack({ open: true, message, color });
-  };
-
-  const handleClose = () => {
-    setSnack({ ...snack, open: false });
-  };
 
   const onButtonClick = () => {
     fileInputRef.current.click();
@@ -28,14 +20,14 @@ const UploadButton = ({ onUploadSuccess }) => {
       const isCsv = fileName.endsWith('.csv') || file.type === 'text/csv';
 
       if (!isCsv) {
-        showSnack('Please upload a valid CSV file.', '#0d21bfff');
+        setSnack({ open: true, message: 'Please upload a valid CSV file.', color: '#0d21bfff' });
         event.target.value = '';
         return;
       }
 
       const name = fileName.replace(/\.csv$/i, '');
       if (!isValidDate(name)) {
-        showSnack('Please upload file with valid date format dd.mm.yyyy.', '#adb4eeff');
+        setSnack({ open: true, message: 'Please upload file with valid date format dd.mm.yyyy.', color: '#adb4eeff' });
         event.target.value = '';
         return;
       }
@@ -52,11 +44,10 @@ const UploadButton = ({ onUploadSuccess }) => {
         if (!res.ok) throw new Error('Upload failed');
         return res.text();
       }).then((data) => {
-        console.log('Upload success:', data);
-        showSnack('Upload successful!', '#44bd32');
+        setSnack({ open: true, message: 'Upload successful!' + data, color: '#44bd32' });
         onUploadSuccess && onUploadSuccess();
       }).catch((err) => {
-        showSnack('Upload failed.', '#e74c3c');
+        setSnack({ open: true, message: 'Upload failed.', color: '#e74c3c' });
       });
     }
   };
@@ -99,7 +90,7 @@ const UploadButton = ({ onUploadSuccess }) => {
       <SnackbarMessage
         open={snack.open}
         message={snack.message}
-        onClose={handleClose}
+        onClose={() => { setSnack({ ...snack, open: false }); }}
         backgroundColor={snack.color}
         data-testid="snackbar"
       />
