@@ -71,4 +71,34 @@ describe("AllData", () => {
     expect(screen.getByText("Original Test Movie")).toBeInTheDocument();
     expect(screen.getByText("Drama")).toBeInTheDocument();
   });
+
+  test("handles no data for selected date", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRatings = [];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+
+    await act(async () => {
+      userEvent.click(screen.getByLabelText(/Pick Date/i));
+    });
+
+    await act(async () => {
+      userEvent.click(screen.getByText("02.01.2010"));
+    });
+
+    await waitFor(() =>
+      expect(screen.getByText(/No rows/i)).toBeInTheDocument()
+    );
+  });
 });
