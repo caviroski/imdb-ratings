@@ -40,7 +40,6 @@ const UploadButton = ({ onUploadSuccess }) => {
         return;
       }
 
-      // Proceed with valid CSV file
       console.log('CSV File:', file);
 
       const formData = new FormData();
@@ -63,19 +62,15 @@ const UploadButton = ({ onUploadSuccess }) => {
   };
 
   function isValidDate(dateString) {
-    // First check the format: dd.mm.yyyy
     const regex = /^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[0-2])\.(19|20)\d\d$/;
     if (!regex.test(dateString)) {
       return false;
     }
 
-    // Extract day, month, year as integers
     const [day, month, year] = dateString.split('.').map(Number);
 
-    // Create a Date object (month is 0-based in JS Date)
     const date = new Date(year, month - 1, day);
 
-    // Check if date is valid by comparing components
     return (
       date.getFullYear() === year &&
       date.getMonth() === month - 1 &&
