@@ -364,5 +364,4 @@ public class ImdbRatingsController {
 
         return ResponseEntity.ok("Cleaned file data from " + updatedCount + " entries for file: " + fileName);
     }
-
 }
