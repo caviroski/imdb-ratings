@@ -57,7 +57,6 @@ const UploadButton = ({ onUploadSuccess }) => {
         showSnack('Upload successful!', '#44bd32');
         onUploadSuccess && onUploadSuccess();
       }).catch((err) => {
-        console.error(err);
         showSnack('Upload failed.', '#e74c3c');
       });
     }
