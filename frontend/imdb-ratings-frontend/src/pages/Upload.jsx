@@ -24,7 +24,15 @@ export default function Upload() {
   const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetchDates(setSortedDates);
+    const loadDates = async () => {
+      try {
+        await fetchDates(setSortedDates);
+      } catch (err) {
+        setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
+        setSortedDates([]);
+      }
+    };
+    loadDates();
   }, []);
 
   const clickDeleteButton = (value) => {

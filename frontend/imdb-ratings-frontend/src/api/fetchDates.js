@@ -12,7 +12,6 @@ export const fetchDates = async (setSortedDates) => {
       return dayA - dayB;
     }));
   } catch (error) {
-    console.error('Failed to fetch file names:', error);
-    return [];
+    throw error;
   }
 };

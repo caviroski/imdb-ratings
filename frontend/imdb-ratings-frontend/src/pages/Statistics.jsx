@@ -4,6 +4,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
 import SelectDate from '../components/SelectDate';
+import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchYearlyAverage } from '../api/fetchYearlyAverage';
 import { fetchTitleTypeCounts } from '../api/fetchTitleTypeCounts';
@@ -16,9 +17,18 @@ export default function Statistics() {
   const [titleTypeRows, setTitleTypeRows] = useState([]);
   const [genreRows, setGenreRows] = useState([]);
   const [selectedDate, setSelectedDate] = useState('');
+  const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetchDates(setDate);
+    const loadDates = async () => {
+      try {
+        await fetchDates(setDate);
+      } catch (err) {
+        setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
+        setDate([]);
+      }
+    };
+    loadDates();
   }, []);
 
   useEffect(() => {
@@ -48,6 +58,10 @@ export default function Statistics() {
     fetchYearlyAverage(setYearRows, selectedDate);
     fetchTitleTypeCounts(setTitleTypeRows, selectedDate);
     fetchGenreStats(setGenreRows, selectedDate);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnack({ ...snack, open: false });
   };
 
   return (
@@ -117,6 +131,13 @@ export default function Statistics() {
           </Paper>
         </div>
       </div>
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleCloseSnackbar}
+        backgroundColor={snack.color}
+        duration={snack.duration}
+      />
     </div>
   );
 }

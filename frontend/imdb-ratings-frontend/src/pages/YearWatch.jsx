@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 
 import SelectDate from '../components/SelectDate';
+import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchYearCount } from '../api/fetchYearCount';
 
@@ -10,10 +11,19 @@ export default function YearWatch() {
   const [date, setDate] = useState([]);
   const [dataset, setDataset] = useState([]);
   const [total, setTotal] = useState(0);
+  const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetchDates(setDate);
-    fetchYearCount(setDataset, setTotal, '');
+    const loadDates = async () => {
+      try {
+        await fetchDates(setDate);
+        await fetchYearCount(setDataset, setTotal, '');
+      } catch (err) {
+        setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
+        setDate([]);
+      }
+    };
+    loadDates();
   }, []);
 
   useEffect(() => {
@@ -32,6 +42,10 @@ export default function YearWatch() {
     const selectedDate = event.target.value;
     setFromDate(selectedDate);
     fetchYearCount(setDataset, setTotal, selectedDate);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnack({ ...snack, open: false });
   };
 
   return (
@@ -86,6 +100,13 @@ export default function YearWatch() {
           }}
         />
       </div>
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleCloseSnackbar}
+        backgroundColor={snack.color}
+        duration={snack.duration}
+      />
     </div>
   )
 }

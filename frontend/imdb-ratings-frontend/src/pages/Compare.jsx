@@ -5,6 +5,7 @@ import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 
 import SelectDate from '../components/SelectDate';
+import SnackbarMessage from '../components/SnackbarMessage';
 import { fetchDates } from '../api/fetchDates';
 import { fetchComparison } from '../api/fetchComparison';
 
@@ -12,9 +13,18 @@ export default function Compare() {
   const [sortedDates, setSortedDates] = useState([]);
   const [rows, setRows] = useState([]);
   const [search, setSearch] = useState("");
+  const [snack, setSnack] = useState({ open: false, message: '' });
 
   useEffect(() => {
-    fetchDates(setSortedDates);
+    const loadDates = async () => {
+      try {
+        await fetchDates(setSortedDates);
+      } catch (err) {
+        setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
+        setSortedDates([]);
+      }
+    };
+    loadDates();
   }, []);
 
   useEffect(() => {
@@ -83,6 +93,10 @@ export default function Compare() {
     { field: 'difference', headerName: 'Difference', width: 115 }
   ];
 
+  const handleCloseSnackbar = () => {
+    setSnack({ ...snack, open: false });
+  };
+
   return (
     <div
       style={{
@@ -143,6 +157,13 @@ export default function Compare() {
           />
         </Paper>
       </div>
+      <SnackbarMessage
+        open={snack.open}
+        message={snack.message}
+        onClose={handleCloseSnackbar}
+        backgroundColor={snack.color}
+        duration={snack.duration}
+      />
     </div>
   );
 }

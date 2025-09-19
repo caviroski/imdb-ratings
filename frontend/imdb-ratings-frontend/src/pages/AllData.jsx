@@ -20,7 +20,7 @@ export default function AllData() {
       try {
         await fetchDates(setDate);
       } catch (err) {
-        setSnack({ open: true, message: err.message, color: '#e84118' });
+        setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
         setDate([]);
       }
     };
