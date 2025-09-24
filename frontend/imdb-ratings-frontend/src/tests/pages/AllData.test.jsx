@@ -140,4 +140,33 @@ describe("AllData", () => {
       expect(screen.getByText(/Failed to fetch ratings/i)).toBeInTheDocument()
     );
   });
+
+  test("closes snackbar", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce(() =>
+      Promise.reject(new Error("Failed to fetch ratings"))
+    );
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    await act(async () => {
+      userEvent.click(screen.getByLabelText(/Pick Date/i));
+    });
+
+    await act(async () => {
+      userEvent.click(screen.getByText("01.01.2010"));
+    });
+
+    const snackbarMessage = await screen.findByText(/Failed to fetch ratings/i);
+    expect(snackbarMessage).toBeInTheDocument();
+
+    await waitFor(() =>
+      expect(screen.queryByText(/Failed to fetch ratings/i)).not.toBeInTheDocument(),
+      { timeout: 4000 }
+    );
+  });
 });
