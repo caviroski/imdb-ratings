@@ -119,20 +119,25 @@ describe("AllData", () => {
 
     fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
     fetchRatingsByDate.mockImplementationOnce(() => Promise.reject(new Error("Failed to fetch ratings")));
+
     await act(async () => {
       render(<AllData />);
     });
-    await waitFor(() =>
-      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
-    );
+
     await act(async () => {
       userEvent.click(screen.getByLabelText(/Pick Date/i));
     });
+
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
     });
+    
     await waitFor(() =>
       expect(screen.getByText(/No rows/i)).toBeInTheDocument()
+    );
+
+    await waitFor(() =>
+      expect(screen.getByText(/Failed to fetch ratings/i)).toBeInTheDocument()
     );
   });
 });
