@@ -210,9 +210,44 @@ describe("AllData", () => {
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
     });
-    
+
     await waitFor(() =>
       expect(screen.getByText(/No rows/i)).toBeInTheDocument()
     );
+  });
+
+  test("snapshot test", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        const: "tt1234567",
+        yourRating: 8,
+        dateRated: "01.01.2010",
+        title: "Test Movie",
+        originalTitle: "Original Test Movie",
+        url: "https://imdb.com/title/tt1234567",
+        titleType: "movie",
+        imdbRating: 7.5,
+        runtime: 120,
+        year: 2010,
+        genres: "Drama",
+        numVotes: 2000,
+        releaseDate: "2010-01-01",
+        directors: "John Doe"
+      }
+    ];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+    
+    let container;
+    await act(async () => {
+      const rendered = render(<AllData />);
+      container = rendered.container;
+    });
+    expect(container).toMatchSnapshot();
   });
 });
