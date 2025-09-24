@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, cleanup } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { within } from "@testing-library/dom";
 
@@ -97,5 +97,10 @@ describe("SelectDate", () => {
     );
 
     expect(screen.getByLabelText(customLabel)).toBeInTheDocument();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    cleanup();
   });
 });

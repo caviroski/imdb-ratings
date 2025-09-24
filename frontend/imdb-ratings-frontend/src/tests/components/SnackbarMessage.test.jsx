@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, cleanup } from "@testing-library/react";
 
 import SnackbarMessage from "../../components/SnackbarMessage";
 
@@ -37,5 +37,10 @@ describe("SnackbarMessage", () => {
 
     expect(handleClose).toHaveBeenCalledTimes(1);
     jest.useRealTimers();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    cleanup();
   });
 });

@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from '@testing-library/react';
+import { render, screen, fireEvent, act, cleanup } from '@testing-library/react';
 
 import AlertDialog from '../../components/AlertDialog';
 
@@ -92,5 +92,10 @@ describe('AlertDialog', () => {
 
     expect(screen.queryByText(title)).not.toBeInTheDocument();
     expect(screen.queryByText(message)).not.toBeInTheDocument();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+    cleanup();
   });
 });
