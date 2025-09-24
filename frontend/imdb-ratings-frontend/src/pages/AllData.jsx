@@ -48,10 +48,16 @@ export default function AllData() {
     { field: 'directors', headerName: 'Directors', width: 150 }
   ];
 
-  const pickDate = (event) => {
+  const pickDate = async (event) => {
     const selectedDate = event.target.value;
     setSelectedDate(selectedDate);
-    fetchRatingsByDate(setDataRows, selectedDate);
+
+    try {
+      await fetchRatingsByDate(setDataRows, selectedDate);
+    } catch (err) {
+      setSnack({ open: true, message: err.message, color: '#e84118' });
+      setDataRows([]);
+    }
   };
 
   const handleCloseSnackbar = () => {
