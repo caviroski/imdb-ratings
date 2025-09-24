@@ -169,4 +169,50 @@ describe("AllData", () => {
       { timeout: 4000 }
     );
   });
+
+  test("no dates available", async () => {
+    const mockDates = [];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
+    expect(screen.getByTestId("test-select-date")).toBeInTheDocument();
+    expect(screen.getByTestId("test-select-date")).toHaveValue('');
+    expect(screen.getByRole("grid")).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toHaveTextContent('No rows');
+  });
+
+  test("no ratings for selected date", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRatings = [];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+
+    await act(async () => {
+      render(<AllData />);
+    } );
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+
+    await act(async () => {
+      userEvent.click(screen.getByLabelText(/Pick Date/i));
+    });
+
+    await act(async () => {
+      userEvent.click(screen.getByText("01.01.2010"));
+    });
+    
+    await waitFor(() =>
+      expect(screen.getByText(/No rows/i)).toBeInTheDocument()
+    );
+  });
 });
