@@ -1,6 +1,6 @@
-import { render, screen, act, cleanup } from "@testing-library/react";
+import { render, screen, act, cleanup, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { within } from "@testing-library/dom";
+import { fireEvent, within } from "@testing-library/dom";
 
 import SelectDate from "../../components/SelectDate";
 
@@ -27,12 +27,12 @@ describe("SelectDate", () => {
       );
     });
 
-    await act(async () => {
-      userEvent.click(screen.getByRole("combobox"));
-    });
+    await userEvent.click(screen.getByRole('combobox'));
 
-    expect(screen.getByText("January 1, 2023")).toBeInTheDocument();
-    expect(screen.getByText("February 1, 2023")).toBeInTheDocument();
+    const popover = await waitFor(() => document.querySelector('.MuiPopover-root'));
+
+    expect(within(popover).getByText("January 1, 2023")).toBeInTheDocument();
+    expect(within(popover).getByText("February 1, 2023")).toBeInTheDocument();
   });
 
   test("calls onChange when an option is selected", async () => {
@@ -52,13 +52,11 @@ describe("SelectDate", () => {
       );
     });
 
-    await act(async () => {
-      userEvent.click(screen.getByRole("combobox"));
-    });
+    await userEvent.click(screen.getByRole('combobox'));
 
-    await act(async () => {
-      userEvent.click(screen.getByText("February 1, 2023"));
-    });
+    const popover = await waitFor(() => document.querySelector('.MuiPopover-root'));
+
+    fireEvent.click(within(popover).getByText("February 1, 2023"));
 
     expect(handleChange).toHaveBeenCalledWith("2023-02-01");
     expect(handleChange).toHaveBeenCalledTimes(1);
