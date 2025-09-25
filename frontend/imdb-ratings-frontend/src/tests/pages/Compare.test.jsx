@@ -1,0 +1,94 @@
+import { render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
+import Compare from '../../pages/Compare';
+import { fetchDates } from '../../api/fetchDates';
+import { fetchComparison } from '../../api/fetchComparison';
+
+jest.mock("../../api/fetchDates");
+jest.mock("../../api/fetchComparison");
+
+
+describe('Compare component', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  test('renders date selects and DataGrid rows after selecting dates', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRows = [
+      {
+        id: 1,
+        dateRated: '2023-01-01',
+        name: 'Movie A',
+        link: 'https://imdb.com/title/tt123',
+        firstDate: 1000,
+        secondDate: 1500,
+        difference: 500,
+      },
+      {
+        id: 2,
+        dateRated: '2023-01-02',
+        name: 'Movie B',
+        link: 'https://imdb.com/title/tt456',
+        firstDate: 2000,
+        secondDate: 2500,
+        difference: 500,
+      },
+    ];
+
+    // Mock fetchDates to set sortedDates
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchComparison.mockImplementationOnce((from, to, search, setRows) =>
+      setRows(mockRows)
+    );
+
+    render(<Compare />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-from-date')).toBeInTheDocument()
+    );
+
+    // Open first date select and pick a date
+    let combobox = screen.getByTestId('select-from-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+
+    // Open second date select and pick a date
+    combobox = screen.getByTestId('select-to-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('02.01.2010'));
+
+    // Wait for DataGrid rows to appear
+    const grid = await screen.findByRole('grid');
+    const rows = within(grid).getAllByRole('row');
+
+    // Header row + 2 data rows
+    expect(rows).toHaveLength(3);
+
+    // Check content of first data row
+    expect(within(rows[1]).getByText('Movie A')).toBeInTheDocument();
+    expect(within(rows[2]).getByText('Movie B')).toBeInTheDocument();
+  });
+
+  test('typing in search triggers fetchComparison', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchComparison.mockImplementationOnce(jest.fn());
+
+    render(<Compare />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-from-date')).toBeInTheDocument()
+    );
+
+    const searchInput = screen.getByLabelText(/Search/i);
+    await userEvent.type(searchInput, 'Movie');
+
+    // Press Enter to trigger fetchComparison
+    await userEvent.keyboard('{Enter}');
+
+    expect(fetchComparison).toHaveBeenCalled();
+  });
+});

@@ -121,12 +121,14 @@ export default function Compare() {
           onChange={handleFromChange}
           label="Pick first Date"
           options={optionsOne}
+          inputProps={{ 'data-testid': 'select-from-date' }}
         />
         <SelectDate
           value={toDate}
           onChange={handleToChange}
           label="Pick second Date"
           options={optionsTwo}
+          inputProps={{ 'data-testid': 'select-to-date' }}
         />
       </div>
 
