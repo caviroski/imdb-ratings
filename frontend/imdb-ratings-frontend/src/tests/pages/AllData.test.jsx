@@ -67,6 +67,9 @@ describe("AllData", () => {
       userEvent.click(screen.getByLabelText(/Pick Date/i));
     });
 
+    const comboBoxes = screen.getAllByRole('combobox');
+    await userEvent.click(comboBoxes[0]);
+
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
     });
