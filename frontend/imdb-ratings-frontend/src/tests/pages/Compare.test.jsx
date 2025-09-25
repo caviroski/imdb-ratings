@@ -37,7 +37,6 @@ describe('Compare component', () => {
       },
     ];
 
-    // Mock fetchDates to set sortedDates
     fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
     fetchComparison.mockImplementationOnce((from, to, search, setRows) =>
       setRows(mockRows)
@@ -59,14 +58,11 @@ describe('Compare component', () => {
     await userEvent.click(within(combobox).getByRole('combobox'));
     await userEvent.click(screen.getByText('02.01.2010'));
 
-    // Wait for DataGrid rows to appear
     const grid = await screen.findByRole('grid');
     const rows = within(grid).getAllByRole('row');
 
-    // Header row + 2 data rows
     expect(rows).toHaveLength(3);
 
-    // Check content of first data row
     expect(within(rows[1]).getByText('Movie A')).toBeInTheDocument();
     expect(within(rows[2]).getByText('Movie B')).toBeInTheDocument();
   });
@@ -86,7 +82,6 @@ describe('Compare component', () => {
     const searchInput = screen.getByLabelText(/Search/i);
     await userEvent.type(searchInput, 'Movie');
 
-    // Press Enter to trigger fetchComparison
     await userEvent.keyboard('{Enter}');
 
     expect(fetchComparison).toHaveBeenCalled();
