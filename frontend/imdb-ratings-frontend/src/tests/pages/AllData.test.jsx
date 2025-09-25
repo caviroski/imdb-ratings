@@ -1,4 +1,4 @@
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { render, screen, act, waitFor, within, waitForElementToBeRemoved, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import AllData from "../../pages/AllData";
@@ -312,54 +312,58 @@ describe("AllData", () => {
     expect(screen.getByText("Action")).toBeInTheDocument();
   });
 
-  // test("dropdown opens and closes correctly", async () => {
-  //   jest.useFakeTimers();
+  test("dropdown opens picks value and closes correctly", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    await act(async () => {
+      render(<AllData />);
+    });
 
-  //   const mockDates = ["01.01.2010", "02.01.2010"];
-  //   fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
-  //   await act(async () => {
-  //     render(<AllData />);
-  //   });
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+    
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
+    userEvent.click(screen.getByText("01.01.2010"));
 
-  //   await waitFor(() =>
-  //     expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
-  //   );
-  //   const dropdown = screen.getByLabelText(/Pick Date/i);
+    let popover = document.querySelector('.MuiPopover-root');
 
-  //   // Open dropdown
-  //   await act(async () => {
-  //     userEvent.click(dropdown);
-  //   });
+    const menu = within(popover).getByRole('listbox');
+    expect(within(menu).queryByText("01.01.2010")).toBeInTheDocument();
+    expect(within(menu).queryByText("02.01.2010")).toBeInTheDocument();
 
-  //   let popover = document.querySelector('.MuiPopover-root'); // your portal root
-  //   const menu = within(popover).getByRole('listbox');
-  //   expect(within(menu).queryByText("01.01.2010")).toBeInTheDocument();
-  //   expect(within(menu).queryByText("02.01.2010")).toBeInTheDocument();
-  //   // expect(screen.getByText("02.01.2010")).toBeInTheDocument();
+    await waitForElementToBeRemoved(() => document.querySelector('.MuiPopover-root'));
+    expect(document.querySelector('.MuiPopover-root')).not.toBeInTheDocument();
 
-  //   await act(async () => userEvent.click(dropdown));
-  //   // await waitForElementToBeRemoved(() => screen.queryByText("01.01.2010"), { timeout: 2000 });
+    expect(screen.queryByText("01.01.2010")).toBeInTheDocument();
+    expect(screen.queryByText("02.01.2010")).not.toBeInTheDocument();
+  });
 
-  //   fireEvent.click(document.body);
-  //     await act(async () => {
-  //       fireEvent.click(document.body);
-  //       jest.advanceTimersByTime(3000); // simulate clicking outside
-  //     });
-  //     await act(async () => {
-  //   fireEvent.keyDown(dropdown, { key: "Escape" });
-  // });
-  //   await act(async () => {
-  //     jest.advanceTimersByTime(30000); // Advance by 1 second
-  //     await Promise.resolve();
-  //   });
-  //   await waitForElementToBeRemoved(() => document.querySelector('.MuiPopover-root'));
-  //   popover = document.querySelector('.MuiPopover-root'); // your portal root
-  //   console.log(popover.outerHTML);
+  test("dropdown opens and closes correctly", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    await act(async () => {
+      render(<AllData />);
+    });
 
-  //   // // Assert visibility instead of removal
-  //   // console.log(screen.queryByText("01.01.2010").parentNode.parentNode.parentNode.parentNode.outerHTML);
-  //   // expect(screen.queryByText("01.01.2010")).not.toBeVisible();
-  //   // await waitForElementToBeRemoved(() => screen.queryByRole("listbox"));
-  //   // expect(screen.queryByText("02.01.2010")).not.toBeVisible();
-  // });
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+    
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
+
+    expect(screen.queryByText("01.01.2010")).toBeInTheDocument();
+    expect(screen.queryByText("02.01.2010")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('presentation').firstChild);
+
+    await waitForElementToBeRemoved(() => document.querySelector('.MuiPopover-root'));
+
+    expect(document.querySelector('.MuiPopover-root')).not.toBeInTheDocument();
+
+    let option = screen.queryByText("01.01.2010");
+    expect(option).not.toBeInTheDocument();
+    option = screen.queryByText("02.01.2010");
+    expect(option).not.toBeInTheDocument();
+  });
 });
