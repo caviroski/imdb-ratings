@@ -366,4 +366,175 @@ describe("AllData", () => {
     option = screen.queryByText("02.01.2010");
     expect(option).not.toBeInTheDocument();
   });
+
+  test("check if there are 3 rows of data", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        const: "tt1234567",
+        yourRating: 8,
+        dateRated: "01.01.2010",
+        title: "Test Movie 1",
+        originalTitle: "Original Test Movie 1",
+        url: "https://imdb.com/title/tt1234567",
+        titleType: "movie",
+        imdbRating: 7.5,
+        runtime: 120,
+        year: 2010,
+        genres: "Drama",
+        numVotes: 2000,
+        releaseDate: "2010-01-01",
+        directors: "John Doe"
+      },
+      {
+        id: 2,
+        const: "tt7654321",
+        yourRating: 9,
+        dateRated: "01.01.2010",
+        title: "Test Movie 2",
+        originalTitle: "Original Test Movie 2",
+        url: "https://imdb.com/title/tt7654321",
+        titleType: "movie",
+        imdbRating: 8.5,
+        runtime: 130,
+        year: 2011,
+        genres: "Action",
+        numVotes: 3000,
+        releaseDate: "2011-01-01",
+        directors: "Jane Smith"
+      },
+      {
+        id: 3,
+        const: "tt1111111",
+        yourRating: 7,
+        dateRated: "01.01.2010",
+        title: "Test Movie 3",
+        originalTitle: "Original Test Movie 3",
+        url: "https://imdb.com/title/tt1111111",
+        titleType: "movie",
+        imdbRating: 6.5,
+        runtime: 110,
+        year: 2009,
+        genres: "Comedy",
+        numVotes: 1500,
+        releaseDate: "2009-01-01",
+        directors: "Alice Johnson"
+      }
+    ];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
+    userEvent.click(screen.getByText("01.01.2010"));
+
+    await waitFor(() =>
+      expect(screen.getByText("Test Movie 1")).toBeInTheDocument()
+    );
+
+    const rows = screen.getAllByRole('row');
+    // There should be 4 rows: 1 header row + 3 data rows
+    expect(rows).toHaveLength(4);
+  });
+
+  test("check if there are 0 rows of data", async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRatings = [];
+
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+
+    await act(async () => {
+      render(<AllData />);
+    });
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
+    userEvent.click(screen.getByText("01.01.2010"));
+
+    await waitFor(() =>
+      expect(screen.getByText(/No rows/i)).toBeInTheDocument()
+    );
+
+    await waitFor(() => {
+      // header row always exists
+      expect(screen.getAllByRole('row')[0]).toBeInTheDocument();
+    });
+
+    const rows = screen.queryAllByRole('row');
+    // There should be only 1 row: the header row, since there are no data rows
+    expect(rows).toHaveLength(1);
+  });
+
+  test("check if correct columns are rendered", async () => {
+    const mockDates = ["01.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        const: "tt1234567",
+        yourRating: 8,
+        dateRated: "01.01.2010",
+        title: "Test Movie 1",
+        originalTitle: "Original Test Movie 1",
+        url: "https://imdb.com/title/tt1234567",
+        titleType: "movie",
+        imdbRating: 7.5,
+        runtime: 120,
+        year: 2010,
+        genres: "Drama",
+        numVotes: 2000,
+        releaseDate: "2010-01-01",
+        directors: "John Doe"
+      }
+    ]; 
+    fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
+    fetchRatingsByDate.mockImplementationOnce((setDataRows, date) =>
+      setDataRows(mockRatings)
+    );
+    
+    await act(async () => {
+      render(<AllData />);
+    }
+    );
+
+    await waitFor(() =>
+      expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
+    );
+
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
+    userEvent.click(screen.getByText("01.01.2010"));
+    await waitFor(() =>
+      expect(screen.getByText("Test Movie 1")).toBeInTheDocument()
+    );
+    expect(screen.getByRole('columnheader', { name: 'Const' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Your Rating' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Date Rated' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Title' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Original Title' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'URL' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Title Type' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'IMDb Rating' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Runtime (mins)' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Year' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Genres' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Num Votes' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Release Date' })).toBeInTheDocument();
+    expect(screen.getByRole('columnheader', { name: 'Directors' })).toBeInTheDocument();
+  });
 });
