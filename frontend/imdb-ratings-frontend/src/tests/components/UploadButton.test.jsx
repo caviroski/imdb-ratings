@@ -1,4 +1,4 @@
-import { render, screen, act, fireEvent, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, act, fireEvent, waitFor } from "@testing-library/react";
 
 import UploadButton from "../../components/UploadButton";
 
@@ -108,6 +108,5 @@ describe("UploadButton", () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-    cleanup();
   });
 });

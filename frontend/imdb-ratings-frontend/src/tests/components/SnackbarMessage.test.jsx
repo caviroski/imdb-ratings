@@ -1,4 +1,4 @@
-import { render, screen, act, cleanup } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 
 import SnackbarMessage from "../../components/SnackbarMessage";
 
@@ -41,6 +41,5 @@ describe("SnackbarMessage", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    cleanup();
   });
 });

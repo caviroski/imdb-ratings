@@ -1,6 +1,5 @@
-import { render, screen, act, cleanup, waitFor } from "@testing-library/react";
+import { render, screen, act, waitFor, fireEvent, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { fireEvent, within } from "@testing-library/dom";
 
 import SelectDate from "../../components/SelectDate";
 
@@ -99,6 +98,5 @@ describe("SelectDate", () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    cleanup();
   });
 });

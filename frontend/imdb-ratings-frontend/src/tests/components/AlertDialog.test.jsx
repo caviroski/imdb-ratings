@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act, cleanup } from '@testing-library/react';
+import { render, screen, fireEvent, act } from '@testing-library/react';
 
 import AlertDialog from '../../components/AlertDialog';
 
@@ -96,6 +96,5 @@ describe('AlertDialog', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
-    cleanup();
   });
 });
