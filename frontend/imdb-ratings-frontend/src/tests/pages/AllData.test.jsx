@@ -67,8 +67,7 @@ describe("AllData", () => {
       userEvent.click(screen.getByLabelText(/Pick Date/i));
     });
 
-    const comboBoxes = screen.getAllByRole('combobox');
-    await userEvent.click(comboBoxes[0]);
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
@@ -99,9 +98,7 @@ describe("AllData", () => {
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
     );
 
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/Pick Date/i));
-    });
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
     await act(async () => {
       userEvent.click(screen.getByText("02.01.2010"));
@@ -134,9 +131,7 @@ describe("AllData", () => {
       render(<AllData />);
     });
 
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/Pick Date/i));
-    });
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
@@ -163,9 +158,7 @@ describe("AllData", () => {
       render(<AllData />);
     });
 
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/Pick Date/i));
-    });
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
@@ -213,9 +206,7 @@ describe("AllData", () => {
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
     );
 
-    await act(async () => {
-      userEvent.click(screen.getByLabelText(/Pick Date/i));
-    });
+    await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
     await act(async () => {
       userEvent.click(screen.getByText("01.01.2010"));
