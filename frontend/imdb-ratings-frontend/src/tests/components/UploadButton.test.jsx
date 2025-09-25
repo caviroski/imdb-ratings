@@ -1,5 +1,4 @@
-import { render, screen, act, fireEvent, cleanup } from "@testing-library/react";
-import { waitFor } from "@testing-library/dom";
+import { render, screen, act, fireEvent, cleanup, waitFor } from "@testing-library/react";
 
 import UploadButton from "../../components/UploadButton";
 

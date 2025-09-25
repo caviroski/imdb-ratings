@@ -1,5 +1,4 @@
-import { render, screen, cleanup, within, waitForElementToBeRemoved, act, waitFor } from "@testing-library/react";
-import { fireEvent } from "@testing-library/dom";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import AllData from "../../pages/AllData";
