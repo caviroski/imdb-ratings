@@ -105,7 +105,7 @@ describe('Compare component', () => {
     let combobox = screen.getByTestId('select-from-date').closest('.MuiSelect-root');
     await userEvent.click(within(combobox).getByRole('combobox'));
     await userEvent.click(screen.getByText('01.01.2010'));
-    
+
     combobox = screen.getByTestId('select-to-date').closest('.MuiSelect-root');
     await userEvent.click(within(combobox).getByRole('combobox'));
     await userEvent.click(screen.getByText('02.01.2010'));
