@@ -10,9 +10,8 @@ jest.mock("../../api/fetchRatingsByDate");
 
 describe("AllData", () => {
   test("renders AllData component", async () => {
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
+
     expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
     expect(screen.getByTestId("test-select-date")).toBeInTheDocument();
     expect(screen.getByTestId("test-select-date")).toHaveValue('');
@@ -47,9 +46,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -78,9 +75,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -98,9 +93,7 @@ describe("AllData", () => {
   test("handles fetchDates error", async () => {
     fetchDates.mockImplementationOnce(() => Promise.reject(new Error("Failed to fetch dates")));
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
     expect(screen.getByRole("grid")).toBeInTheDocument();
@@ -113,9 +106,7 @@ describe("AllData", () => {
     fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
     fetchRatingsByDate.mockImplementationOnce(() => Promise.reject(new Error("Failed to fetch ratings")));
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
@@ -138,9 +129,7 @@ describe("AllData", () => {
       Promise.reject(new Error("Failed to fetch ratings"))
     );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
 
@@ -160,9 +149,7 @@ describe("AllData", () => {
 
     fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     expect(screen.getByText(/All the data from the export/i)).toBeInTheDocument();
     expect(screen.getByTestId("test-select-date")).toBeInTheDocument();
@@ -180,9 +167,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
 
-    await act(async () => {
-      render(<AllData />);
-    } );
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -281,9 +266,7 @@ describe("AllData", () => {
         setDataRows(mockRatingsDate2)
       );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -315,9 +298,8 @@ describe("AllData", () => {
   test("dropdown opens picks value and closes correctly", async () => {
     const mockDates = ["01.01.2010", "02.01.2010"];
     fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
-    await act(async () => {
-      render(<AllData />);
-    });
+    
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -342,9 +324,8 @@ describe("AllData", () => {
   test("dropdown opens and closes correctly", async () => {
     const mockDates = ["01.01.2010", "02.01.2010"];
     fetchDates.mockImplementationOnce((setDate) => setDate(mockDates));
-    await act(async () => {
-      render(<AllData />);
-    });
+    
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -428,9 +409,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -457,9 +436,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
 
-    await act(async () => {
-      render(<AllData />);
-    });
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
@@ -508,10 +485,7 @@ describe("AllData", () => {
       setDataRows(mockRatings)
     );
     
-    await act(async () => {
-      render(<AllData />);
-    }
-    );
+    render(<AllData />);
 
     await waitFor(() =>
       expect(screen.getByLabelText(/Pick Date/i)).toBeInTheDocument()
