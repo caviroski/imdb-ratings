@@ -86,4 +86,32 @@ describe('Compare component', () => {
 
     expect(fetchComparison).toHaveBeenCalled();
   });
+
+  // test('displays error message when fetchComparison fails', async () => {
+  //   const mockDates = ["01.01.2010", "02.01.2010"];
+  //   const mockError = 'Failed to fetch comparison data';
+
+  //   fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+  //   fetchComparison.mockImplementationOnce((from, to, search, setRows, setError) =>
+  //     setError(mockError)
+  //   );
+
+  //   render(<Compare />);
+
+  //   await waitFor(() =>
+  //     expect(screen.getByTestId('select-from-date')).toBeInTheDocument()
+  //   );
+
+  //   // Open first date select and pick a date
+  //   let combobox = screen.getByTestId('select-from-date').closest('.MuiSelect-root');
+  //   await userEvent.click(within(combobox).getByRole('combobox'));
+  //   await userEvent.click(screen.getByText('01.01.2010'));
+  //   // Open second date select and pick a date
+  //   combobox = screen.getByTestId('select-to-date').closest('.MuiSelect-root');
+  //   await userEvent.click(within(combobox).getByRole('combobox'));
+  //   await userEvent.click(screen.getByText('02.01.2010'));
+  //   const errorMessage = await screen.findByText(mockError);
+
+  //   expect(errorMessage).toBeInTheDocument();
+  // });
 });

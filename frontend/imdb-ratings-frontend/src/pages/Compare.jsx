@@ -60,13 +60,22 @@ export default function Compare() {
     setOptionsOne(optionsBackend.filter(opt => opt.value !== selected));
 
     if (fromDate && selected) {
-      fetchComparison(fromDate, selected, search, setRows);
+      getComparison(fromDate, selected, search, setRows);
     }
-  }
+  };
   
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
-      fetchComparison(fromDate, toDate, search, setRows);
+      getComparison(fromDate, toDate, search, setRows);
+    }
+  };
+
+  const getComparison = async (from, to, search, setRows) => {
+    try {
+      await fetchComparison(from, to, search, setRows);
+    } catch (err) {
+      setSnack({ open: true, message: 'Get comparison data - ' + err.message, color: '#e84118' });
+      setRows([]);
     }
   };
 
