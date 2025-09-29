@@ -17,7 +17,7 @@ describe("UploadButton", () => {
     });
     const button = screen.getByText(/upload/i);
     const fileInput = screen.getByRole("button");
-    jest.spyOn(fileInput, "click");
+    vi.spyOn(fileInput, "click");
 
     await act(async () => {
       button.click();
@@ -55,8 +55,8 @@ describe("UploadButton", () => {
   });
 
   test("calls onUploadSuccess on valid file upload", async () => {
-    const mockUploadSuccess = jest.fn();
-    global.fetch = jest.fn(() =>
+    const mockUploadSuccess = vi.fn();
+    global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: true,
         text: () => Promise.resolve('Success'),
@@ -76,7 +76,7 @@ describe("UploadButton", () => {
   });
 
   test("shows snackbar on upload failure", async () => {
-    global.fetch = jest.fn(() =>
+    global.fetch = vi.fn(() =>
       Promise.resolve({
         ok: false
       })
@@ -94,7 +94,7 @@ describe("UploadButton", () => {
   });
 
   test("shows snackbar on fetch error", async () => {
-    global.fetch = jest.fn(() => Promise.reject('API is down'));
+    global.fetch = vi.fn(() => Promise.reject('API is down'));
     await act(async () => {
       render(<UploadButton onUploadSuccess={() => {}} />);
     });
@@ -107,6 +107,6 @@ describe("UploadButton", () => {
   });
 
   afterEach(() => {
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 });

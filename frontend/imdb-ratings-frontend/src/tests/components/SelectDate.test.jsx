@@ -39,7 +39,7 @@ describe("SelectDate", () => {
       { value: "2023-01-01", label: "January 1, 2023" },
       { value: "2023-02-01", label: "February 1, 2023" },
     ];
-    const handleChange = jest.fn();
+    const handleChange = vi.fn();
 
     await act(async () => {
       render(
@@ -97,6 +97,6 @@ describe("SelectDate", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 });

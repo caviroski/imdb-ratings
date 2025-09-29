@@ -5,10 +5,18 @@ import AllData from "../../pages/AllData";
 import { fetchDates } from "../../api/fetchDates";
 import { fetchRatingsByDate } from "../../api/fetchRatingsByDate";
 
-jest.mock("../../api/fetchDates");
-jest.mock("../../api/fetchRatingsByDate");
+vi.mock("../../api/fetchDates");
+vi.mock("../../api/fetchRatingsByDate");
 
 describe("AllData", () => {
+  afterEach(() => {
+    vi.resetAllMocks();
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+  
   test("renders AllData component", async () => {
     render(<AllData />);
 
@@ -459,7 +467,7 @@ describe("AllData", () => {
     expect(rows).toHaveLength(1);
   });
 
-  test("check if correct columns are rendered", async () => {
+  test("check if correct aaaaaaaaaa columns are rendered", async () => {
     const mockDates = ["01.01.2010"];
     const mockRatings = [
       {

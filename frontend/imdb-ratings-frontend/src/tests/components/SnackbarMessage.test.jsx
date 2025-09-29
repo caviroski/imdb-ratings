@@ -20,22 +20,22 @@ describe("SnackbarMessage", () => {
   });
 
   test("calls onClose when autoHideDuration elapses", async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     const message = "This is a test message";
-    const handleClose = jest.fn();
+    const handleClose = vi.fn();
     
     render(<SnackbarMessage open={true} message={message} onClose={handleClose} duration={1000} />);
 
     expect(screen.getByText(message)).toBeInTheDocument();
     act(() => {
-      jest.advanceTimersByTime(1000);
+      vi.advanceTimersByTime(1000);
     });
 
     expect(handleClose).toHaveBeenCalledTimes(1);
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 });

@@ -10,8 +10,8 @@ describe('AlertDialog', () => {
   let onConfirm;
 
   beforeEach(() => {
-    onClose = jest.fn();
-    onConfirm = jest.fn();
+    onClose = vi.fn();
+    onConfirm = vi.fn();
   });
 
   test('renders dialog with title and message when open', async () => {
@@ -95,6 +95,6 @@ describe('AlertDialog', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 });

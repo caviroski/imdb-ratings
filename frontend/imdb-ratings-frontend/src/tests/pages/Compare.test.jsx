@@ -5,13 +5,13 @@ import Compare from '../../pages/Compare';
 import { fetchDates } from '../../api/fetchDates';
 import { fetchComparison } from '../../api/fetchComparison';
 
-jest.mock("../../api/fetchDates");
-jest.mock("../../api/fetchComparison");
+vi.mock("../../api/fetchDates");
+vi.mock("../../api/fetchComparison");
 
 
 describe('Compare component', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('renders date selects and DataGrid rows after selecting dates', async () => {
@@ -71,7 +71,7 @@ describe('Compare component', () => {
     const mockDates = ["01.01.2010", "02.01.2010"];
 
     fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
-    fetchComparison.mockImplementationOnce(jest.fn());
+    fetchComparison.mockImplementationOnce(vi.fn());
 
     render(<Compare />);
 

@@ -87,10 +87,10 @@ export default function YearWatch() {
             tickLabelInterval: () => true,
             valueFormatter: (v) => { return v }
           }]}
-          yAxis={[{ position: 'none' }]}
+          yAxis={[{ position: 'none', min: 0, max: 215 }]}
           series={[{ dataKey: 'itemsNum', valueFormatter: (v) => { return v } }]}
           layout="vertical"
-          height={300}
+          height={350}
           onItemClick={(event, item) => {
             if (item?.dataIndex !== undefined) {
               const clickedYear = dataset[item.dataIndex]?.year;
