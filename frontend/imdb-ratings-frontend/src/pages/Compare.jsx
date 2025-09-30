@@ -22,6 +22,8 @@ export default function Compare() {
       } catch (err) {
         setSnack({ open: true, message: 'Get files dates - ' + err.message, color: '#e84118' });
         setSortedDates([]);
+        setDisableFromDate(true);
+        setDisableToDate(true);
       }
     };
     loadDates();
@@ -41,7 +43,9 @@ export default function Compare() {
   const [optionsTwo, setOptionsTwo] = useState([...optionsBackend]);
 
   const [fromDate, setFromDate] = useState('');
+  const [disableFromDate, setDisableFromDate] = useState(false);
   const [toDate, setToDate] = useState('');
+  const [disableToDate, setDisableToDate] = useState(false);
 
   const [firstColumnHeader, setFirstColumnHeader] = useState('Start Date');
   const [secondColumnHeader, setSecondColumnHeader] = useState('Start Date');
@@ -130,6 +134,7 @@ export default function Compare() {
           onChange={handleFromChange}
           label="Pick first Date"
           options={optionsOne}
+          disabled={disableFromDate}
           inputProps={{ 'data-testid': 'select-from-date' }}
         />
         <SelectDate
@@ -137,6 +142,7 @@ export default function Compare() {
           onChange={handleToChange}
           label="Pick second Date"
           options={optionsTwo}
+          disabled={disableToDate}
           inputProps={{ 'data-testid': 'select-to-date' }}
         />
       </div>

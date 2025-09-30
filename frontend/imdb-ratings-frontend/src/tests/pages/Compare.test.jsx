@@ -141,4 +141,20 @@ describe('Compare component', () => {
       expect(screen.getByText(/No rows/i)).toBeInTheDocument()
     );
   });
+
+  test('displays error message when fetchDates fails', async () => {
+    const mockError = 'Failed to fetch dates';
+    fetchDates.mockImplementationOnce((setDates, setError) => 
+      Promise.reject(new Error(mockError))
+    );
+
+    render(<Compare />);
+
+    await waitFor(() =>
+      expect(screen.getByText((content) => content.includes(mockError))).toBeInTheDocument()
+    );
+
+    expect(screen.getByTestId('select-from-date')).toBeDisabled();
+    expect(screen.getByTestId('select-to-date')).toBeDisabled();
+  });
 });
