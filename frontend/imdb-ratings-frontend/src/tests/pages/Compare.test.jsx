@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import Compare from '../../pages/Compare';
 import { fetchDates } from '../../api/fetchDates';
 import { fetchComparison } from '../../api/fetchComparison';
+import { test } from 'vitest';
 
 vi.mock("../../api/fetchDates");
 vi.mock("../../api/fetchComparison");
@@ -112,6 +113,32 @@ describe('Compare component', () => {
 
     await waitFor(() =>
       expect(screen.getByText((content) => content.includes(mockError))).toBeInTheDocument()
+    );
+  });
+
+  test('displays no data message when fetchComparison returns empty', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockRows = [];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchComparison.mockImplementationOnce((from, to, search, setRows) =>
+      setRows(mockRows)
+    );
+
+    render(<Compare />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-from-date')).toBeInTheDocument()
+    );
+
+    let combobox = screen.getByTestId('select-from-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    combobox = screen.getByTestId('select-to-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('02.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByText(/No rows/i)).toBeInTheDocument()
     );
   });
 });
