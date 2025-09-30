@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function SelectDate({ value = "", onChange, label = "Select Date", options = [], disabled = false, ...props }) {
+export default function SelectDate({ value = "", onChange, label = "Select Date", options = [], ...props }) {
   return (
     <Box sx={{ minWidth: 120 }}>
       <FormControl fullWidth>
@@ -15,7 +15,6 @@ export default function SelectDate({ value = "", onChange, label = "Select Date"
           value={value}
           label={label}
           onChange={onChange}
-          disabled={disabled}
           inputProps={{ 'data-testid': 'test-select-date' }}
           {...props}
         >
