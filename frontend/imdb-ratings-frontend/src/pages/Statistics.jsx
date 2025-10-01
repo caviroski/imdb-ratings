@@ -52,12 +52,20 @@ export default function Statistics() {
     { field: 'avgRating', headerName: 'Average Rating', width: 150 }
   ];
 
-  const pickDate = (event) => {
+  const pickDate = async (event) => {
     const selectedDate = event.target.value;
     setSelectedDate(selectedDate);
-    fetchYearlyAverage(setYearRows, selectedDate);
-    fetchTitleTypeCounts(setTitleTypeRows, selectedDate);
-    fetchGenreStats(setGenreRows, selectedDate);
+
+    try {
+      await fetchYearlyAverage(setYearRows, selectedDate);
+      await fetchTitleTypeCounts(setTitleTypeRows, selectedDate);
+      await fetchGenreStats(setGenreRows, selectedDate);
+    } catch (err) {
+      setSnack({ open: true, message: 'Fetch statistics - ' + err.message, color: '#e84118' });
+      setYearRows([]);
+      setTitleTypeRows([]);
+      setGenreRows([]);
+    }
   };
 
   const handleCloseSnackbar = () => {

@@ -11,6 +11,6 @@ export const fetchYearlyAverage = async (setDataset, cutoffDate = '') => {
     const data = await response.json();
     setDataset(data);
   } catch (error) {
-    console.error('Error fetching yearly average ratings:', error);
+    throw error;
   }
 };

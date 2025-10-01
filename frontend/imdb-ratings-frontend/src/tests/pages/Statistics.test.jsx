@@ -86,4 +86,40 @@ describe('Statistics component', () => {
     const genreRows = within(genreGrid).getAllByRole('row');
     expect(genreRows).toHaveLength(3); // 2 data rows + 1 header row
   });
+
+  test('handles fetchDates error gracefully', async () => {
+    fetchDates.mockImplementationOnce(() => {
+      throw new Error('Failed to fetch dates');
+    });
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByText(/Get files dates - Failed to fetch dates/i)).toBeInTheDocument()
+    );
+  });
+
+  test('handles fetchYearlyAverage error gracefully', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockError = 'Failed to fetch yearly average data';
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => 
+      Promise.reject(new Error(mockError))
+    );
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    // Open date select and pick a date
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByText(/Fetch statistics - Failed to fetch yearly average data/i)).toBeInTheDocument()
+    );
+  });
 });
