@@ -84,6 +84,7 @@ export default function Statistics() {
           value={selectedDate}
           onChange={pickDate}
           label="Pick Date"
+          inputProps={{ 'data-testid': 'select-date' }}
           options={options}
         />
       </div>
@@ -99,7 +100,7 @@ export default function Statistics() {
       >
         <div style={{ width: 400 }}>
           <p style={{ textAlign: 'center' }}>Every years items average rating</p>
-          <Paper sx={{ height: 590, width: '100%' }}>
+          <Paper sx={{ height: 590, width: '100%' }} data-testid="yearly-average-grid">
             <DataGrid
               rows={yearRows}
               columns={yearColumns}
@@ -110,7 +111,7 @@ export default function Statistics() {
         </div>
         <div style={{ width: 290 }}>
           <p style={{ textAlign: 'center' }}>How many items are from every type</p>
-          <Paper sx={{ height: 590, width: '100%' }}>
+          <Paper sx={{ height: 590, width: '100%' }} data-testid="title-type-counts-grid">
             <DataGrid
               rows={titleTypeRows}
               columns={titleTypeColumns}
@@ -121,7 +122,7 @@ export default function Statistics() {
         </div>
         <div style={{ width: 380 }}>
           <p style={{ textAlign: 'center' }}>Every genre average rating</p>
-          <Paper sx={{ height: 590, width: '100%' }}>
+          <Paper sx={{ height: 590, width: '100%' }} data-testid="genre-stats-grid">
             <DataGrid
               rows={genreRows}
               columns={genreColumns}

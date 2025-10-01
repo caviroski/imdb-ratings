@@ -9,7 +9,6 @@ import { test } from 'vitest';
 vi.mock("../../api/fetchDates");
 vi.mock("../../api/fetchComparison");
 
-
 describe('Compare component', () => {
   beforeEach(() => {
     vi.clearAllMocks();
