@@ -64,7 +64,7 @@ describe('Statistics component', () => {
     expect(within(yearGrid).getByText('7')).toBeInTheDocument();
     expect(within(yearGrid).getByText('150')).toBeInTheDocument();
     const yearRows = within(yearGrid).getAllByRole('row');
-    expect(yearRows).toHaveLength(3); // 2 data rows + 1 header row
+    expect(yearRows).toHaveLength(3);
 
     // Check if rows are rendered in Title Type Counts DataGrid
     const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
@@ -73,7 +73,7 @@ describe('Statistics component', () => {
     expect(within(titleTypeGrid).getByText('tvSeries')).toBeInTheDocument();
     expect(within(titleTypeGrid).getByText('101')).toBeInTheDocument();
     const titleTypeRows = within(titleTypeGrid).getAllByRole('row');
-    expect(titleTypeRows).toHaveLength(3); // 2 data rows + 1 header row
+    expect(titleTypeRows).toHaveLength(3);
 
     // Check if rows are rendered in Genre Stats DataGrid
     const genreGrid = screen.getByTestId('genre-stats-grid');
@@ -84,7 +84,7 @@ describe('Statistics component', () => {
     expect(within(genreGrid).getByText('80')).toBeInTheDocument();
     expect(within(genreGrid).getByText('6.8')).toBeInTheDocument();
     const genreRows = within(genreGrid).getAllByRole('row');
-    expect(genreRows).toHaveLength(3); // 2 data rows + 1 header row
+    expect(genreRows).toHaveLength(3);
   });
 
   test('handles fetchDates error gracefully', async () => {
@@ -114,7 +114,6 @@ describe('Statistics component', () => {
       expect(screen.getByTestId('select-date')).toBeInTheDocument()
     );
 
-    // Open date select and pick a date
     const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
     await userEvent.click(within(combobox).getByRole('combobox'));
     await userEvent.click(screen.getByText('01.01.2010'));
