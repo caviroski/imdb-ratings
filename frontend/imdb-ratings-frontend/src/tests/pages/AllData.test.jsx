@@ -467,7 +467,7 @@ describe("AllData", () => {
     expect(rows).toHaveLength(1);
   });
 
-  test("check if correct aaaaaaaaaa columns are rendered", async () => {
+  test("check if correct columns are rendered", async () => {
     const mockDates = ["01.01.2010"];
     const mockRatings = [
       {
