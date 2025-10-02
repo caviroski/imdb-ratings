@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, screen, waitFor, within, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Statistics from '../../pages/Statistics';
@@ -164,5 +164,61 @@ describe('Statistics component', () => {
     await waitFor(() =>
       expect(screen.getByText(/Fetch genre stats - Failed to fetch genre stats data/i)).toBeInTheDocument()
     );
+  });
+
+  test('displays no data message when fetch functions return empty', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockYearRows = [];
+    const mockTitleTypeRows = [];
+    const mockGenreRows = [];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockYearRows));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockTitleTypeRows));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => setRows(mockGenreRows));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+
+    // Check each grid individually for no data message
+    await waitFor(() => {
+      const yearGrid = screen.getByTestId('yearly-average-grid');
+      const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
+      const genreGrid = screen.getByTestId('genre-stats-grid');
+
+      expect(within(yearGrid).getByText(/No rows/i)).toBeInTheDocument();
+      expect(within(titleTypeGrid).getByText(/No rows/i)).toBeInTheDocument();
+      expect(within(genreGrid).getByText(/No rows/i)).toBeInTheDocument();
+    });
+  });
+
+  test('date select contains correct options', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010", "03.01.2010"];
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    mockDates.forEach(date => {
+      expect(screen.getByText(date)).toBeInTheDocument();
+    });
+
+    // Close the dropdown
+    fireEvent.click(screen.getByRole('presentation').firstChild);
+    await waitForElementToBeRemoved(() => document.querySelector('.MuiPopover-root'));
+
+    expect(screen.queryByText('01.01.2010')).not.toBeInTheDocument();
   });
 });
