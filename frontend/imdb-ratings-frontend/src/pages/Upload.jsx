@@ -81,16 +81,29 @@ export default function Upload() {
           <UploadButton onUploadSuccess={() => fetchDates(setSortedDates)} />
         </Box>
         <Stack direction="row" spacing={2} sx={{ flex: 1, justifyContent: 'flex-end' }}>
-          <Button variant="contained" onClick={handleFillCountries} disabled={filling}>
+          <Button
+            variant="contained"
+            onClick={handleFillCountries}
+            disabled={filling}
+            data-testid="fill-countries-button"
+          >
             {filling ? "Filling..." : "Fill Missing Countries"}
           </Button>
-          <Button variant="contained" onClick={handleStopFillCountries} style={{ marginRight: '15px' }}>
+          <Button
+            variant="contained"
+            onClick={handleStopFillCountries}
+            style={{ marginRight: '15px' }}
+            data-testid="stop-fill-countries-button"
+          >
             Stop filling countries
           </Button>
         </Stack>
       </Box>
 
-      <List sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}>
+      <List
+        sx={{ width: '100%', maxWidth: 200, bgcolor: '#2add8cff', paddingTop: '0', paddingBottom: '0', margin: '20px auto 0 auto' }}
+        data-testid="files-list"
+      >
         {sortedDates.map((value) => (
           <ListItem
             style={{ borderBottom: '1px solid #ccc' }}
