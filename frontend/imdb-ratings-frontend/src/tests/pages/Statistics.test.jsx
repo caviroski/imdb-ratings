@@ -329,4 +329,146 @@ describe('Statistics component', () => {
     expect(rows[1]).toHaveTextContent('Action1207.2');
     expect(rows).toHaveLength(2);
   });
+
+  test('handles no dates available', async () => {
+    const mockDates = [];
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    expect(screen.queryByRole('option')).not.toBeInTheDocument();
+
+    // Close the dropdown
+    fireEvent.click(screen.getByRole('presentation').firstChild);
+    await waitForElementToBeRemoved(() => document.querySelector('.MuiPopover-root'));
+
+    expect(screen.queryByText('01.01.2010')).not.toBeInTheDocument();
+  });
+
+  test('handles no data for selected date', async () => {
+    const mockDates = ["01.01.2010"];
+    const mockYearRows = [];
+    const mockTitleTypeRows = [];
+    const mockGenreRows = [];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockYearRows));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockTitleTypeRows));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => setRows(mockGenreRows));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument() && 
+        expect(screen.getByTestId('title-type-counts-grid')).toBeInTheDocument() &&
+        expect(screen.getByTestId('genre-stats-grid')).toBeInTheDocument()
+    );
+
+    // Check if no rows message is rendered in Yearly Average DataGrid
+    const yearGrid = screen.getByTestId('yearly-average-grid');
+    expect(within(yearGrid).getByText(/No rows/i)).toBeInTheDocument();
+    const yearRows = within(yearGrid).getAllByRole('row');
+    expect(yearRows).toHaveLength(1);
+
+    // Check if no rows message is rendered in Title Type Counts DataGrid
+    const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
+    expect(within(titleTypeGrid).getByText(/No rows/i)).toBeInTheDocument();
+    const titleTypeRows = within(titleTypeGrid).getAllByRole('row');
+    expect(titleTypeRows).toHaveLength(1);
+
+    // Check if no rows message is rendered in Genre Stats DataGrid
+    const genreGrid = screen.getByTestId('genre-stats-grid');
+    expect(within(genreGrid).getByText(/No rows/i)).toBeInTheDocument();
+    const genreRows = within(genreGrid).getAllByRole('row');
+    expect(genreRows).toHaveLength(1);
+  });
+
+  test('handles rapid date changes', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockYearRowsDate1 = [
+      { id: 1, year: 2000, avgRating: 7.5, itemsNum: 115 }
+    ];
+    const mockYearRowsDate2 = [
+      { id: 1, year: 2001, avgRating: 7.1, itemsNum: 150 }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage
+      .mockImplementationOnce((setRows, date) => setRows(mockYearRowsDate1))
+      .mockImplementationOnce((setRows, date) => setRows(mockYearRowsDate2));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('02.01.2010'));
+
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument()
+    );
+
+    const yearGrid = screen.getByTestId('yearly-average-grid');
+    const rows = within(yearGrid).getAllByRole('row');
+    expect(within(yearGrid).getByText('2001')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('7.1')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('150')).toBeInTheDocument();
+    expect(rows[0]).toHaveTextContent('YearAverage RatingCount');
+    expect(rows[1]).toHaveTextContent('20017.1150');
+    expect(rows).toHaveLength(2);
+  });
+
+  test('snapshot test', async () => {
+    const mockDates = ["01.01.2010"];
+    const mockYearRows = [
+      { id: 1, year: 2000, avgRating: 7.5, itemsNum: 115 }
+    ];
+    const mockTitleTypeRows = [
+      { id: 1, titleType: 'movie', count: 200 }
+    ];
+    const mockGenreRows = [
+      { id: 1, genre: 'Action', count: 120, avgRating: 7.2 }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockYearRows));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockTitleTypeRows));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => setRows(mockGenreRows));
+
+    const { asFragment } = render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument() && 
+        expect(screen.getByTestId('title-type-counts-grid')).toBeInTheDocument() &&
+        expect(screen.getByTestId('genre-stats-grid')).toBeInTheDocument()
+    );
+
+    expect(asFragment()).toMatchSnapshot();
+  });
 });
