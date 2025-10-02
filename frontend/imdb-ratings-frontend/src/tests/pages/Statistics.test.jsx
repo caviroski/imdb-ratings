@@ -221,4 +221,112 @@ describe('Statistics component', () => {
 
     expect(screen.queryByText('01.01.2010')).not.toBeInTheDocument();
   });
+
+  test("check if correct columns are rendered year average", async () => {
+    const mockDates = ["01.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        year: 2000,
+        avgRating: 7.5,
+        itemsNum: 115
+      }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockRatings));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument()
+    );
+
+    const yearGrid = screen.getByTestId('yearly-average-grid');
+    const rows = within(yearGrid).getAllByRole('row');
+    expect(within(yearGrid).getByText('Year')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('Average Rating')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('Count')).toBeInTheDocument();
+    expect(rows[0]).toHaveTextContent('YearAverage RatingCount');
+    expect(rows[1]).toHaveTextContent('20007.5115');
+    expect(rows).toHaveLength(2);
+  });
+
+  test("check if correct columns are rendered title type counts", async () => {
+    const mockDates = ["01.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        titleType: 'movie',
+        count: 200
+      }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockRatings));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('title-type-counts-grid')).toBeInTheDocument()
+    );
+
+    const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
+    const rows = within(titleTypeGrid).getAllByRole('row');
+    expect(within(titleTypeGrid).getByText('Title Type')).toBeInTheDocument();
+    expect(within(titleTypeGrid).getByText('Count')).toBeInTheDocument();
+    expect(rows[0]).toHaveTextContent('Title TypeCount');
+    expect(rows[1]).toHaveTextContent('movie200');
+    expect(rows).toHaveLength(2);
+  });
+
+  test("check if correct columns are rendered genre stats", async () => {
+    const mockDates = ["01.01.2010"];
+    const mockRatings = [
+      {
+        id: 1,
+        genre: 'Action',
+        count: 120,
+        avgRating: 7.2
+      }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => setRows(mockRatings));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('genre-stats-grid')).toBeInTheDocument()
+    );
+    const genreGrid = screen.getByTestId('genre-stats-grid');
+    const rows = within(genreGrid).getAllByRole('row');
+    expect(within(genreGrid).getByText('Genre')).toBeInTheDocument();
+    expect(within(genreGrid).getByText('Count')).toBeInTheDocument();
+    expect(within(genreGrid).getByText('Average Rating')).toBeInTheDocument();
+    expect(rows[0]).toHaveTextContent('GenreCountAverage Rating');
+    expect(rows[1]).toHaveTextContent('Action1207.2');
+    expect(rows).toHaveLength(2);
+  });
 });
