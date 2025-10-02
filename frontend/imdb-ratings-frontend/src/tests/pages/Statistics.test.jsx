@@ -121,4 +121,26 @@ describe('Statistics component', () => {
       expect(screen.getByText(/Fetch statistics - Failed to fetch yearly average data/i)).toBeInTheDocument()
     );
   });
+
+  test('handles fetchTitleTypeCounts error gracefully', async () => {
+    const mockDates = ["01.01.2010", "02.01.2010"];
+    const mockError = 'Failed to fetch title type counts data';
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => 
+      Promise.reject(new Error(mockError))
+    );
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByText(/Fetch statistics - Failed to fetch title type counts data/i)).toBeInTheDocument()
+    );
+  });
 });
