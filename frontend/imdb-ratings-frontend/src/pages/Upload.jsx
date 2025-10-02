@@ -109,7 +109,11 @@ export default function Upload() {
             style={{ borderBottom: '1px solid #ccc' }}
             key={value}
             secondaryAction={
-              <IconButton aria-label="delete" onClick={() => clickDeleteButton(value)}>
+              <IconButton
+                aria-label="delete"
+                onClick={() => clickDeleteButton(value)}
+                data-testid={`delete-button-${value}`}
+              >
                 <DeleteIcon />
               </IconButton>
             }
@@ -133,6 +137,7 @@ export default function Upload() {
         onClose={handleCloseSnackbar}
         backgroundColor={snack.color}
         duration={snack.duration}
+        data-testid="snackbar"
       />
     </div>
   )
