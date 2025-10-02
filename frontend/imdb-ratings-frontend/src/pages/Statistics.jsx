@@ -58,12 +58,22 @@ export default function Statistics() {
 
     try {
       await fetchYearlyAverage(setYearRows, selectedDate);
+    } catch (err) {
+      setSnack({ open: true, message: 'Fetch yearly avarage - ' + err.message, color: '#e84118' });
+      setYearRows([]);
+    }
+
+    try {
       await fetchTitleTypeCounts(setTitleTypeRows, selectedDate);
+    } catch (err) {
+      setSnack({ open: true, message: 'Fetch title type - ' + err.message, color: '#e84118' });
+      setTitleTypeRows([]);
+    }
+
+    try {
       await fetchGenreStats(setGenreRows, selectedDate);
     } catch (err) {
-      setSnack({ open: true, message: 'Fetch statistics - ' + err.message, color: '#e84118' });
-      setYearRows([]);
-      setTitleTypeRows([]);
+      setSnack({ open: true, message: 'Fetch genre stats - ' + err.message, color: '#e84118' });
       setGenreRows([]);
     }
   };
