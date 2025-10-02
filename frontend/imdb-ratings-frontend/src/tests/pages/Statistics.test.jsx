@@ -471,4 +471,114 @@ describe('Statistics component', () => {
 
     expect(asFragment()).toMatchSnapshot();
   });
+
+  test('read data from the three tables', async () => {
+    const mockDates = ["01.01.2010"];
+    const mockYearRows = [
+      { id: 1, year: 2000, avgRating: 7.5, itemsNum: 115 }
+    ];
+    const mockTitleTypeRows = [
+      { id: 1, titleType: 'movie', count: 200 }
+    ];
+    const mockGenreRows = [
+      { id: 1, genre: 'Action', count: 120, avgRating: 7.2 }
+    ];
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockYearRows));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockTitleTypeRows));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => setRows(mockGenreRows));
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument() && 
+        expect(screen.getByTestId('title-type-counts-grid')).toBeInTheDocument() &&
+        expect(screen.getByTestId('genre-stats-grid')).toBeInTheDocument()
+    );
+
+    const yearGrid = screen.getByTestId('yearly-average-grid');
+    const yearRows = within(yearGrid).getAllByRole('row');
+    expect(within(yearGrid).getByText('2000')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('7.5')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('115')).toBeInTheDocument();
+    expect(yearRows[0]).toHaveTextContent('YearAverage RatingCount');
+    expect(yearRows[1]).toHaveTextContent('20007.5115');
+    expect(yearRows).toHaveLength(2);
+
+    const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
+    const titleTypeRows = within(titleTypeGrid).getAllByRole('row');
+    expect(within(titleTypeGrid).getByText('movie')).toBeInTheDocument();
+    expect(within(titleTypeGrid).getByText('200')).toBeInTheDocument();
+    expect(titleTypeRows[0]).toHaveTextContent('Title TypeCount');
+    expect(titleTypeRows[1]).toHaveTextContent('movie200');
+    expect(titleTypeRows).toHaveLength(2);
+
+    const genreGrid = screen.getByTestId('genre-stats-grid');
+    const genreRows = within(genreGrid).getAllByRole('row');
+    expect(within(genreGrid).getByText('Action')).toBeInTheDocument();
+    expect(within(genreGrid).getByText('120')).toBeInTheDocument();
+    expect(within(genreGrid).getByText('7.2')).toBeInTheDocument();
+    expect(genreRows[0]).toHaveTextContent('GenreCountAverage Rating');
+    expect(genreRows[1]).toHaveTextContent('Action1207.2');
+    expect(genreRows).toHaveLength(2);
+  });
+
+  test('read data from two tables and fail to read from the third one', async () => {
+    const mockDates = ["01.01.2010"];
+    const mockYearRows = [
+      { id: 1, year: 2000, avgRating: 7.5, itemsNum: 115 }
+    ];
+    const mockTitleTypeRows = [
+      { id: 1, titleType: 'movie', count: 200 }
+    ];
+    const mockError = 'Failed to fetch genre stats data';
+
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fetchYearlyAverage.mockImplementationOnce((setRows, date) => setRows(mockYearRows));
+    fetchTitleTypeCounts.mockImplementationOnce((setRows, date) => setRows(mockTitleTypeRows));
+    fetchGenreStats.mockImplementationOnce((setRows, date) => 
+      Promise.reject(new Error(mockError))
+    );
+
+    render(<Statistics />);
+
+    await waitFor(() =>
+      expect(screen.getByTestId('select-date')).toBeInTheDocument()
+    );
+
+    const combobox = screen.getByTestId('select-date').closest('.MuiSelect-root');
+    await userEvent.click(within(combobox).getByRole('combobox'));
+    await userEvent.click(screen.getByText('01.01.2010'));
+    await waitFor(() =>
+      expect(screen.getByTestId('yearly-average-grid')).toBeInTheDocument() && 
+        expect(screen.getByTestId('title-type-counts-grid')).toBeInTheDocument() &&
+        expect(screen.getByTestId('genre-stats-grid')).toBeInTheDocument()
+    );
+    const yearGrid = screen.getByTestId('yearly-average-grid');
+    const yearRows = within(yearGrid).getAllByRole('row');
+    expect(within(yearGrid).getByText('2000')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('7.5')).toBeInTheDocument();
+    expect(within(yearGrid).getByText('115')).toBeInTheDocument();
+    expect(yearRows[0]).toHaveTextContent('YearAverage RatingCount');
+    expect(yearRows[1]).toHaveTextContent('20007.5115');
+    expect(yearRows).toHaveLength(2);
+
+    const titleTypeGrid = screen.getByTestId('title-type-counts-grid');
+    const titleTypeRows = within(titleTypeGrid).getAllByRole('row');
+    expect(within(titleTypeGrid).getByText('movie')).toBeInTheDocument();
+    expect(within(titleTypeGrid).getByText('200')).toBeInTheDocument();
+    expect(titleTypeRows[0]).toHaveTextContent('Title TypeCount');
+    expect(titleTypeRows[1]).toHaveTextContent('movie200');
+    expect(titleTypeRows).toHaveLength(2);
+
+    expect(screen.getByText(/Fetch genre stats - Failed to fetch genre stats data/i)).toBeInTheDocument();
+  });
 });
