@@ -5,6 +5,7 @@ import Upload from '../../pages/Upload';
 import { fetchDates } from '../../api/fetchDates';
 import { fillCountries, stopFillCountries } from '../../api/fillCountries';
 import { deleteFileByName } from '../../api/deleteFileByName';
+import { expectSnackbar } from '../utils/snackbarUtils';
 import { test } from 'vitest';
 
 vi.mock('../../api/fetchDates');
@@ -169,5 +170,20 @@ describe("Upload page", () => {
       expect(screen.queryByText(/Get files dates - Fetch dates failed/i)).not.toBeInTheDocument();
       expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
     });
+  });
+
+  test("shows error snackbar if deleteFileByName fails", async () => {
+    const mockDates = ["01.01.2010"];
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    deleteFileByName.mockRejectedValue(new Error("Delete failed"));
+
+    render(<Upload />);
+
+    const deleteButton = screen.getByTestId("delete-button-01.01.2010");
+    await userEvent.click(deleteButton);
+    const confirmButton = screen.getByText("Agree");
+    await userEvent.click(confirmButton);
+
+    await expectSnackbar({ textPattern: /Failed to delete entry/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
   });
 });
