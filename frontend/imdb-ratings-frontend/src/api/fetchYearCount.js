@@ -8,5 +8,6 @@ export const fetchYearCount = async (setDataset, setTotal, fromDate = '') => {
     setDataset(data.years);
   } catch (error) {
     console.error('Error fetching year count:', error);
+    throw error;
   }
 };

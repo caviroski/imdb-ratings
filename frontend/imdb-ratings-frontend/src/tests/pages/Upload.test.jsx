@@ -149,4 +149,25 @@ describe("Upload page", () => {
       expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
     });
   });
+
+  test("shows error snackbar if fetchDates fails", async () => {
+    fetchDates.mockImplementationOnce(() => {
+      throw new Error("Fetch dates failed");
+    });
+
+    render(<Upload />);
+
+    const snackbar = await screen.findByText(/Get files dates - Fetch dates failed/i);
+    expect(snackbar).toBeInTheDocument();
+    expect(screen.getByTestId("snackbar")).toHaveStyle({ backgroundColor: expect.stringMatching(/(rgb\(232, 65, 24\)|#e84118)/) });
+
+    await waitForElementToBeRemoved(() => screen.queryByText(/Get files dates - Fetch dates failed/i), {
+      timeout: 6000
+    });
+
+    await waitFor(() => {
+      expect(screen.queryByText(/Get files dates - Fetch dates failed/i)).not.toBeInTheDocument();
+      expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
+    });
+  });
 });

@@ -52,12 +52,21 @@ export default function Upload() {
 
   const handleFillCountries = () => {
     setFilling(true);
-    fillCountries();
+    try {
+      fillCountries();
+    } catch (err) {
+      setSnack({ open: true, message: 'Failed to fill missing countries - ' + err.message, color: '#e84118' });
+      setFilling(false);
+    }
   };
 
   const handleStopFillCountries = () => {
     setFilling(false);
-    stopFillCountries();
+    try {
+      stopFillCountries();
+    } catch (err) {
+      setSnack({ open: true, message: 'Failed to stop filling countries - ' + err.message, color: '#e84118' });
+    }
   };
 
   const handleAlertDialogClose = () => {

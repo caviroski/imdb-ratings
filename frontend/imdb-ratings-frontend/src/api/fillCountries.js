@@ -13,10 +13,16 @@ export const fillCountries = async () => {
     }
   } catch (error) {
     console.error("Error filling countries:", error);
+    throw error;
   }
 };
 
 export const stopFillCountries = async () => {
-  const response = await fetch(`${API_BASE_URL}/stop-filling-missing-countries`, { method: "POST" });
-  console.log(await response.text());
+  try {
+    const response = await fetch(`${API_BASE_URL}/stop-filling-missing-countries`, { method: "POST" });
+    console.log(await response.text());
+  } catch (error) {
+    console.error("Error stopping fill countries:", error);
+    throw error;
+  }
 };

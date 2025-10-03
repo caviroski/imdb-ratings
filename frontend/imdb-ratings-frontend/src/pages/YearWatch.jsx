@@ -41,7 +41,13 @@ export default function YearWatch() {
   const handleChange = (event) => {
     const selectedDate = event.target.value;
     setFromDate(selectedDate);
-    fetchYearCount(setDataset, setTotal, selectedDate);
+    try {
+      fetchYearCount(setDataset, setTotal, selectedDate);
+    } catch (err) {
+      setSnack({ open: true, message: 'Fetch year count - ' + err.message, color: '#e84118' });
+      setDataset([]);
+      setTotal(0);
+    }
   };
 
   const handleCloseSnackbar = () => {
