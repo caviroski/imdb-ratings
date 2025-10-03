@@ -108,17 +108,7 @@ describe("Upload page", () => {
 
     await userEvent.upload(fileInput, file);
 
-    const snackbar = await screen.findByText(/Upload successful!/i);
-    expect(snackbar).toBeInTheDocument();
-
-    await waitForElementToBeRemoved(() => screen.queryByText(/Upload successful!/i), {
-      timeout: 6000
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText(/Upload successful!/i)).not.toBeInTheDocument();
-      expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
-    });
+    await expectSnackbar({ textPattern: /Upload successful!/i, color: /(rgb\(68, 189, 50\)|#44bd32)/ });
   });
 
   test("snackbar shows error on upload failure", async () => {
@@ -138,17 +128,7 @@ describe("Upload page", () => {
 
     await userEvent.upload(fileInput, file);
 
-    const snackbar = await screen.findByText(/Upload failed/i);
-    expect(snackbar).toBeInTheDocument();
-    expect(screen.getByTestId("snackbar")).toHaveStyle({ backgroundColor: expect.stringMatching(/(rgb\(231, 76, 60\)|#e74c3c)/) });
-
-    await waitForElementToBeRemoved(() => screen.queryByText(/Upload failed/i), {
-      timeout: 6000
-    });
-    await waitFor(() => {
-      expect(screen.queryByText(/Upload failed/i)).not.toBeInTheDocument();
-      expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
-    });
+    await expectSnackbar({ textPattern: /Upload failed/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
   });
 
   test("shows error snackbar if fetchDates fails", async () => {
@@ -158,18 +138,7 @@ describe("Upload page", () => {
 
     render(<Upload />);
 
-    const snackbar = await screen.findByText(/Get files dates - Fetch dates failed/i);
-    expect(snackbar).toBeInTheDocument();
-    expect(screen.getByTestId("snackbar")).toHaveStyle({ backgroundColor: expect.stringMatching(/(rgb\(232, 65, 24\)|#e84118)/) });
-
-    await waitForElementToBeRemoved(() => screen.queryByText(/Get files dates - Fetch dates failed/i), {
-      timeout: 6000
-    });
-
-    await waitFor(() => {
-      expect(screen.queryByText(/Get files dates - Fetch dates failed/i)).not.toBeInTheDocument();
-      expect(screen.queryByTestId("snackbar")).not.toBeInTheDocument();
-    });
+    await expectSnackbar({ textPattern: /Get files dates - Fetch dates failed/i, color: /(rgb\(232, 65, 24\)|#e84118)/ });
   });
 
   test("shows error snackbar if deleteFileByName fails", async () => {
