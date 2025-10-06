@@ -6,7 +6,6 @@ import { fetchDates } from '../../api/fetchDates';
 import { fillCountries, stopFillCountries } from '../../api/fillCountries';
 import { deleteFileByName } from '../../api/deleteFileByName';
 import { expectSnackbar } from '../utils/snackbarUtils';
-import { test } from 'vitest';
 
 vi.mock('../../api/fetchDates');
 vi.mock('../../api/fillCountries');
