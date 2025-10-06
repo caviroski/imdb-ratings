@@ -167,4 +167,30 @@ describe("Upload page", () => {
     await userEvent.click(fillButton);
     await expectSnackbar({ textPattern: /Failed to fill missing countries - Fill countries failed/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
   });
+
+  test("shows error snackbar if stopFillCountries fails", async () => {
+    const mockDates = ["01.01.2010"];
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    stopFillCountries.mockRejectedValue(new Error("Stop fill countries failed"));
+
+    render(<Upload />);
+
+    const stopButton = screen.getByTestId("stop-fill-countries-button");
+    await userEvent.click(stopButton);
+    await expectSnackbar({ textPattern: /Failed to stop filling countries - Stop fill countries failed/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
+  });
+
+  test("loading indicator appears during fetch", async () => {
+    const fillPromise = new Promise(() => {});
+    fillCountries.mockReturnValue(fillPromise);
+
+    render(<Upload />);
+
+    const button = screen.getByTestId("fill-countries-button");
+    await userEvent.click(button);
+
+    expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
+
+    fillCountries.mockRejectedValue(new Error("cancelled"));
+  });
 });

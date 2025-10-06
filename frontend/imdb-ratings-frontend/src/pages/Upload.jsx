@@ -8,6 +8,7 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import UploadButton from '../components/UploadButton';
 import AlertDialog from '../components/AlertDialog';
@@ -95,6 +96,7 @@ export default function Upload() {
             onClick={handleFillCountries}
             disabled={filling}
             data-testid="fill-countries-button"
+            startIcon={filling ? <CircularProgress data-testid="loading-indicator" size={18} color="inherit" /> : null}
           >
             {filling ? "Filling..." : "Fill Missing Countries"}
           </Button>
