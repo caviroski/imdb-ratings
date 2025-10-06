@@ -46,7 +46,7 @@ describe("Upload page", () => {
   test("fill countries button works", async () => {
     const mockDates = ["01.01.2010", "02.02.2020"];
     fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
-    fillCountries.mockResolvedValue();
+    fillCountries.mockImplementation(() => new Promise((resolve) => setTimeout(resolve, 100)));
     stopFillCountries.mockResolvedValue();
 
     render(<Upload />);
@@ -58,14 +58,17 @@ describe("Upload page", () => {
     expect(fillButton).toHaveTextContent("Fill Missing Countries");
 
     await userEvent.click(fillButton);
-    expect(fillButton).toBeDisabled();
-    expect(fillButton).toHaveTextContent("Filling...");
-    expect(fillCountries).toHaveBeenCalledTimes(1);
-
+    await waitFor(() => {
+      expect(fillButton).toBeDisabled();
+      expect(fillButton).toHaveTextContent("Filling...");
+      expect(fillCountries).toHaveBeenCalledTimes(1);
+    });
     await userEvent.click(stopButton);
-    expect(fillButton).toBeEnabled();
-    expect(fillButton).toHaveTextContent("Fill Missing Countries");
-    expect(stopFillCountries).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(fillButton).toBeEnabled();
+      expect(fillButton).toHaveTextContent("Fill Missing Countries");
+      expect(stopFillCountries).toHaveBeenCalledTimes(1);
+    });
   });
 
   test("delete file works", async () => {
@@ -192,5 +195,19 @@ describe("Upload page", () => {
     expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
 
     fillCountries.mockRejectedValue(new Error("cancelled"));
+  });
+
+  test("loading indicator disappears after fetch", async () => {
+    const fillPromise = new Promise((resolve) => setTimeout(() => resolve(), 100));
+    fillCountries.mockReturnValue(fillPromise);
+
+    render(<Upload />);
+
+    const button = screen.getByTestId("fill-countries-button");
+    await userEvent.click(button);
+    expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
+
+    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-indicator"), { timeout: 2000 });
+    expect(screen.queryByTestId("loading-indicator")).not.toBeInTheDocument();
   });
 });

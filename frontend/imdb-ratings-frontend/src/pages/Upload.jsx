@@ -58,6 +58,8 @@ export default function Upload() {
     } catch (err) {
       setSnack({ open: true, message: 'Failed to fill missing countries - ' + err.message, color: '#e84118' });
       setFilling(false);
+    } finally {
+      setFilling(false);
     }
   };
 
