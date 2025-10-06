@@ -155,4 +155,16 @@ describe("Upload page", () => {
 
     await expectSnackbar({ textPattern: /Failed to delete entry/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
   });
+
+  test("shows error snackbar if fillCountries fails", async () => {
+    const mockDates = ["01.01.2010"];
+    fetchDates.mockImplementationOnce((setDates) => setDates(mockDates));
+    fillCountries.mockRejectedValue(new Error("Fill countries failed"));
+
+    render(<Upload />);
+
+    const fillButton = screen.getByTestId("fill-countries-button");
+    await userEvent.click(fillButton);
+    await expectSnackbar({ textPattern: /Failed to fill missing countries - Fill countries failed/i, color: /(rgb\(231, 76, 60\)|#e74c3c)/ });
+  });
 });

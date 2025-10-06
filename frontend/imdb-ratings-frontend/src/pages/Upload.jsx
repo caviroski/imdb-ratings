@@ -44,26 +44,26 @@ export default function Upload() {
     try {
       const msg = await deleteFileByName(fileName);
       setSnack({ open: true, message: msg, color: '#44bd32', duration: 15000 });
-      fetchDates(setSortedDates);
+      await fetchDates(setSortedDates);
     } catch (err) {
       setSnack({ open: true, message: 'Failed to delete entry.', color: '#e84118' });
     }
   }
 
-  const handleFillCountries = () => {
+  const handleFillCountries = async () => {
     setFilling(true);
     try {
-      fillCountries();
+      await fillCountries();
     } catch (err) {
       setSnack({ open: true, message: 'Failed to fill missing countries - ' + err.message, color: '#e84118' });
       setFilling(false);
     }
   };
 
-  const handleStopFillCountries = () => {
+  const handleStopFillCountries = async () => {
     setFilling(false);
     try {
-      stopFillCountries();
+      await stopFillCountries();
     } catch (err) {
       setSnack({ open: true, message: 'Failed to stop filling countries - ' + err.message, color: '#e84118' });
     }
