@@ -132,4 +132,123 @@ describe('WorldMap', () => {
       ])
     );
   });
+
+  test('renders map with no data', async () => {
+    fetchCountryCounts.mockResolvedValue([]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+    const dataProp = JSON.parse(map.textContent);
+    expect(dataProp).toEqual([]);
+  });
+
+  test('renders map with some data', async () => {
+    fetchCountryCounts.mockResolvedValue([
+      { country: 'United States', count: 10 },
+      { country: 'India', count: 5 }
+    ]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+    const dataProp = JSON.parse(map.textContent);
+    expect(dataProp).toEqual(
+      expect.arrayContaining([
+        { id: 'USA', value: 10 },
+        { id: 'IND', value: 5 }
+      ])
+    );
+  });
+
+  test('renders map with all countries data', async () => {
+    const allCountriesData = Object.keys(countryMapping).map((country, index) => ({
+      country,
+      count: index + 1
+    }));
+    fetchCountryCounts.mockResolvedValue(allCountriesData);
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+    const dataProp = JSON.parse(map.textContent);
+    expect(dataProp.length).toBe(allCountriesData.length);
+    allCountriesData.forEach(({ country, count }) => {
+      const countryCode = countryMapping[country];
+      expect(dataProp).toEqual(
+        expect.arrayContaining([
+          { id: countryCode, value: count }
+        ])
+      );
+    });
+  });
+
+  test('renders map with historical countries data', async () => {
+    fetchCountryCounts.mockResolvedValue([
+      { country: 'West Germany', count: 10 },
+      { country: 'Soviet Union', count: 5 },
+      { country: 'Yugoslavia', count: 7 }
+    ]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+    const dataProp = JSON.parse(map.textContent);
+    expect(dataProp).toEqual(
+      expect.arrayContaining([
+        { id: 'DEU', value: 10 },
+        { id: 'RUS', value: 5 },
+        { id: 'SRB', value: 7 }
+      ])
+    );
+  });
+
+  test('renders map with mixed known and unknown countries data', async () => {
+    fetchCountryCounts.mockResolvedValue([
+      { country: 'United States', count: 10 },
+      { country: 'UnknownCountry1', count: 5 },
+      { country: 'India', count: 7 },
+      { country: 'UnknownCountry2', count: 3 }
+    ]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+    const dataProp = JSON.parse(map.textContent);
+    expect(dataProp).toEqual(
+      expect.arrayContaining([
+        { id: 'USA', value: 10 },
+        { id: 'IND', value: 7 },
+        { id: 'UnknownCountry1', value: 5 },
+        { id: 'UnknownCountry2', value: 3 }
+      ])
+    );
+  });
 });
