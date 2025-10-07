@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within, fireEvent, waitForElementToBeRemoved } from '@testing-library/react';
+import { render, screen, waitFor, waitForElementToBeRemoved } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import Upload from '../../pages/Upload';

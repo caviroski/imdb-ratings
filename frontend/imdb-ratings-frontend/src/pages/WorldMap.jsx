@@ -77,7 +77,7 @@ export default function WorldMap() {
   }, []);
 
   return (
-    <div style={{ height: '600px', width: '100%' }}>
+    <div style={{ height: '600px', width: '100%' }} data-testid="world-map">
       <ResponsiveChoropleth
         data={data}
         features={worldFeatures.features}

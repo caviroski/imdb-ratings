@@ -19,7 +19,7 @@ describe('WorldMap', () => {
     vi.clearAllMocks();
   });
 
-  it('renders', async () => {
+  test('renders', async () => {
     fetchCountryCounts.mockResolvedValue([]);
 
     render(<WorldMap />);
@@ -29,7 +29,7 @@ describe('WorldMap', () => {
     });
   });
 
-  it('maps country names correctly using countryMapping', async () => {
+  test('maps country names correctly using countryMapping', async () => {
     fetchCountryCounts.mockResolvedValue([
       { country: 'United States', count: 10 },
       { country: 'India', count: 5 },
@@ -47,7 +47,7 @@ describe('WorldMap', () => {
     expect(countryMapping['Germany']).toBe('DEU');
   });
 
-  it('renders map container with correct size', async () => {
+  test('renders map container with correct size', async () => {
     fetchCountryCounts.mockResolvedValue([]);
 
     const { container } = render(<WorldMap />);
@@ -60,7 +60,7 @@ describe('WorldMap', () => {
     expect(mapDiv).toHaveStyle({ height: '600px', width: '100%' });
     });
 
-  it('handles API errors gracefully', async () => {
+  test('handles API errors gracefully', async () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
     fetchCountryCounts.mockRejectedValue(new Error('API error'));
 
@@ -72,5 +72,17 @@ describe('WorldMap', () => {
     });
 
     consoleSpy.mockRestore();
+  });
+
+  test('handles empty data from API', async () => {
+    fetchCountryCounts.mockResolvedValue([]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
   });
 });
