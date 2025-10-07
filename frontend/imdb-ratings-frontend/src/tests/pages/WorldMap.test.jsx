@@ -13,6 +13,11 @@ vi.mock('../../data/world_countries.json', () => ({
     ]
   }
 }));
+vi.mock('@nivo/geo', () => ({
+  ResponsiveChoropleth: vi.fn(({ data }) => (
+    <div data-testid="choropleth-mock">{JSON.stringify(data)}</div>
+  ))
+}));
 
 describe('WorldMap', () => {
   beforeEach(() => {
@@ -84,5 +89,47 @@ describe('WorldMap', () => {
     });
 
     expect(screen.getByTestId('world-map')).toBeInTheDocument();
+  });
+
+  test('handles large data sets from API', async () => {
+    const largeData = Array.from({ length: 1000 }, (_, i) => ({ country: `Country${i}`, count: i }));
+    fetchCountryCounts.mockResolvedValue(largeData);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+    expect(screen.getByTestId('world-map')).toBeInTheDocument();
+  });
+
+  test('handles unknown countries in data', async () => {
+    fetchCountryCounts.mockResolvedValue([
+      { country: 'UnknownCountry', count: 10 },
+      { country: 'India', count: 5 }
+    ]);
+
+    render(<WorldMap />);
+
+    await waitFor(() => {
+      expect(fetchCountryCounts).toHaveBeenCalledTimes(1);
+    });
+
+    const map = screen.getByTestId('choropleth-mock');
+    expect(map).toBeInTheDocument();
+
+    const dataProp = JSON.parse(map.textContent);
+
+    expect(dataProp).toEqual(
+      expect.arrayContaining([
+        { id: 'IND', value: 5 }
+      ])
+    );
+
+    expect(dataProp).toEqual(
+      expect.arrayContaining([
+        { id: 'UnknownCountry', value: 10 }
+      ])
+    );
   });
 });
