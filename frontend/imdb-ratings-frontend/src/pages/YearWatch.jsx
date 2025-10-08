@@ -75,6 +75,7 @@ export default function YearWatch() {
           onChange={handleChange}
           label="Pick Date"
           options={options}
+          inputProps={{ 'data-testid': 'select-date' }}
         />
       </div>
 
