@@ -44,7 +44,7 @@ const UploadButton = ({ onUploadSuccess }) => {
         if (!res.ok) throw new Error('Upload failed');
         return res.text();
       }).then((data) => {
-        setSnack({ open: true, message: 'Upload successful!' + data, color: '#44bd32' });
+        setSnack({ open: true, message: 'Upload successful! ' + data, color: '#44bd32' });
         onUploadSuccess && onUploadSuccess();
       }).catch((err) => {
         setSnack({ open: true, message: 'Upload failed.', color: '#e74c3c' });
