@@ -3,6 +3,8 @@ name: Run Unit Tests
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'frontend/**'
   pull_request:
     branches: [ main ]
 
@@ -18,6 +20,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        with:
+          path: frontend/imdb-ratings-frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/imdb-ratings-frontend/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Install dependencies
         working-directory: ./frontend/imdb-ratings-frontend
