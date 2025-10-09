@@ -20,7 +20,9 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
+        working-directory: ./frontend/imdb-ratings-frontend
         run: npm ci
 
       - name: Run unit tests
+        working-directory: ./frontend/imdb-ratings-frontend
         run: npx vitest
