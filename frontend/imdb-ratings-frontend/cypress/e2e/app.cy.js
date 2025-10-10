@@ -38,4 +38,36 @@ describe("Home page", () => {
     cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/15.15.2025.csv', { force: true });
     cy.contains("Please upload file with valid date format dd.mm.yyyy.");
   });
+
+  it("shows success message on valid file upload", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/upload").as("fileUpload");
+    cy.visit("/");
+    cy.get("button").contains("Upload").click();
+    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/09.10.2025.csv', { force: true });
+    cy.wait("@fileUpload").its("response.statusCode").should("eq", 200);
+    cy.contains("Upload successful!");
+  });
+
+  it("shows error message on failed file upload", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/upload", {
+      statusCode: 500,
+      body: {},
+    }).as("fileUploadFail");
+    cy.visit("/");
+    cy.get("button").contains("Upload").click();
+    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/09.10.2025.csv', { force: true });
+    cy.wait("@fileUploadFail").its("response.statusCode").should("eq", 500);
+    cy.contains("Upload failed.");
+  });
+
+  it("click on fill missng countries button", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/fill-missing-countries", {
+      statusCode: 200,
+      body: {},
+    }).as("fillMissingCountries");
+    cy.visit("/");
+    cy.get("button").contains("Fill Missing Countries").click();
+    cy.wait("@fillMissingCountries").its("response.statusCode").should("eq", 200);
+    cy.contains("Missing countries filled successfully.");
+  });
 });

@@ -55,6 +55,7 @@ export default function Upload() {
     setFilling(true);
     try {
       await fillCountries();
+      setSnack({ open: true, message: 'Missing countries filled successfully.', color: '#44bd32' });
     } catch (err) {
       setSnack({ open: true, message: 'Failed to fill missing countries - ' + err.message, color: '#e84118' });
       setFilling(false);
