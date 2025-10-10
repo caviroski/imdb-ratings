@@ -9,7 +9,7 @@ export const fillCountries = async () => {
       const text = await response.text();
       console.log(text || "Countries filled successfully!");
     } else {
-      console.log("Error: " + response.status);
+      throw new Error(`Request failed with status code ${response.status}`);
     }
   } catch (error) {
     throw error;

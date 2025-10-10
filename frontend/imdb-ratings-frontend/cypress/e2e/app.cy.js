@@ -70,4 +70,15 @@ describe("Home page", () => {
     cy.wait("@fillMissingCountries").its("response.statusCode").should("eq", 200);
     cy.contains("Missing countries filled successfully.");
   });
+
+  it("shows error message on failed fill missing countries", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/fill-missing-countries", {
+      statusCode: 500,
+      body: {},
+    }).as("fillMissingCountriesFail");
+    cy.visit("/");
+    cy.get("button").contains("Fill Missing Countries").click();
+    cy.wait("@fillMissingCountriesFail").its("response.statusCode").should("eq", 500);
+    cy.contains("Failed to fill missing countries - Request failed with status code 500");
+  });
 });
