@@ -24,4 +24,18 @@ describe("Home page", () => {
       expect(files[0].name).to.equal('09.10.2025.csv');
     });
   });
+
+  it("shows error on invalid file upload extension", () => {
+    cy.visit("/");
+    cy.get("button").contains("Upload").click();
+    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/invalid-file.txt', { force: true });
+    cy.contains("Please upload a valid CSV file.");
+  });
+
+  it("shows error on invalid file upload data format", () => {
+    cy.visit("/");
+    cy.get("button").contains("Upload").click();
+    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/invalid-file.txt', { force: true });
+    cy.contains("Please upload a valid CSV file.");
+  });
 });
