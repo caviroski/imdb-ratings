@@ -32,10 +32,10 @@ describe("Home page", () => {
     cy.contains("Please upload a valid CSV file.");
   });
 
-  it("shows error on invalid file upload data format", () => {
+  it("shows error on invalid file upload date format", () => {
     cy.visit("/");
     cy.get("button").contains("Upload").click();
-    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/invalid-file.txt', { force: true });
-    cy.contains("Please upload a valid CSV file.");
+    cy.get('[data-testid="file-input"]').selectFile('cypress/fixtures/15.15.2025.csv', { force: true });
+    cy.contains("Please upload file with valid date format dd.mm.yyyy.");
   });
 });
