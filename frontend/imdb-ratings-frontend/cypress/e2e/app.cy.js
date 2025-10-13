@@ -88,4 +88,22 @@ describe("Home page", () => {
     cy.url().should("include", "/compare");
     cy.contains("It will compare the number of votes for the entries.");
   });
+
+  it("ul list should have 7 li elements", () => {
+    cy.visit("/");
+    cy.get("ul").find("li").should("have.length", 7);
+  });
+
+  it("click on delete date should work", () => {
+    cy.intercept("DELETE", "http://localhost:8080/api/imdb-ratings/delete-by-file/25.09.2025", {
+      statusCode: 200,
+      body: "Cleaned file data from 20 entries for file: 25.09.2025",
+      headers: { "Content-Type": "text/plain" }
+    }).as("deleteDate");
+    cy.visit("/");
+    cy.get('[data-testid="delete-button-25.09.2025"]').click();
+    cy.get("button").contains("Agree").click();
+    cy.wait("@deleteDate").its("response.statusCode").should("eq", 200);
+    cy.contains("Cleaned file data from");
+  });
 });
