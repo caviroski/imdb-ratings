@@ -162,4 +162,11 @@ describe("Home page", () => {
       cy.wrap(item).should("contain.text", expectedDates[index]);
     });
   });
+
+  it("every li element has a delete button", () => {
+    cy.visit("/");
+    cy.get("ul").find("li").each((item) => {
+      cy.wrap(item).find('[data-testid^="delete-button-"]').should('exist');
+    });
+  });
 });
