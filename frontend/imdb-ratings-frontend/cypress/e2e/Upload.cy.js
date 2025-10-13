@@ -1,4 +1,8 @@
 describe("Home page", () => {
+  afterEach(() => {
+    cy.request('POST', 'http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries');
+  });
+
   it("should load and show the heading", () => {
     cy.visit("/");
     cy.contains("a", "Upload File");
@@ -91,7 +95,11 @@ describe("Home page", () => {
 
   it("ul list should have 7 li elements", () => {
     cy.visit("/");
-    cy.get("ul").find("li").should("have.length", 7);
+    cy.get("ul")
+      .should('be.visible')
+      .find("li")
+      .should('be.visible')
+      .should("have.length", 7);
   });
 
   it("click on delete date should work", () => {
@@ -130,5 +138,28 @@ describe("Home page", () => {
     cy.get("button").contains("Stop filling countries").click();
     cy.wait("@stopFillCountries").its("response.statusCode").should("eq", 200);
     cy.contains("Stopped filling countries");
+  });
+
+  it("shows error message on failed stop filling countries", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries", {
+      statusCode: 500,
+      body: "Request failed with status code 500",
+      headers: { "Content-Type": "text/plain" }
+    }).as("stopFillCountriesFail");
+    cy.visit("/");
+    cy.get("button").contains("Fill Missing Countries").click();
+    cy.get("button").contains("Stop filling countries").click();
+    cy.wait("@stopFillCountriesFail").its("response.statusCode").should("eq", 500);
+    cy.contains("Request failed with status code 500");
+  });
+
+  it("dates of upload files are shown in descending order", () => {
+    cy.visit("/");
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
+    cy.wait("@getFileNames");
+    const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025"];
+    cy.get("ul").find("li").should("have.length", expectedDates.length).each((item, index) => {
+      cy.wrap(item).should("contain.text", expectedDates[index]);
+    });
   });
 });
