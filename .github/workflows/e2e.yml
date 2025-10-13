@@ -1,0 +1,75 @@
+name: E2E Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    services:
+      # Backend container (Node Spring Boot or your Java backend)
+      backend:
+        image: openjdk:20-jdk
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd="curl --fail http://localhost:8080/actuator/health || exit 1"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+        volumes:
+          - ./:/app
+        working-directory: /app
+        command: bash -c "cd backend && ./mvnw spring-boot:run"
+
+      # Optional: Mock database container
+      db:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: testdb
+        ports:
+          - 3306:3306
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        run: npm run build
+
+      - name: Wait for backend
+        run: npx wait-on http://localhost:8080
+        env:
+          WAIT_ON_TIMEOUT: 30000
+
+      - name: Run Cypress tests
+        working-directory: frontend
+        run: npx cypress run --config baseUrl=http://localhost:3000
+
+      - name: Upload Cypress screenshots
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-screenshots
+          path: frontend/cypress/screenshots
+
+      - name: Upload Cypress videos
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-videos
+          path: frontend/cypress/videos
