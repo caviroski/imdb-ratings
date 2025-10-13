@@ -81,4 +81,11 @@ describe("Home page", () => {
     cy.wait("@fillMissingCountriesFail").its("response.statusCode").should("eq", 500);
     cy.contains("Failed to fill missing countries - Request failed with status code 500");
   });
+
+  it("navigates to Compare Dates page", () => {
+    cy.visit("/");
+    cy.get("a").contains("Compare Dates").click();
+    cy.url().should("include", "/compare");
+    cy.contains("It will compare the number of votes for the entries.");
+  });
 });
