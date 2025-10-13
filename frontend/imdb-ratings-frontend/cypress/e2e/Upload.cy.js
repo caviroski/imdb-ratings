@@ -106,4 +106,29 @@ describe("Home page", () => {
     cy.wait("@deleteDate").its("response.statusCode").should("eq", 200);
     cy.contains("Cleaned file data from");
   });
+
+  it("shows error message on failed delete date", () => {
+    cy.intercept("DELETE", "http://localhost:8080/api/imdb-ratings/delete-by-file/25.09.2025", {
+      statusCode: 500,
+      body: {},
+    }).as("deleteDateFail");
+    cy.visit("/");
+    cy.get('[data-testid="delete-button-25.09.2025"]').click();
+    cy.get("button").contains("Agree").click();
+    cy.wait("@deleteDateFail").its("response.statusCode").should("eq", 500);
+    cy.contains("Failed to delete entry.");
+  });
+
+  it("click on stop filling countries button", () => {
+    cy.intercept("POST", "http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries", {
+      statusCode: 200,
+      body: "Stopped filling countries",
+      headers: { "Content-Type": "text/plain" }
+    }).as("stopFillCountries");
+    cy.visit("/");
+    cy.get("button").contains("Fill Missing Countries").click();
+    cy.get("button").contains("Stop filling countries").click();
+    cy.wait("@stopFillCountries").its("response.statusCode").should("eq", 200);
+    cy.contains("Stopped filling countries");
+  });
 });

@@ -67,7 +67,8 @@ export default function Upload() {
   const handleStopFillCountries = async () => {
     setFilling(false);
     try {
-      await stopFillCountries();
+      const msg = await stopFillCountries();
+      setSnack({ open: true, message: msg, color: '#44bd32' });
     } catch (err) {
       setSnack({ open: true, message: 'Failed to stop filling countries - ' + err.message, color: '#e84118' });
     }

@@ -19,7 +19,7 @@ export const fillCountries = async () => {
 export const stopFillCountries = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/stop-filling-missing-countries`, { method: "POST" });
-    console.log(await response.text());
+    return await response.text();
   } catch (error) {
     throw error;
   }
