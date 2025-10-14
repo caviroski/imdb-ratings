@@ -53,7 +53,7 @@ jobs:
 
       - name: Load test database
         run: |
-          mysql --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
+          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
 
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
