@@ -52,15 +52,15 @@ jobs:
           WAIT_ON_TIMEOUT: 60000
 
       - name: Install frontend dependencies
-        working-directory: frontend
+        working-directory: ./frontend/imdb-ratings-frontend
         run: npm ci
 
       - name: Build frontend
-        working-directory: frontend
+        working-directory: ./frontend/imdb-ratings-frontend
         run: npm run build
 
       - name: Run Cypress tests
-        working-directory: frontend
+        working-directory: ./frontend/imdb-ratings-frontend
         run: npx cypress run --config baseUrl=http://localhost:3000
 
       - name: Upload Cypress screenshots
