@@ -59,6 +59,13 @@ jobs:
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm run build
 
+      - name: Start frontend
+        working-directory: ./frontend/imdb-ratings-frontend
+        run: npm run dev &
+
+      - name: Wait for frontend
+        run: npx wait-on http://localhost:3000
+
       - name: Run Cypress tests
         working-directory: ./frontend/imdb-ratings-frontend
         run: npx cypress run --config baseUrl=http://localhost:3000
