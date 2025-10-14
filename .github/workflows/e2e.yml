@@ -20,10 +20,13 @@ jobs:
           --health-interval=5s
           --health-timeout=5s
           --health-retries=10
-        volumes:
-          - ./:/app
-        working-directory: /app
-        command: bash -c "cd backend && ./mvnw spring-boot:run"
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          MYSQL_HOST: db
+          MYSQL_PORT: 3306
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_DATABASE: testdb
 
       # Optional: Mock database container
       db:
