@@ -59,6 +59,9 @@ jobs:
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm run build
 
+      - name: Load full test database
+        run: mysql -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
+
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm run dev &
