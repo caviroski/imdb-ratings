@@ -10,23 +10,6 @@ jobs:
   e2e:
     runs-on: ubuntu-latest
     services:
-      backend:
-        image: openjdk:20-jdk
-        ports:
-          - 8080:8080
-        options: >-
-          --health-cmd="curl --fail http://localhost:8080/actuator/health || exit 1"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=10
-        env:
-          SPRING_PROFILES_ACTIVE: test
-          MYSQL_HOST: db
-          MYSQL_PORT: 3306
-          MYSQL_USER: root
-          MYSQL_PASSWORD: root
-          MYSQL_DATABASE: testdb
-
       db:
         image: mysql:8
         env:
@@ -39,10 +22,36 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 20
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+
+      - name: Build backend
+        working-directory: backend
+        run: ./mvnw clean package -DskipTests
+
+      - name: Run backend
+        working-directory: backend
+        run: java -jar target/*.jar &
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          MYSQL_HOST: localhost
+          MYSQL_PORT: 3306
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
+          MYSQL_DATABASE: testdb
+
+      - name: Wait for backend
+        run: npx wait-on http://localhost:8080/actuator/health
+        env:
+          WAIT_ON_TIMEOUT: 60000
 
       - name: Install frontend dependencies
         working-directory: frontend
@@ -51,11 +60,6 @@ jobs:
       - name: Build frontend
         working-directory: frontend
         run: npm run build
-
-      - name: Wait for backend
-        run: npx wait-on http://localhost:8080
-        env:
-          WAIT_ON_TIMEOUT: 30000
 
       - name: Run Cypress tests
         working-directory: frontend
