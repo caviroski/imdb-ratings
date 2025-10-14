@@ -51,6 +51,10 @@ jobs:
         env:
           WAIT_ON_TIMEOUT: 60000
 
+      - name: Load test database
+        run: |
+          mysql --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
+
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm ci
@@ -58,9 +62,6 @@ jobs:
       - name: Build frontend
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm run build
-
-      - name: Load full test database
-        run: mysql -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
