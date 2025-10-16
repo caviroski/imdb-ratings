@@ -52,6 +52,7 @@ jobs:
           [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
 
       - name: Load test database
+        shell: cmd
         run: |
           mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
           mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
