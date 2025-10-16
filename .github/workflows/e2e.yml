@@ -51,10 +51,25 @@ jobs:
           $mysqlBin = "C:\mysql\bin"
           [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
 
+      - name: Check MySQL status
+        run: |
+          Get-Service MySQL80 | Format-List Name, Status, StartType
+          netstat -ano | findstr "3306"
+          & "C:\mysql\bin\mysqladmin" -h 127.0.0.1 -u root -proot ping
+
+      - name: Create test database
+        shell: cmd
+        run: |
+          echo CREATE DATABASE IF NOT EXISTS testdb; | mysql -h 127.0.0.1 -u root -proot
+
+      - name: Verify database creation
+        shell: cmd
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "SHOW DATABASES;"
+
       - name: Load test database
         shell: cmd
         run: |
-          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
           mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
 
       - name: Test MySQL connection
