@@ -168,6 +168,7 @@ jobs:
         working-directory: ./frontend/imdb-ratings-frontend
         run: npx cypress run --config baseUrl=http://localhost:3000
         env:
+          CYPRESS_DEBUG: true
           DEBUG: cypress:server,cypress:launcher,cypress:cli
 
       - name: Upload Cypress screenshots
