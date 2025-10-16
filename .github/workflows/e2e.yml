@@ -51,45 +51,6 @@ jobs:
           $mysqlBin = "C:\mysql\bin"
           [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
 
-      - name: Start MySQL service
-        run: |
-          $serviceName = (Get-Service -Name MySQL* | Select-Object -First 1).Name
-          if (-not $serviceName) {
-              Write-Error "MySQL service not found"
-              exit 1
-          }
-          Write-Host "Found MySQL service: $serviceName"
-          
-          try { 
-              net start $serviceName
-              Write-Host "MySQL service started successfully"
-          } catch { 
-              Write-Host "Error starting MySQL service: $_"
-              Get-Service $serviceName | Format-List *
-          }
-
-      - name: Wait for MySQL
-        run: |
-          echo "Waiting for MySQL..."
-          $maxAttempts = 30
-          $attempts = 0
-          do {
-            try {
-              $attempts++
-              mysqladmin ping -h 127.0.0.1 -u root -proot
-              Write-Host "MySQL is up!"
-              break
-            } catch {
-              Write-Host "Attempt $attempts of $maxAttempts: MySQL not ready yet..."
-              Start-Sleep -Seconds 2
-            }
-          } while ($attempts -lt $maxAttempts)
-          
-          if ($attempts -eq $maxAttempts) {
-            Write-Error "MySQL failed to start after $maxAttempts attempts"
-            exit 1
-          }
-
       - name: Load test database
         run: |
           mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
