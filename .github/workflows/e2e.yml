@@ -158,7 +158,7 @@ jobs:
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
-        run: Start-Process npm -ArgumentList 'run dev' -PassThru
+        run: npm run dev
 
       - name: Wait for frontend
         working-directory: ./frontend/imdb-ratings-frontend
