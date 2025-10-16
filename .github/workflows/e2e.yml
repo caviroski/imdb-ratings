@@ -17,7 +17,15 @@ jobs:
       - name: Install MySQL
         run: |
           choco install mysql --params "/port:3306 /password:root /allowremotetransactions:true" -y
-          net start mysql
+
+      - name: Start MySQL service
+        run: |
+          try {
+            net start mysql
+          } catch {
+            Write-Host "MySQL service already running, continuing..."
+          }
+          exit 0
 
       - name: Wait for MySQL
         run: |
