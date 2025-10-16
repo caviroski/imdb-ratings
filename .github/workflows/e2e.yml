@@ -56,7 +56,8 @@ jobs:
 
       - name: Start backend
         working-directory: backend
-        run: Start-Job { java -jar target/*.jar }
+        run: |
+          Start-Process -FilePath "java" -ArgumentList "-jar", "target\*.jar" -NoNewWindow
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: root
