@@ -14,9 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install MySQL 8.0.43
+      - name: Install MySQL 8.0
         run: |
-          choco install mysql --version=8.0.43 --params "/port:3306 /password:root /allowremotetransactions:true" -y
+          choco install mysql --version=8.0 --params "/port:3306 /password:root /allowremotetransactions:true" -y
 
       - name: Start MySQL service
         run: |
