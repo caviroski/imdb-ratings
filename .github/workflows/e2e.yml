@@ -1,4 +1,4 @@
-name: E2E Tests (Windows)
+name: E2E Tests (Windows, no containers)
 
 on:
   push:
@@ -10,23 +10,26 @@ jobs:
   e2e:
     runs-on: windows-latest
 
-    services:
-      db:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost -proot"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install MySQL
+        run: |
+          choco install mysql --params "/port:3306 /password:root /allowremotetransactions:true" -y
+          net start mysql
+
+      - name: Wait for MySQL
+        run: |
+          echo "Waiting for MySQL..."
+          for ($i = 0; $i -lt 30; $i++) {
+            try {
+              mysqladmin ping -h 127.0.0.1 -proot | Out-Null
+              break
+            } catch {
+              Start-Sleep -Seconds 2
+            }
+          }
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -59,6 +62,7 @@ jobs:
 
       - name: Load test database
         run: |
+          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
           mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
 
       - name: Install frontend dependencies
