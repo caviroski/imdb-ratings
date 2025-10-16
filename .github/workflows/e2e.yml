@@ -54,15 +54,28 @@ jobs:
         working-directory: backend
         run: .\mvnw.cmd clean package -DskipTests
 
+      - name: Verify JAR file
+        working-directory: backend
+        run: dir target
+
       - name: Start backend
         working-directory: backend
         run: |
-          Start-Process -FilePath "java" -ArgumentList "-jar", "target\*.jar" -NoNewWindow
+          $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
+          if (-not $jar) {
+            Write-Host "No JAR found in target directory"
+            exit 1
+          }
+          Write-Host "Starting backend with $($jar.Name)"
+          Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
           SPRING_PROFILES_ACTIVE: test
+
+      - name: Wait before backend health check
+        run: Start-Sleep -Seconds 20
 
       - name: Wait for backend
         run: npx wait-on http://localhost:8080/actuator/health
