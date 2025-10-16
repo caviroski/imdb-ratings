@@ -14,9 +14,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install MySQL 8.0
+      - name: Download MySQL 8.0.43
         run: |
-          choco install mysql --version=8.0 -y
+          Invoke-WebRequest `
+            -Uri "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.43-winx64.msi" `
+            -OutFile "$env:TEMP\mysql-8.0.43.msi"
+
+      - name: Install MySQL
+        run: |
+          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root" -Wait
+
+      - name: Add MySQL to PATH
+        run: |
+          $mysqlBin = "C:\mysql\bin"
+          [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
 
       - name: Start MySQL service
         run: |
@@ -29,10 +40,10 @@ jobs:
           for ($i = 0; $i -lt 30; $i++) {
             try {
               mysqladmin ping -h 127.0.0.1 -proot | Out-Null
-              Write-Host "✅ MySQL is up!"
+              Write-Host "MySQL is up!"
               break
             } catch {
-              Write-Host "⏳ Still waiting for MySQL..."
+              Write-Host "Still waiting for MySQL..."
               Start-Sleep -Seconds 2
             }
           }
