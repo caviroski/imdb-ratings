@@ -10,43 +10,28 @@ jobs:
   e2e:
     runs-on: windows-latest
 
-    services:
-      db:
-        image: mysql:8.0.43
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testdb
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost -proot"
-          --health-interval=5s
-          --health-timeout=5s
-          --health-retries=5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # - name: Download MySQL 8.0.43
-      #   run: |
-      #     Invoke-WebRequest `
-      #       -Uri "https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.43-winx64.msi" `
-      #       -OutFile "$env:TEMP\mysql-8.0.43.msi"
+      - name: Download MySQL 8.0.43
+        run: |
+          curl -L "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-8.0.43-winx64.msi" -o "$env:TEMP\mysql-8.0.43.msi"
 
-      # - name: Install MySQL
-      #   run: |
-      #     Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root" -Wait
 
-      # - name: Add MySQL to PATH
-      #   run: |
-      #     $mysqlBin = "C:\mysql\bin"
-      #     [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
+      - name: Install MySQL
+        run: |
+          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root" -Wait
 
-      # - name: Start MySQL service
-      #   run: |
-      #     try { net start mysql } catch { Write-Host "MySQL already running" }
-      #     exit 0
+      - name: Add MySQL to PATH
+        run: |
+          $mysqlBin = "C:\mysql\bin"
+          [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
+
+      - name: Start MySQL service
+        run: |
+          try { net start mysql } catch { Write-Host "MySQL already running" }
+          exit 0
 
       - name: Wait for MySQL
         run: |
