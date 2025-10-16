@@ -1,4 +1,4 @@
-name: E2E Tests
+name: E2E Tests (Windows)
 
 on:
   push:
@@ -8,7 +8,8 @@ on:
 
 jobs:
   e2e:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
+
     services:
       db:
         image: mysql:8
@@ -17,6 +18,11 @@ jobs:
           MYSQL_DATABASE: testdb
         ports:
           - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
     steps:
       - name: Checkout code
@@ -35,11 +41,11 @@ jobs:
 
       - name: Build backend
         working-directory: backend
-        run: ./mvnw clean package -DskipTests
+        run: .\mvnw.cmd clean package -DskipTests
 
-      - name: Run backend
+      - name: Start backend
         working-directory: backend
-        run: java -jar target/*.jar &
+        run: Start-Job { java -jar target/*.jar }
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: root
@@ -53,7 +59,7 @@ jobs:
 
       - name: Load test database
         run: |
-          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend/src/test/resources/full-database.sql
+          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
 
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
@@ -65,7 +71,7 @@ jobs:
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
-        run: npm run dev &
+        run: Start-Job { npm run dev }
 
       - name: Wait for frontend
         run: npx wait-on http://localhost:3000
@@ -79,11 +85,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
-          path: frontend/cypress/screenshots
+          path: frontend\cypress\screenshots
 
       - name: Upload Cypress videos
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
-          path: frontend/cypress/videos
+          path: frontend\cypress\videos
