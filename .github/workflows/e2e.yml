@@ -95,9 +95,9 @@ jobs:
           java-version: 20
 
       - name: Setup Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
 
       - name: Build backend
         working-directory: backend
@@ -158,9 +158,7 @@ jobs:
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
-        shell: pwsh
-        run: |
-          $job = Start-Job { npm run dev }
+        run: Start-Process npm -ArgumentList 'run dev' -PassThru
 
       - name: Wait for frontend
         working-directory: ./frontend/imdb-ratings-frontend
