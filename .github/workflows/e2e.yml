@@ -158,7 +158,9 @@ jobs:
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
-        run: npm run dev
+        shell: pwsh
+        run: |
+          $job = Start-Job { npm run dev }
 
       - name: Wait for frontend
         working-directory: ./frontend/imdb-ratings-frontend
