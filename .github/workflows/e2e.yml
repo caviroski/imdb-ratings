@@ -167,6 +167,8 @@ jobs:
       - name: Run Cypress tests
         working-directory: ./frontend/imdb-ratings-frontend
         run: npx cypress run --config baseUrl=http://localhost:3000
+        env:
+          DEBUG: cypress:server,cypress:launcher,cypress:cli
 
       - name: Upload Cypress screenshots
         if: failure()
