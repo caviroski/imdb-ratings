@@ -21,8 +21,21 @@ jobs:
 
       - name: Install MySQL
         run: |
-          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root SERVICENAME=MySQL80 ADDLOCAL=MySQLServer,Client,ServerInstance" -Wait
-          Start-Sleep -Seconds 10
+          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root ADDLOCAL=All" -Wait -NoNewWindow
+          Start-Sleep -Seconds 15
+          
+          # Verify installation
+          if (!(Test-Path "C:\mysql\bin\mysqld.exe")) {
+              Write-Error "MySQL server executable not found"
+              exit 1
+          }
+          
+          # Install and configure the service manually if needed
+          if (!(Get-Service MySQL* -ErrorAction SilentlyContinue)) {
+              Write-Host "Installing MySQL service..."
+              & "C:\mysql\bin\mysqld.exe" --install
+              Start-Sleep -Seconds 5
+          }
 
       - name: Add MySQL to PATH
         run: |
