@@ -158,7 +158,11 @@ jobs:
 
       - name: Start frontend
         working-directory: ./frontend/imdb-ratings-frontend
-        run: Start-Job { npm run dev }
+        run: Start-Process npm -ArgumentList 'run dev' -PassThru
+
+      - name: Wait for frontend
+        working-directory: ./frontend/imdb-ratings-frontend
+        run: npx wait-on http://localhost:3000
 
       - name: Run Cypress tests
         working-directory: ./frontend/imdb-ratings-frontend
