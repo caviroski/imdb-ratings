@@ -132,13 +132,13 @@ jobs:
                 break
               }
             } catch {
-              Write-Host "Attempt $attempts of $maxAttempts: Backend not ready yet..."
+              Write-Host "Attempt $attempts of ${maxAttempts}: Backend not ready yet..."
               Start-Sleep -Seconds 5
             }
           } while ($attempts -lt $maxAttempts)
           
           if ($attempts -eq $maxAttempts) {
-            Write-Error "Backend failed to start after $maxAttempts attempts"
+            Write-Error "Backend failed to start after ${maxAttempts} attempts"
             $process | Stop-Process -Force
             exit 1
           }
