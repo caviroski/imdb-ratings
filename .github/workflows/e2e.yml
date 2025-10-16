@@ -21,7 +21,8 @@ jobs:
 
       - name: Install MySQL
         run: |
-          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root" -Wait
+          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root SERVICENAME=MySQL80 ADDLOCAL=MySQLServer,Client,ServerInstance" -Wait
+          Start-Sleep -Seconds 10
 
       - name: Add MySQL to PATH
         run: |
@@ -30,14 +31,20 @@ jobs:
 
       - name: Start MySQL service
         run: |
-          try { 
-            net start MySQL80
-            Write-Host "MySQL service started successfully"
-          } catch { 
-            Write-Host "Error starting MySQL service: $_"
-            Get-Service MySQL80 | Format-List *
+          $serviceName = (Get-Service -Name MySQL* | Select-Object -First 1).Name
+          if (-not $serviceName) {
+              Write-Error "MySQL service not found"
+              exit 1
           }
-          exit 0
+          Write-Host "Found MySQL service: $serviceName"
+          
+          try { 
+              net start $serviceName
+              Write-Host "MySQL service started successfully"
+          } catch { 
+              Write-Host "Error starting MySQL service: $_"
+              Get-Service $serviceName | Format-List *
+          }
 
       - name: Wait for MySQL
         run: |
