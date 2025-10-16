@@ -16,26 +16,35 @@ jobs:
 
       - name: Download MySQL 8.0.43
         run: |
-          curl -L "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-8.0.43-winx64.msi" -o "$env:TEMP\mysql-8.0.43.msi"
+          curl -L "https://cdn.mysql.com/Downloads/MySQL-8.0/mysql-8.0.43-winx64.zip" -o "$env:TEMP\mysql.zip"
+          Expand-Archive -Path "$env:TEMP\mysql.zip" -DestinationPath "C:\" -Force
+          Rename-Item -Path "C:\mysql-8.0.43-winx64" -NewName "C:\mysql" -Force
 
-
-      - name: Install MySQL
+      - name: Configure MySQL
         run: |
-          Start-Process msiexec.exe -ArgumentList "/i $env:TEMP\mysql-8.0.43.msi /qn INSTALLDIR=C:\mysql MYSQLROOTPASSWORD=root ADDLOCAL=All" -Wait -NoNewWindow
-          Start-Sleep -Seconds 15
+          # Create MySQL configuration file
+          @"
+          [mysqld]
+          basedir=C:/mysql
+          datadir=C:/mysql/data
+          port=3306
+          "@ | Out-File -Encoding UTF8 "C:\mysql\my.ini"
+
+          # Initialize MySQL data directory
+          New-Item -ItemType Directory -Path "C:\mysql\data" -Force
+          & "C:\mysql\bin\mysqld.exe" --initialize-insecure --console
+
+          # Install MySQL service
+          & "C:\mysql\bin\mysqld.exe" --install "MySQL80"
+          Start-Sleep -Seconds 5
+
+      - name: Start MySQL service
+        run: |
+          net start MySQL80
+          Start-Sleep -Seconds 5
           
-          # Verify installation
-          if (!(Test-Path "C:\mysql\bin\mysqld.exe")) {
-              Write-Error "MySQL server executable not found"
-              exit 1
-          }
-          
-          # Install and configure the service manually if needed
-          if (!(Get-Service MySQL* -ErrorAction SilentlyContinue)) {
-              Write-Host "Installing MySQL service..."
-              & "C:\mysql\bin\mysqld.exe" --install
-              Start-Sleep -Seconds 5
-          }
+          # Set root password
+          & "C:\mysql\bin\mysqladmin.exe" -u root password "root"
 
       - name: Add MySQL to PATH
         run: |
