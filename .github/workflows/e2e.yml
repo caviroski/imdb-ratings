@@ -20,11 +20,7 @@ jobs:
 
       - name: Start MySQL service
         run: |
-          try {
-            net start mysql
-          } catch {
-            Write-Host "MySQL service already running, continuing..."
-          }
+          try { net start mysql } catch { Write-Host "MySQL already running" }
           exit 0
 
       - name: Wait for MySQL
@@ -33,11 +29,22 @@ jobs:
           for ($i = 0; $i -lt 30; $i++) {
             try {
               mysqladmin ping -h 127.0.0.1 -proot | Out-Null
+              Write-Host "✅ MySQL is up!"
               break
             } catch {
+              Write-Host "⏳ Still waiting for MySQL..."
               Start-Sleep -Seconds 2
             }
           }
+
+      - name: Load test database
+        run: |
+          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
+          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
+
+      - name: Test MySQL connection
+        run: |
+          mysql -h 127.0.0.1 -u root -proot -e "SHOW DATABASES;"
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -81,11 +88,6 @@ jobs:
         run: npx wait-on http://localhost:8080/actuator/health
         env:
           WAIT_ON_TIMEOUT: 60000
-
-      - name: Load test database
-        run: |
-          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot -e "CREATE DATABASE IF NOT EXISTS testdb;"
-          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
 
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
