@@ -67,10 +67,22 @@ jobs:
         run: |
           mysql -h 127.0.0.1 -u root -proot -e "SHOW DATABASES;"
 
+      - name: Check SQL file
+        run: |
+          Write-Host "Checking SQL file content..."
+          Get-Content backend\src\test\resources\full-database.sql -Raw | Select-Object -First 10
+          Write-Host "File encoding:"
+          [System.IO.File]::ReadAllText("backend\src\test\resources\full-database.sql").Encoding
+
       - name: Load test database
         shell: cmd
         run: |
-          mysql --verbose --binary-mode=1 -h 127.0.0.1 -u root -proot testdb < backend\src\test\resources\full-database.sql
+          type backend\src\test\resources\full-database.sql | mysql -h 127.0.0.1 -u root -proot testdb
+
+      - name: Verify database load
+        shell: cmd
+        run: |
+          mysql -h 127.0.0.1 -u root -proot testdb -e "SHOW TABLES;"
 
       - name: Test MySQL connection
         run: |
