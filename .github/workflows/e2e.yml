@@ -107,29 +107,46 @@ jobs:
         working-directory: backend
         run: dir target
 
-      - name: Start backend
+      - name: Start backend and wait for health
         working-directory: backend
         run: |
           $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
           if (-not $jar) {
-            Write-Host "No JAR found in target directory"
+            Write-Error "No JAR found in target directory"
             exit 1
           }
+          
           Write-Host "Starting backend with $($jar.Name)"
-          Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -NoNewWindow
+          $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow
+          
+          Write-Host "Waiting for backend to start..."
+          $attempts = 0
+          $maxAttempts = 30
+          
+          do {
+            $attempts++
+            try {
+              $response = Invoke-WebRequest -Uri "http://localhost:8080/actuator/health" -UseBasicParsing
+              if ($response.StatusCode -eq 200) {
+                Write-Host "Backend is healthy!"
+                break
+              }
+            } catch {
+              Write-Host "Attempt $attempts of $maxAttempts: Backend not ready yet..."
+              Start-Sleep -Seconds 5
+            }
+          } while ($attempts -lt $maxAttempts)
+          
+          if ($attempts -eq $maxAttempts) {
+            Write-Error "Backend failed to start after $maxAttempts attempts"
+            $process | Stop-Process -Force
+            exit 1
+          }
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
           SPRING_PROFILES_ACTIVE: test
-
-      - name: Wait before backend health check
-        run: Start-Sleep -Seconds 20
-
-      - name: Wait for backend
-        run: npx wait-on http://localhost:8080/actuator/health
-        env:
-          WAIT_ON_TIMEOUT: 60000
 
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
