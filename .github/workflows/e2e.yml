@@ -107,50 +107,48 @@ jobs:
         working-directory: backend
         run: dir target
 
-      - name: Start backend and wait for health
+      - name: Start backend and wait for port + health
         working-directory: backend
+        shell: pwsh
         run: |
           $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
-          if (-not $jar) {
-            Write-Error "No JAR found in target directory"
-            exit 1
-          }
+          if (-not $jar) { Write-Error "No JAR found"; exit 1 }
+          Write-Host "Starting backend: $($jar.Name)"
           
-          Write-Host "Starting backend with $($jar.Name)"
-          $process = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow
+          $backendProcess = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log"
           
-          Write-Host "Waiting for backend to start..."
-          $attempts = 0
+          # Wait until port 8080 is listening
           $maxAttempts = 30
-          
+          $attempt = 0
+          $portOpen = $false
           do {
-            $attempts++
-            try {
-              $response = Invoke-WebRequest -Uri "http://localhost:8080/actuator/health" -UseBasicParsing
-              if ($response.StatusCode -eq 200) {
-                Write-Host "Backend is healthy!"
-                break
-              }
-            } catch {
-              Write-Host "Attempt $attempts of ${maxAttempts}: Backend not ready yet..."
-              Start-Sleep -Seconds 5
-            }
-          } while ($attempts -lt $maxAttempts)
-          
-          if ($attempts -eq $maxAttempts) {
-            Write-Error "Backend failed to start after ${maxAttempts} attempts"
-            $process | Stop-Process -Force
-            exit 1
-          }
+              $attempt++
+              $tcp = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080
+              if ($tcp.TcpTestSucceeded) { $portOpen = $true; break }
+              Start-Sleep -Seconds 2
+          } while ($attempt -lt $maxAttempts)
+          if (-not $portOpen) { Write-Error "Port 8080 never opened"; exit 1 }
+
+          Write-Host "Port 8080 is open, checking /actuator/health..."
+          $attempt = 0
+          $healthy = $false
+          do {
+              $attempt++
+              try {
+                  $resp = Invoke-WebRequest -Uri "http://localhost:8080/actuator/health" -UseBasicParsing -TimeoutSec 5
+                  if ($resp.StatusCode -eq 200) { $healthy = $true; break }
+              } catch {}
+              Start-Sleep -Seconds 2
+          } while ($attempt -lt $maxAttempts)
+          if (-not $healthy) { Write-Error "/actuator/health never returned 200"; exit 1 }
+
+          Write-Host "Backend is healthy and ready!"
+
         env:
           SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3306/testdb
           SPRING_DATASOURCE_USERNAME: root
           SPRING_DATASOURCE_PASSWORD: root
           SPRING_PROFILES_ACTIVE: test
-
-      - name: Set PowerShell execution policy
-        shell: pwsh
-        run: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
