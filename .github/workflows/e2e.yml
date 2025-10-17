@@ -148,6 +148,10 @@ jobs:
           SPRING_DATASOURCE_PASSWORD: root
           SPRING_PROFILES_ACTIVE: test
 
+      - name: Set PowerShell execution policy
+        shell: pwsh
+        run: Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+
       - name: Install frontend dependencies
         working-directory: ./frontend/imdb-ratings-frontend
         run: npm ci
