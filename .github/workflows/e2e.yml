@@ -168,6 +168,19 @@ jobs:
         working-directory: ./frontend/imdb-ratings-frontend
         run: npx wait-on http://localhost:3000
 
+      - name: Check backend port 8080
+        shell: pwsh
+        run: |
+          Write-Host "Checking if backend process is listening on port 8080..."
+          $tcp = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080
+          Write-Host "TcpTestSucceeded: $($tcp.TcpTestSucceeded)"
+          Write-Host "RemoteAddress: $($tcp.RemoteAddress)"
+          Write-Host "RemotePort: $($tcp.RemotePort)"
+          if (-not $tcp.TcpTestSucceeded) {
+            Write-Error "Backend is not listening on port 8080"
+            exit 1
+          }
+
       - name: Run Cypress tests
         working-directory: ./frontend/imdb-ratings-frontend
         run: npx cypress run --config baseUrl=http://localhost:3000
