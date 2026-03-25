@@ -157,7 +157,7 @@ describe("Home page", () => {
     cy.visit("/");
     cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.wait("@getFileNames");
-    const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025"];
+    const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025", "17.12.2025"];
     cy.get("ul").find("li").should("have.length", expectedDates.length).each((item, index) => {
       cy.wrap(item).should("contain.text", expectedDates[index]);
     });
