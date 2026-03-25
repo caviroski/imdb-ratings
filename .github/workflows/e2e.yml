@@ -108,61 +108,46 @@ jobs:
         working-directory: backend
         run: dir target
 
-      - name: Start backend and wait for port + health
+      - name: Start backend and wait for readiness
         working-directory: backend
         shell: pwsh
         run: |
-          Write-Host "[DEBUG] Java version:"; java -version
-          Write-Host "[DEBUG] Environment variables:"; Get-ChildItem Env:
-          Write-Host "[DEBUG] Listing backend/target directory:"
-          Get-ChildItem -Path target | ForEach-Object { Write-Host $_.FullName }
+          # Find the JAR file
           $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
           if (-not $jar) { Write-Error "No JAR found"; exit 1 }
-          Write-Host "[DEBUG] Backend JAR to run: $($jar.FullName)"
-          $cmd = "java -jar `"$($jar.FullName)`""
-          Write-Host "[DEBUG] Backend start command: $cmd"
-          Write-Host "[DEBUG] Starting backend process..."
-          $backendProcess = Start-Process -Wait -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log"
-          Start-Sleep -Seconds 2
-          Write-Host "[DEBUG] backend.log (initial):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
-          Write-Host "[DEBUG] backend.err.log (initial):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
-          # Check if backend process is still running
-          if ($backendProcess -and $backendProcess.HasExited) {
-            Write-Host "[ERROR] Backend process has stopped unexpectedly! Exit code: $($backendProcess.ExitCode)"
-            Write-Host "[DEBUG] backend.log (on backend process exit):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
-            Write-Host "[DEBUG] backend.err.log (on backend process exit):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
-            Write-Error "Backend process exited before port 8080 was open."; exit 1
-          }
-          # Wait until port 8080 is listening
-          $maxAttempts = 90       # increase timeout to 3 minutes
+
+          # Start the backend in the background, redirect output to logs
+          $backendProcess = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName `
+              -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log" -PassThru
+
+          # Wait for port 8080
+          $maxAttempts = 90
           $attempt = 0
-          $portOpen = $false
-          do {
+          while ($attempt -lt $maxAttempts) {
               $attempt++
-              $tcp = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080
-              if ($tcp.TcpTestSucceeded) { $portOpen = $true; break }
+              if (Test-NetConnection -ComputerName 127.0.0.1 -Port 8080 -WarningAction SilentlyContinue).TcpTestSucceeded {
+                  break
+              }
               Start-Sleep -Seconds 2
-          } while ($attempt -lt $maxAttempts)
-          Write-Host "[DEBUG] backend.log (after port wait):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
-          Write-Host "[DEBUG] backend.err.log (after port wait):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
-          if (-not $portOpen) {
-            Write-Host "[DEBUG] backend.log (on backend start failure):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
-            Write-Host "[DEBUG] backend.err.log (on backend start failure):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
-            Write-Error "Port 8080 never opened (after $($maxAttempts * 2) seconds)"; exit 1 }
-          Write-Host "Port 8080 is open, checking /actuator/health..."
+          }
+          if ($attempt -ge $maxAttempts) {
+              Write-Error "Port 8080 never opened"; exit 1
+          }
+
+          # Wait until /actuator/health returns 200
           $attempt = 0
-          $healthy = $false
-          do {
+          while ($attempt -lt $maxAttempts) {
               $attempt++
               try {
                   $resp = Invoke-WebRequest -Uri "http://localhost:8080/actuator/health" -UseBasicParsing -TimeoutSec 5
-                  if ($resp.StatusCode -eq 200) { $healthy = $true; break }
+                  if ($resp.StatusCode -eq 200) { break }
               } catch {}
               Start-Sleep -Seconds 2
-          } while ($attempt -lt $maxAttempts)
-          Write-Host "[DEBUG] backend.log (after health check):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
-          Write-Host "[DEBUG] backend.err.log (after health check):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
-          if (-not $healthy) { Write-Error "/actuator/health never returned 200"; exit 1 }
+          }
+          if ($attempt -ge $maxAttempts) {
+              Write-Error "/actuator/health never returned 200"; exit 1
+          }
+
           Write-Host "Backend is healthy and ready!"
 
         env:
