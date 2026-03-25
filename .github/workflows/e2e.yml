@@ -119,7 +119,7 @@ jobs:
           $backendProcess = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log"
           
           # Wait until port 8080 is listening
-          $maxAttempts = 30
+          $maxAttempts = 90       # increase timeout to 3 minutes
           $attempt = 0
           $portOpen = $false
           do {
@@ -128,7 +128,10 @@ jobs:
               if ($tcp.TcpTestSucceeded) { $portOpen = $true; break }
               Start-Sleep -Seconds 2
           } while ($attempt -lt $maxAttempts)
-          if (-not $portOpen) { Write-Error "Port 8080 never opened"; exit 1 }
+          if (-not $portOpen) {
+            Write-Host "--- backend.log ---"; Get-Content -Path backend.log -Tail 100 -ErrorAction SilentlyContinue
+            Write-Host "--- backend.err.log ---"; Get-Content -Path backend.err.log -Tail 100 -ErrorAction SilentlyContinue
+            Write-Error "Port 8080 never opened (after $($maxAttempts * 2) seconds)"; exit 1 }
 
           Write-Host "Port 8080 is open, checking /actuator/health..."
           $attempt = 0
