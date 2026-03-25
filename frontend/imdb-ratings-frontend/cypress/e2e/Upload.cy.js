@@ -127,7 +127,11 @@ describe("Home page", () => {
       statusCode: 500,
       body: {},
     }).as("deleteDateFail");
+
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.get('[data-testid="delete-button-25.09.2025"]').click();
     cy.get("button").contains("Agree").click();
     cy.wait("@deleteDateFail").its("response.statusCode").should("eq", 500);
