@@ -9,7 +9,26 @@ export default defineConfig({
     open: false
   },
   build: {
-    outDir: 'dist'
+    outDir: 'dist',
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('@mui') || id.includes('@emotion')) {
+              return 'vendor-mui'
+            }
+            if (id.includes('react-router')) {
+              return 'vendor-router'
+            }
+            return 'vendor'
+          }
+          if (id.includes('src/pages')) {
+            return 'pages'
+          }
+        }
+      }
+    }
   },
   test: {
     globals: true,

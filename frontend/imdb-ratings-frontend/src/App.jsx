@@ -1,11 +1,12 @@
+import { Suspense, lazy } from 'react';
 import { Routes, Route, Link, Navigate } from 'react-router';
 
-import Upload from './pages/Upload';
-import Compare from './pages/Compare';
-import YearWatch from './pages/YearWatch';
-import Statistics from './pages/Statistics';
-import AllData from './pages/AllData';
-import WorldMap from './pages/WorldMap';
+const Upload = lazy(() => import('./pages/Upload'));
+const Compare = lazy(() => import('./pages/Compare'));
+const YearWatch = lazy(() => import('./pages/YearWatch'));
+const Statistics = lazy(() => import('./pages/Statistics'));
+const AllData = lazy(() => import('./pages/AllData'));
+const WorldMap = lazy(() => import('./pages/WorldMap'));
 
 function App() {
   return (
@@ -29,15 +30,17 @@ function App() {
         <Link to="/world-map">World Map</Link>
       </nav>
 
-      <Routes>
-        <Route path="/" element={<Navigate to="/upload" />} />
-        <Route path="/upload" element={<Upload />} />
-        <Route path="/compare" element={<Compare />} />
-        <Route path="/year" element={<YearWatch />} />
-        <Route path="/rating-statistics" element={<Statistics />} />
-        <Route path="/all-data" element={<AllData />} />
-        <Route path="/world-map" element={<WorldMap />} />
-      </Routes>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/upload" />} />
+          <Route path="/upload" element={<Upload />} />
+          <Route path="/compare" element={<Compare />} />
+          <Route path="/year" element={<YearWatch />} />
+          <Route path="/rating-statistics" element={<Statistics />} />
+          <Route path="/all-data" element={<AllData />} />
+          <Route path="/world-map" element={<WorldMap />} />
+        </Routes>
+      </Suspense>
     </div>
   );
 }
