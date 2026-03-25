@@ -126,6 +126,13 @@ jobs:
           Start-Sleep -Seconds 2
           Write-Host "[DEBUG] backend.log (initial):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
           Write-Host "[DEBUG] backend.err.log (initial):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
+          # Check if backend process is still running
+          if ($backendProcess -and $backendProcess.HasExited) {
+            Write-Host "[ERROR] Backend process has stopped unexpectedly! Exit code: $($backendProcess.ExitCode)"
+            Write-Host "[DEBUG] backend.log (on backend process exit):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
+            Write-Host "[DEBUG] backend.err.log (on backend process exit):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
+            Write-Error "Backend process exited before port 8080 was open."; exit 1
+          }
           # Wait until port 8080 is listening
           $maxAttempts = 90       # increase timeout to 3 minutes
           $attempt = 0
