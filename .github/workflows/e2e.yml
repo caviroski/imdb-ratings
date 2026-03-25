@@ -96,9 +96,9 @@ jobs:
           java-version: 17
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Build backend
         working-directory: backend
@@ -181,4 +181,3 @@ jobs:
           if ($frontend -and !$frontend.HasExited) { $frontend.Kill() }
 
           Write-Host "E2E step completed!"
-          
