@@ -122,7 +122,7 @@ jobs:
           $cmd = "java -jar `"$($jar.FullName)`""
           Write-Host "[DEBUG] Backend start command: $cmd"
           Write-Host "[DEBUG] Starting backend process..."
-          $backendProcess = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log"
+          $backendProcess = Start-Process -Wait -FilePath "java" -ArgumentList "-jar", $jar.FullName -PassThru -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log"
           Start-Sleep -Seconds 2
           Write-Host "[DEBUG] backend.log (initial):"; if (Test-Path backend.log) { Get-Content backend.log -Tail 100 } else { Write-Host "[DEBUG] backend.log not found" }
           Write-Host "[DEBUG] backend.err.log (initial):"; if (Test-Path backend.err.log) { Get-Content backend.err.log -Tail 100 } else { Write-Host "[DEBUG] backend.err.log not found" }
