@@ -95,6 +95,7 @@ describe("Home page", () => {
 
   it("ul list should have 8 li elements", () => {
     cy.visit("/");
+    cy.wait(5000);
     cy.get("ul")
       .should('be.visible')
       .find("li")
