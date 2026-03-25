@@ -113,6 +113,10 @@ jobs:
         shell: pwsh
         run: |
           # Find the JAR file
+          Write-Host "[DEBUG] Listing all files in backend directory recursively:"
+          Get-ChildItem -Path . -Recurse | ForEach-Object {
+              Write-Host $_.FullName
+          }
           $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
           if (-not $jar) { Write-Error "No JAR found"; exit 1 }
 
