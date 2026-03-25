@@ -52,6 +52,7 @@ jobs:
           [Environment]::SetEnvironmentVariable("PATH", "$env:PATH;$mysqlBin", [System.EnvironmentVariableTarget]::Process)
 
       - name: Check MySQL status
+        shell: pwsh
         run: |
           Get-Service MySQL80 | Format-List Name, Status, StartType
           netstat -ano | findstr "3306"
