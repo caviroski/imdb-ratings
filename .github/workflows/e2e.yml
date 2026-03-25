@@ -116,7 +116,7 @@ jobs:
           $jar = Get-ChildItem -Path target -Filter *.jar | Select-Object -First 1
           if (-not $jar) { Write-Error "No JAR found"; exit 1 }
 
-          # Start the backend in the background, redirect output to logs
+          # Start the backend in the background
           $backendProcess = Start-Process -FilePath "java" -ArgumentList "-jar", $jar.FullName `
               -NoNewWindow -RedirectStandardOutput "backend.log" -RedirectStandardError "backend.err.log" -PassThru
 
@@ -125,9 +125,8 @@ jobs:
           $attempt = 0
           while ($attempt -lt $maxAttempts) {
               $attempt++
-              if (Test-NetConnection -ComputerName 127.0.0.1 -Port 8080 -WarningAction SilentlyContinue).TcpTestSucceeded {
-                  break
-              }
+              $tcp = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080 -WarningAction SilentlyContinue
+              if ($tcp.TcpTestSucceeded) { break }
               Start-Sleep -Seconds 2
           }
           if ($attempt -ge $maxAttempts) {
