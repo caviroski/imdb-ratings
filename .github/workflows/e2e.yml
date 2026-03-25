@@ -171,6 +171,11 @@ jobs:
           npx wait-on http://localhost:3000
           Write-Host "Frontend is ready!"
 
+          Write-Host "--- Checking database content ---"
+          $check = & "C:\mysql\bin\mysql.exe" -h 127.0.0.1 -u root -proot -D testdb -e "SELECT * FROM imdb_contains LIMIT 5;"
+          Write-Host "First 5 rows in imdb_contains:"
+          Write-Host $check
+
           # --- Run Cypress tests ---
           Write-Host "--- Running Cypress ---"
           npx cypress run --config baseUrl=http://localhost:3000
