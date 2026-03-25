@@ -165,7 +165,7 @@ jobs:
           npm run build
 
           Write-Host "--- Starting frontend ---"
-          $frontend = Start-Process npm -ArgumentList "run", "dev" -NoNewWindow -PassThru
+          $frontend = Start-Process npm.cmd -ArgumentList "run", "dev" -NoNewWindow -PassThru
 
           # Wait for frontend to be ready
           npx wait-on http://localhost:3000
