@@ -93,13 +93,13 @@ describe("Home page", () => {
     cy.contains("It will compare the number of votes for the entries.");
   });
 
-  it("ul list should have 7 li elements", () => {
+  it("ul list should have 8 li elements", () => {
     cy.visit("/");
     cy.get("ul")
       .should('be.visible')
       .find("li")
       .should('be.visible')
-      .should("have.length", 7);
+      .should("have.length", 8);
   });
 
   it("click on delete date should work", () => {
