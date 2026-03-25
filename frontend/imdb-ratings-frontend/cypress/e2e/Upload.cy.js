@@ -144,7 +144,11 @@ describe("Home page", () => {
       body: "Stopped filling countries",
       headers: { "Content-Type": "text/plain" }
     }).as("stopFillCountries");
+
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.get("button").contains("Fill Missing Countries").click();
     cy.get("button").contains("Stop filling countries").click();
     cy.wait("@stopFillCountries").its("response.statusCode").should("eq", 200);
@@ -157,7 +161,11 @@ describe("Home page", () => {
       body: "Request failed with status code 500",
       headers: { "Content-Type": "text/plain" }
     }).as("stopFillCountriesFail");
+
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.get("button").contains("Fill Missing Countries").click();
     cy.get("button").contains("Stop filling countries").click();
     cy.wait("@stopFillCountriesFail").its("response.statusCode").should("eq", 500);
@@ -165,7 +173,10 @@ describe("Home page", () => {
   });
 
   it("dates of upload files are shown in descending order", () => {
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.wait("@getFileNames");
     const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025", "17.12.2025"];
@@ -175,7 +186,10 @@ describe("Home page", () => {
   });
 
   it("every li element has a delete button", () => {
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.get("ul").find("li").each((item) => {
       cy.wrap(item).find('[data-testid^="delete-button-"]').should('exist');
     });
