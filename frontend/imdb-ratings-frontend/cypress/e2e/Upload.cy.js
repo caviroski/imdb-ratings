@@ -14,7 +14,7 @@ describe("Home page", () => {
   });
 
   it("can click a button", () => {
-    cy.intercept("GET", "/api/imdb-ratings/file-names").as("getFileNames");
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
 
     cy.visit("/");
     cy.get("button").contains("Upload").click();
