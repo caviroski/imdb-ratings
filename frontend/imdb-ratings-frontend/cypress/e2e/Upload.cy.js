@@ -94,8 +94,10 @@ describe("Home page", () => {
   });
 
   it("ul list should have 8 li elements", () => {
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
-    cy.wait(30000);
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+    
     cy.get("ul")
       .should('be.visible')
       .find("li")
