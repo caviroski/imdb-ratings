@@ -181,28 +181,36 @@ jobs:
       - name: Check backend port 8080
         shell: pwsh
         run: |
-            Write-Host "[DEBUG] Current directory: $(Get-Location)"
-            Write-Host "[DEBUG] Environment PATH: $env:PATH"
-            Write-Host "[DEBUG] Listing all files in backend directory:"
-            Get-ChildItem -Path ..\backend -Recurse | ForEach-Object { Write-Host $_.FullName }
-            Write-Host "[DEBUG] Listing all running processes:"
-            Get-Process | Sort-Object ProcessName | Format-Table -AutoSize | Out-String | Write-Host
-            Write-Host "[DEBUG] Checking if backend process is listening on port 8080..."
-            $tcp = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080
-            Write-Host "[DEBUG] Test-NetConnection result: $($tcp | Format-List | Out-String)"
-            Write-Host "[DEBUG] TcpTestSucceeded: $($tcp.TcpTestSucceeded)"
-            Write-Host "[DEBUG] RemoteAddress: $($tcp.RemoteAddress)"
-            Write-Host "[DEBUG] RemotePort: $($tcp.RemotePort)"
-            Write-Host "[DEBUG] Checking netstat for port 8080:"
-            netstat -ano | findstr 8080
-            Write-Host "[DEBUG] Checking backend.log and backend.err.log if present:"
-            if (Test-Path ..\backend\backend.log) { Write-Host "--- backend.log ---"; Get-Content ..\backend\backend.log -Tail 50 }
-            if (Test-Path ..\backend\backend.err.log) { Write-Host "--- backend.err.log ---"; Get-Content ..\backend\backend.err.log -Tail 50 }
-            if (-not $tcp.TcpTestSucceeded) {
-              Write-Error "[DEBUG] Backend is not listening on port 8080"
-              exit 1
-            }
-            Write-Host "[DEBUG] Backend IS listening on port 8080."
+          Write-Host "[DEBUG] Current directory: $(Get-Location)"
+          Write-Host "[DEBUG] Environment PATH: $env:PATH"
+          Write-Host "[DEBUG] Listing all files in backend directory:"
+          Get-ChildItem -Path ..\backend -Recurse | ForEach-Object { Write-Host $_.FullName }
+          Write-Host "[DEBUG] Listing all running processes:"
+          Get-Process | Sort-Object ProcessName | Format-Table -AutoSize | Out-String | Write-Host
+          Write-Host "[DEBUG] Checking if backend process is listening on port 8080 (127.0.0.1)..."
+          $tcpLocal = Test-NetConnection -ComputerName 127.0.0.1 -Port 8080
+          Write-Host "[DEBUG] Test-NetConnection (127.0.0.1): $($tcpLocal | Format-List | Out-String)"
+          Write-Host "[DEBUG] Checking if backend process is listening on port 8080 (0.0.0.0)..."
+          $tcpAny = Test-NetConnection -ComputerName 0.0.0.0 -Port 8080
+          Write-Host "[DEBUG] Test-NetConnection (0.0.0.0): $($tcpAny | Format-List | Out-String)"
+          $ip = (Get-NetIPAddress -AddressFamily IPv4 | Where-Object { $_.InterfaceAlias -notlike 'Loopback*' -and $_.IPAddress -notlike '169.*' } | Select-Object -First 1).IPAddress
+          if ($ip) {
+            Write-Host "[DEBUG] Checking if backend process is listening on port 8080 (runner IP: $ip)..."
+            $tcpIp = Test-NetConnection -ComputerName $ip -Port 8080
+            Write-Host "[DEBUG] Test-NetConnection ($ip): $($tcpIp | Format-List | Out-String)"
+          } else {
+            Write-Host "[DEBUG] Could not determine runner's IPv4 address."
+          }
+          Write-Host "[DEBUG] Full netstat output:"
+          netstat -ano | Out-String | Write-Host
+          Write-Host "[DEBUG] Checking backend.log and backend.err.log if present:"
+          if (Test-Path ..\backend\backend.log) { Write-Host "--- backend.log ---"; Get-Content ..\backend\backend.log -Tail 50 }
+          if (Test-Path ..\backend\backend.err.log) { Write-Host "--- backend.err.log ---"; Get-Content ..\backend\backend.err.log -Tail 50 }
+          if (-not $tcpLocal.TcpTestSucceeded -and -not $tcpAny.TcpTestSucceeded -and ($null -eq $tcpIp -or -not $tcpIp.TcpTestSucceeded)) {
+            Write-Error "[DEBUG] Backend is not listening on port 8080 (on any tested interface)"
+            exit 1
+          }
+          Write-Host "[DEBUG] Backend IS listening on port 8080."
 
       - name: Run Cypress tests
         working-directory: ./frontend/imdb-ratings-frontend
