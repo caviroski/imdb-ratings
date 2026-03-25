@@ -97,7 +97,7 @@ describe("Home page", () => {
     cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
     cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
-    
+
     cy.get("ul")
       .should('be.visible')
       .find("li")
@@ -111,7 +111,11 @@ describe("Home page", () => {
       body: "Cleaned file data from 20 entries for file: 25.09.2025",
       headers: { "Content-Type": "text/plain" }
     }).as("deleteDate");
+
+    cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
+    cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
     cy.get('[data-testid="delete-button-25.09.2025"]').click();
     cy.get("button").contains("Agree").click();
     cy.wait("@deleteDate").its("response.statusCode").should("eq", 200);
