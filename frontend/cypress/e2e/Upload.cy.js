@@ -93,7 +93,7 @@ describe("Home page", () => {
     cy.contains("It will compare the number of votes for the entries.");
   });
 
-  it("ul list should have 8 li elements", () => {
+  it("ul list should have 11 li elements", () => {
     cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.visit("/");
     cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
@@ -102,7 +102,7 @@ describe("Home page", () => {
       .should('be.visible')
       .find("li")
       .should('be.visible')
-      .should("have.length", 8);
+      .should("have.length", 11);
   });
 
   it("click on delete date should work", () => {
@@ -179,7 +179,7 @@ describe("Home page", () => {
 
     cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
     cy.wait("@getFileNames");
-    const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025", "17.12.2025"];
+    const expectedDates = ["14.05.2025", "28.07.2025", "06.08.2025", "14.08.2025", "25.08.2025", "09.09.2025", "25.09.2025", "17.12.2025", "15.01.2026", "05.02.2026", "26.03.2026"];
     cy.get("ul").find("li").should("have.length", expectedDates.length).each((item, index) => {
       cy.wrap(item).should("contain.text", expectedDates[index]);
     });
