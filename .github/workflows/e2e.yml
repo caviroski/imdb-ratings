@@ -158,7 +158,7 @@ jobs:
 
           # --- Frontend: install + build + start ---
           Write-Host "--- Installing frontend dependencies ---"
-          cd ../frontend/imdb-ratings-frontend
+          cd ../frontend
           npm ci
 
           Write-Host "--- Building frontend ---"
