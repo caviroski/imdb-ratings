@@ -24,15 +24,15 @@ jobs:
       - name: Cache node modules
         uses: actions/cache@v3
         with:
-          path: frontend/imdb-ratings-frontend/node_modules
-          key: ${{ runner.os }}-node-${{ hashFiles('frontend/imdb-ratings-frontend/package-lock.json') }}
+          path: frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('frontend/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        working-directory: ./frontend/imdb-ratings-frontend
+        working-directory: ./frontend
         run: npm ci
 
       - name: Run unit tests
-        working-directory: ./frontend/imdb-ratings-frontend
+        working-directory: ./frontend
         run: npx vitest
