@@ -165,7 +165,7 @@ public class ImdbRatingsController {
                 row -> ((Number) row[1]).longValue()
             ));
 
-        List<Map<String, Object>> mapped = IntStream.rangeClosed(1874, 2025)
+        List<Map<String, Object>> mapped = IntStream.rangeClosed(1874, 2026)
             .mapToObj(year -> {
                 Map<String, Object> m = new HashMap<>();
                 m.put("year", year);
