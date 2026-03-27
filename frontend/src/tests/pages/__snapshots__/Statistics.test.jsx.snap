@@ -87,7 +87,7 @@ exports[`Statistics component > snapshot test 1`] = `
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
           <div
-            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1weblcb-MuiDataGrid-root"
+            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1s9hzof-MuiDataGrid-root"
             style="--DataGrid-hasScrollX: 1; --DataGrid-hasScrollY: 1; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 320px; --DataGrid-columnsTotalWidth: 320px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
           >
             <div
@@ -161,26 +161,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="year"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="year"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -235,26 +240,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="avgRating"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="avgRating"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -281,7 +291,7 @@ exports[`Statistics component > snapshot test 1`] = `
                         <div
                           aria-colindex="3"
                           aria-sort="none"
-                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--lastUnpinned MuiDataGrid-columnHeader--last"
+                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--last"
                           data-field="itemsNum"
                           role="columnheader"
                           style="width: 90px;"
@@ -309,26 +319,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="itemsNum"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="itemsNum"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -357,7 +372,7 @@ exports[`Statistics component > snapshot test 1`] = `
                           role="presentation"
                         />
                         <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
+                          class="MuiDataGrid-scrollbarFiller"
                           role="presentation"
                         />
                       </div>
@@ -443,22 +458,28 @@ exports[`Statistics component > snapshot test 1`] = `
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-2n9dey"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-1j20uzp"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="width: 320px;"
                   />
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ir2opr"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ablnqd"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="height: 52px;"
                   />
                 </div>
+                <div
+                  aria-hidden="true"
+                  class="css-980l56"
+                />
               </div>
               <div
                 class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
@@ -475,7 +496,7 @@ exports[`Statistics component > snapshot test 1`] = `
                     />
                     <p
                       class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id="_r_ji_"
+                      id="_r_mq_"
                     >
                       Rows per page:
                     </p>
@@ -485,9 +506,9 @@ exports[`Statistics component > snapshot test 1`] = `
                       <div
                         aria-expanded="false"
                         aria-haspopup="listbox"
-                        aria-labelledby="_r_ji_ _r_jh_"
+                        aria-labelledby="_r_mq_ _r_mp_"
                         class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id="_r_jh_"
+                        id="_r_mp_"
                         role="combobox"
                         tabindex="0"
                       >
@@ -568,7 +589,7 @@ exports[`Statistics component > snapshot test 1`] = `
             <style
               href="/MuiDataGridVariables-3851315942"
             >
-              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:rgba(0, 0, 0, 0.04);--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#1976d2;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
+              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:#f5f5f5;--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#eeeeee;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
             </style>
           </div>
         </div>
@@ -587,7 +608,7 @@ exports[`Statistics component > snapshot test 1`] = `
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
           <div
-            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1weblcb-MuiDataGrid-root"
+            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1s9hzof-MuiDataGrid-root"
             style="--DataGrid-hasScrollX: 1; --DataGrid-hasScrollY: 1; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 270px; --DataGrid-columnsTotalWidth: 270px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
           >
             <div
@@ -661,26 +682,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="titleType"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="titleType"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -707,7 +733,7 @@ exports[`Statistics component > snapshot test 1`] = `
                         <div
                           aria-colindex="2"
                           aria-sort="none"
-                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--lastUnpinned MuiDataGrid-columnHeader--last"
+                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--last"
                           data-field="count"
                           role="columnheader"
                           style="width: 90px;"
@@ -735,26 +761,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="count"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="count"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -783,7 +814,7 @@ exports[`Statistics component > snapshot test 1`] = `
                           role="presentation"
                         />
                         <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
+                          class="MuiDataGrid-scrollbarFiller"
                           role="presentation"
                         />
                       </div>
@@ -855,22 +886,28 @@ exports[`Statistics component > snapshot test 1`] = `
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-2n9dey"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-1j20uzp"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="width: 270px;"
                   />
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ir2opr"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ablnqd"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="height: 52px;"
                   />
                 </div>
+                <div
+                  aria-hidden="true"
+                  class="css-980l56"
+                />
               </div>
               <div
                 class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
@@ -887,7 +924,7 @@ exports[`Statistics component > snapshot test 1`] = `
                     />
                     <p
                       class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id="_r_jn_"
+                      id="_r_mv_"
                     >
                       Rows per page:
                     </p>
@@ -897,9 +934,9 @@ exports[`Statistics component > snapshot test 1`] = `
                       <div
                         aria-expanded="false"
                         aria-haspopup="listbox"
-                        aria-labelledby="_r_jn_ _r_jm_"
+                        aria-labelledby="_r_mv_ _r_mu_"
                         class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id="_r_jm_"
+                        id="_r_mu_"
                         role="combobox"
                         tabindex="0"
                       >
@@ -980,7 +1017,7 @@ exports[`Statistics component > snapshot test 1`] = `
             <style
               href="/MuiDataGridVariables-3851315942"
             >
-              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:rgba(0, 0, 0, 0.04);--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#1976d2;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
+              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:#f5f5f5;--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#eeeeee;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
             </style>
           </div>
         </div>
@@ -999,7 +1036,7 @@ exports[`Statistics component > snapshot test 1`] = `
           style="--Paper-shadow: 0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);"
         >
           <div
-            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1weblcb-MuiDataGrid-root"
+            class="MuiDataGrid-root MuiDataGrid-root--densityStandard MuiDataGrid-withBorderColor MuiDataGridVariables-3851315942 css-1s9hzof-MuiDataGrid-root"
             style="--DataGrid-hasScrollX: 1; --DataGrid-hasScrollY: 1; --DataGrid-scrollbarSize: 0px; --DataGrid-rowWidth: 360px; --DataGrid-columnsTotalWidth: 360px; --DataGrid-leftPinnedWidth: 0px; --DataGrid-rightPinnedWidth: 0px; --DataGrid-headerHeight: 56px; --DataGrid-headersTotalHeight: 56px; --DataGrid-topContainerHeight: 56px; --DataGrid-bottomContainerHeight: 0px; --height: 52px;"
           >
             <div
@@ -1073,26 +1110,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="genre"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="genre"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -1147,26 +1189,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="count"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="count"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -1193,7 +1240,7 @@ exports[`Statistics component > snapshot test 1`] = `
                         <div
                           aria-colindex="3"
                           aria-sort="none"
-                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--lastUnpinned MuiDataGrid-columnHeader--last"
+                          class="MuiDataGrid-columnHeader MuiDataGrid-columnHeader--sortable MuiDataGrid-withBorderColor MuiDataGrid-columnHeader--last"
                           data-field="avgRating"
                           role="columnheader"
                           style="width: 150px;"
@@ -1221,26 +1268,31 @@ exports[`Statistics component > snapshot test 1`] = `
                               <div
                                 class="MuiDataGrid-iconButtonContainer css-ltf0zy-MuiDataGrid-iconButtonContainer"
                               >
-                                <button
+                                <span
                                   aria-label="Sort"
-                                  class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
-                                  field="avgRating"
-                                  tabindex="-1"
-                                  title="Sort"
-                                  type="button"
+                                  class=""
+                                  data-mui-internal-clone-element="true"
                                 >
-                                  <svg
-                                    aria-hidden="true"
-                                    class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
-                                    data-testid="ArrowUpwardIcon"
-                                    focusable="false"
-                                    viewBox="0 0 24 24"
+                                  <button
+                                    aria-label="Sort"
+                                    class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall MuiDataGrid-sortButton css-1vkrt00-MuiButtonBase-root-MuiIconButton-root-MuiDataGrid-sortButton"
+                                    field="avgRating"
+                                    tabindex="-1"
+                                    type="button"
                                   >
-                                    <path
-                                      d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
-                                    />
-                                  </svg>
-                                </button>
+                                    <svg
+                                      aria-hidden="true"
+                                      class="MuiSvgIcon-root MuiSvgIcon-fontSizeSmall MuiDataGrid-sortIcon css-120dh41-MuiSvgIcon-root"
+                                      data-testid="ArrowUpwardIcon"
+                                      focusable="false"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"
+                                      />
+                                    </svg>
+                                  </button>
+                                </span>
                               </div>
                             </div>
                           </div>
@@ -1269,7 +1321,7 @@ exports[`Statistics component > snapshot test 1`] = `
                           role="presentation"
                         />
                         <div
-                          class="MuiDataGrid-scrollbarFiller MuiDataGrid-scrollbarFiller--header"
+                          class="MuiDataGrid-scrollbarFiller"
                           role="presentation"
                         />
                       </div>
@@ -1355,22 +1407,28 @@ exports[`Statistics component > snapshot test 1`] = `
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-2n9dey"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--horizontal css-1j20uzp"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="width: 360px;"
                   />
                 </div>
                 <div
                   aria-hidden="true"
-                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ir2opr"
+                  class="MuiDataGrid-scrollbar MuiDataGrid-scrollbar--vertical css-1ablnqd"
                   tabindex="-1"
                 >
                   <div
                     class="MuiDataGrid-scrollbarContent"
+                    style="height: 52px;"
                   />
                 </div>
+                <div
+                  aria-hidden="true"
+                  class="css-980l56"
+                />
               </div>
               <div
                 class="MuiDataGrid-footerContainer MuiDataGrid-withBorderColor css-15lx25q-MuiDataGrid-footerContainer"
@@ -1387,7 +1445,7 @@ exports[`Statistics component > snapshot test 1`] = `
                     />
                     <p
                       class="MuiTablePagination-selectLabel css-s09cke-MuiTablePagination-selectLabel"
-                      id="_r_js_"
+                      id="_r_n4_"
                     >
                       Rows per page:
                     </p>
@@ -1397,9 +1455,9 @@ exports[`Statistics component > snapshot test 1`] = `
                       <div
                         aria-expanded="false"
                         aria-haspopup="listbox"
-                        aria-labelledby="_r_js_ _r_jr_"
+                        aria-labelledby="_r_n4_ _r_n3_"
                         class="MuiSelect-select MuiTablePagination-select MuiSelect-standard MuiInputBase-input css-18zjd9i-MuiNativeSelect-root-MuiSelect-select-MuiInputBase-input"
-                        id="_r_jr_"
+                        id="_r_n3_"
                         role="combobox"
                         tabindex="0"
                       >
@@ -1480,7 +1538,7 @@ exports[`Statistics component > snapshot test 1`] = `
             <style
               href="/MuiDataGridVariables-3851315942"
             >
-              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:rgba(0, 0, 0, 0.04);--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#1976d2;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
+              .MuiDataGridVariables-3851315942{--DataGrid-t-spacing-unit:8px;--DataGrid-t-color-border-base:rgba(224, 224, 224, 1);--DataGrid-t-color-background-base:#fff;--DataGrid-t-color-background-overlay:#fff;--DataGrid-t-color-background-backdrop:rgba(255, 255, 255, 0.38);--DataGrid-t-color-foreground-base:rgba(0, 0, 0, 0.87);--DataGrid-t-color-foreground-muted:rgba(0, 0, 0, 0.6);--DataGrid-t-color-foreground-accent:#1565c0;--DataGrid-t-color-foreground-disabled:rgba(0, 0, 0, 0.38);--DataGrid-t-color-foreground-error:#c62828;--DataGrid-t-color-interactive-hover:#f5f5f5;--DataGrid-t-color-interactive-hover-opacity:0.04;--DataGrid-t-color-interactive-focus:rgba(from #1976d2 r g b / 1);--DataGrid-t-color-interactive-focus-opacity:0.12;--DataGrid-t-color-interactive-disabled:rgba(from rgba(0, 0, 0, 0.26) r g b / 1);--DataGrid-t-color-interactive-disabled-opacity:0.38;--DataGrid-t-color-interactive-selected:#eeeeee;--DataGrid-t-color-interactive-selected-opacity:0.08;--DataGrid-t-header-background-base:#fff;--DataGrid-t-cell-background-pinned:#fff;--DataGrid-t-radius-base:4px;--DataGrid-t-typography-font-family-base:"Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-weight-light:300;--DataGrid-t-typography-font-weight-regular:400;--DataGrid-t-typography-font-weight-medium:500;--DataGrid-t-typography-font-weight-bold:700;--DataGrid-t-typography-font-body:400 0.875rem / 1.43 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-small:400 0.75rem / 1.66 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-typography-font-large:400 1rem / 1.5 "Roboto", "Helvetica", "Arial", sans-serif;--DataGrid-t-transition-easing-ease-in:cubic-bezier(0.4, 0, 1, 1);--DataGrid-t-transition-easing-ease-out:cubic-bezier(0.0, 0, 0.2, 1);--DataGrid-t-transition-easing-ease-in-out:cubic-bezier(0.4, 0, 0.2, 1);--DataGrid-t-transition-duration-short:200ms;--DataGrid-t-transition-duration-base:250ms;--DataGrid-t-transition-duration-long:300ms;--DataGrid-t-shadow-base:0px 3px 1px -2px rgba(0,0,0,0.2),0px 2px 2px 0px rgba(0,0,0,0.14),0px 1px 5px 0px rgba(0,0,0,0.12);--DataGrid-t-shadow-overlay:0px 5px 5px -3px rgba(0,0,0,0.2),0px 8px 10px 1px rgba(0,0,0,0.14),0px 3px 14px 2px rgba(0,0,0,0.12);--DataGrid-t-z-index-panel:1300;--DataGrid-t-z-index-menu:1300;}
             </style>
           </div>
         </div>
