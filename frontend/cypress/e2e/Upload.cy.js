@@ -1,4 +1,4 @@
-describe("Home page", () => {
+describe("Upload File", () => {
   afterEach(() => {
     cy.request('POST', 'http://localhost:8080/api/imdb-ratings/stop-filling-missing-countries');
   });
