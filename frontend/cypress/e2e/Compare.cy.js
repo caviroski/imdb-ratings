@@ -45,4 +45,29 @@ describe("Compare Dates", () => {
         cy.get('[data-testid="select-to-date"]').find('div').click();
         cy.get('li').should('have.length', 10);
     });
+
+    it("should select from second dropdown and there is data in the table", () => {
+        cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
+        cy.visit("/compare");
+        cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
+        cy.get('[data-testid="select-from-date"]').find('div').click();
+        cy.get('li').first().click();
+
+        cy.get('[data-testid="select-to-date"]').find('div').click();
+        cy.get('li').first().click();
+
+        cy.get('[data-id="1"]').should('exist');
+        cy.get('[data-id="1"]').contains("2025-05-07");
+        cy.get('[data-id="1"]').contains("376");
+        cy.get('[data-id="1"]').contains("382");
+        cy.get('[data-id="2"]').should('exist');
+        cy.get('[data-id="2"]').contains("2025-05-03");
+        cy.get('[data-id="2"]').contains("1208");
+        cy.get('[data-id="2"]').contains("1221");
+        cy.get('[data-id="3"]').should('exist');
+        cy.get('[data-id="3"]').contains("2025-04-29");
+        cy.get('[data-id="3"]').contains("46");
+        cy.get('[data-id="3"]').contains("49");
+    });
 });
