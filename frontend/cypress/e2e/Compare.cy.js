@@ -12,8 +12,8 @@ describe("Compare Dates", () => {
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-from-date"]').should('exist');
-        cy.get('[data-testid="select-to-date"]').should('exist');
+        cy.get('[data-testid="select-from-date-div"]').should('exist');
+        cy.get('[data-testid="select-to-date-div"]').should('exist');
     });
 
     it("should load all available dates", () => {
@@ -21,7 +21,7 @@ describe("Compare Dates", () => {
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-from-date"]').find('div').click();
+        cy.get('[data-testid="select-from-date-div"]').find('div').click();
         cy.get('li').should('have.length', 11);
     });
 
@@ -30,7 +30,7 @@ describe("Compare Dates", () => {
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-to-date"]').find('div').click();
+        cy.get('[data-testid="select-to-date-div"]').find('div').click();
         cy.get('li').should('have.length', 11);
     });
 
@@ -39,23 +39,26 @@ describe("Compare Dates", () => {
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-from-date"]').find('div').click();
+        cy.get('[data-testid="select-from-date-div"]').find('div').click();
         cy.get('li').first().click();
 
-        cy.get('[data-testid="select-to-date"]').find('div').click();
+        cy.get('[data-testid="select-to-date-div"]').find('div').click();
         cy.get('li').should('have.length', 10);
     });
 
     it("should select from second dropdown and there is data in the table", () => {
         cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
+        cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/compare*").as("getComparisonData");
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-from-date"]').find('div').click();
+        cy.get('[data-testid="select-from-date-div"]').find('div').click();
         cy.get('li').first().click();
 
-        cy.get('[data-testid="select-to-date"]').find('div').click();
+        cy.get('[data-testid="select-to-date-div"]').find('div').click();
         cy.get('li').first().click();
+
+        cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
 
         cy.get('[data-id="1"]').should('exist');
         cy.get('[data-id="1"]').contains("2025-05-07");
@@ -75,16 +78,21 @@ describe("Compare Dates", () => {
 
     it("should search", () => {
         cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
+        cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/compare*").as("getComparisonData");
         cy.visit("/compare");
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="select-from-date"]').find('div').click();
+        cy.get('[data-testid="select-from-date-div"]').find('div').click();
         cy.get('li').first().click();
 
-        cy.get('[data-testid="select-to-date"]').find('div').click();
+        cy.get('[data-testid="select-to-date-div"]').find('div').click();
         cy.get('li').first().click();
+
+        cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
 
         cy.get('[data-testid="search-input"]').type("pevaj{enter}");
+
+        cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
 
         cy.get('[data-id="1"]').should('exist');
         cy.get('[data-id="1"]').contains("2025-05-07");

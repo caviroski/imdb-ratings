@@ -136,7 +136,7 @@ export default function Compare() {
           options={optionsOne}
           disabled={disableFromDate}
           inputProps={{ 'data-testid': 'select-from-date' }}
-          data-testid="select-from-date"
+          data-testid="select-from-date-div"
         />
         <SelectDate
           value={toDate}
@@ -145,7 +145,7 @@ export default function Compare() {
           options={optionsTwo}
           disabled={disableToDate}
           inputProps={{ 'data-testid': 'select-to-date' }}
-          data-testid="select-to-date"
+          data-testid="select-to-date-div"
         />
       </div>
 
