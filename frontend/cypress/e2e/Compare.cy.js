@@ -102,4 +102,21 @@ describe("Compare Dates", () => {
         cy.get('[data-id="2"]').should('not.exist');
         cy.get('[data-id="3"]').should('not.exist');
     });
+
+    it("should load rows in the table", () => {
+        cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/file-names").as("getFileNames");
+        cy.intercept("GET", "http://localhost:8080/api/imdb-ratings/compare*").as("getComparisonData");
+        cy.visit("/compare");
+        cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
+
+        cy.get('[data-testid="select-from-date-div"]').find('div').click();
+        cy.get('li').first().click();
+
+        cy.get('[data-testid="select-to-date-div"]').find('div').click();
+        cy.get('li').first().click();
+
+        cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
+
+        cy.contains('5907').should('be.visible');
+    });
 });
