@@ -92,10 +92,10 @@ export default function YearWatch() {
             dataKey: 'year',
             tickLabelStyle: { angle: 90, fontSize: 12 },
             tickLabelInterval: () => true,
-            valueFormatter: (v) => { return v }
+            valueFormatter: (v) => String(v)
           }]}
           yAxis={[{ position: 'none', min: 0, max: 215 }]}
-          series={[{ dataKey: 'itemsNum', valueFormatter: (v) => { return v } }]}
+          series={[{ dataKey: 'itemsNum', valueFormatter: (v) => String(v) }]}
           layout="vertical"
           height={350}
           onItemClick={(event, item) => {
