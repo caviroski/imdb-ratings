@@ -500,7 +500,7 @@ describe("AllData", () => {
     );
 
     await userEvent.click(screen.getByRole('combobox', { name: /pick date/i }));
-    userEvent.click(screen.getByText("01.01.2010"));
+    await userEvent.click(screen.getByText("01.01.2010"));
     await waitFor(() =>
       expect(screen.getByText("Test Movie 1")).toBeInTheDocument()
     );
