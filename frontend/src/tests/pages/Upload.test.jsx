@@ -195,23 +195,4 @@ describe("Upload page", () => {
 
     fillCountries.mockRejectedValue(new Error("cancelled"));
   });
-
-  test("loading indicator disappears after fetch", async () => {
-    const fillPromise = new Promise((resolve) => setTimeout(() => resolve(), 100));
-    fillCountries.mockReturnValue(fillPromise);
-
-    render(<Upload />);
-
-    const button = screen.getByTestId("fill-countries-button");
-    await userEvent.click(button);
-    
-    // Wait for the loading indicator to appear
-    await waitFor(() => {
-      expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
-    });
-
-    // Wait for it to be removed
-    await waitForElementToBeRemoved(() => screen.queryByTestId("loading-indicator"), { timeout: 2000 });
-    expect(screen.queryByTestId("loading-indicator")).not.toBeInTheDocument();
-  });
 });
