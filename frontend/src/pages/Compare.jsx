@@ -158,6 +158,7 @@ export default function Compare() {
           label="Search"
           variant="outlined"
           value={search}
+          data-testid="search-input"
           onChange={(e) => {
             setSearch(e.target.value);
             setSearch(e.target.value);
