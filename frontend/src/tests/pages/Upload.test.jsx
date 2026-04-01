@@ -204,8 +204,13 @@ describe("Upload page", () => {
 
     const button = screen.getByTestId("fill-countries-button");
     await userEvent.click(button);
-    expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
+    
+    // Wait for the loading indicator to appear
+    await waitFor(() => {
+      expect(screen.getByTestId("loading-indicator")).toBeInTheDocument();
+    });
 
+    // Wait for it to be removed
     await waitForElementToBeRemoved(() => screen.queryByTestId("loading-indicator"), { timeout: 2000 });
     expect(screen.queryByTestId("loading-indicator")).not.toBeInTheDocument();
   });
