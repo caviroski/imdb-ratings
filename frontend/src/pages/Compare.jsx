@@ -170,6 +170,7 @@ export default function Compare() {
       <div style={{ width: 1100, margin: '50px auto 0 auto' }}>
         <Paper sx={{ height: 400, width: '100%' }}>
           <DataGrid
+            data-testid="data-grid"
             rows={rows}
             columns={columns}
             sx={{ border: 0 }}

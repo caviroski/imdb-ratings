@@ -22,7 +22,7 @@ describe("Compare Dates", () => {
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
         cy.get('[data-testid="select-from-date-div"]').find('div').click();
-        cy.get('li').should('have.length', 11);
+        cy.get('li').should('have.length', 12);
     });
 
     it("should load all dates from second dropdown", () => {
@@ -31,7 +31,7 @@ describe("Compare Dates", () => {
         cy.wait("@getFileNames").its("response.statusCode").should("eq", 200);
 
         cy.get('[data-testid="select-to-date-div"]').find('div').click();
-        cy.get('li').should('have.length', 11);
+        cy.get('li').should('have.length', 12);
     });
 
     it("should select from first dropdown and second should have one less date available", () => {
@@ -43,7 +43,7 @@ describe("Compare Dates", () => {
         cy.get('li').first().click();
 
         cy.get('[data-testid="select-to-date-div"]').find('div').click();
-        cy.get('li').should('have.length', 10);
+        cy.get('li').should('have.length', 11);
     });
 
     it("should select from second dropdown and there is data in the table", () => {
@@ -117,6 +117,6 @@ describe("Compare Dates", () => {
 
         cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
 
-        cy.contains('5907').should('be.visible');
+        cy.get('[data-testid="data-grid"]').contains('5907').should('be.visible');
     });
 });
