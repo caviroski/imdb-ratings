@@ -117,6 +117,6 @@ describe("Compare Dates", () => {
 
         cy.wait("@getComparisonData").its("response.statusCode").should("eq", 200);
 
-        cy.get('[data-testid="data-grid"]').contains('5907').should('be.visible');
+        cy.get('[data-testid="data-grid"]').contains('5,907').should('be.visible');
     });
 });
