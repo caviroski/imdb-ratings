@@ -51,11 +51,9 @@ public class ImdbCsvImporter {
                 if (ratingEntity == null) {
                     ratingEntity = new ImdbRating();
                     ratingEntity.setImdbConst(imdbConst);
-                    ratingEntity.setTitle(currentLine[3]);
                     ratingEntity.setYourRating(parseInt(currentLine[1]));
                     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
                     ratingEntity.setDateRated(LocalDate.parse(currentLine[2], formatter));
-                    ratingEntity.setOriginalTitle(currentLine[4]);
                     ratingEntity.setUrl(currentLine[5]);
                     ratingEntity.setTitleType(currentLine[6]);
                     ratingEntity.setRuntimeMinutes(parseInt(currentLine[8]));
@@ -64,6 +62,9 @@ public class ImdbCsvImporter {
                     ratingEntity.setReleaseDate(currentLine[12]);
                     ratingEntity.setDirectors(currentLine[13]);
                 }
+
+                ratingEntity.setTitle(currentLine[3]);
+                ratingEntity.setOriginalTitle(currentLine[4]);
 
                 // Add fileDate to contains list if not already
                 if (!ratingEntity.getContains().contains(fileDate)) {
