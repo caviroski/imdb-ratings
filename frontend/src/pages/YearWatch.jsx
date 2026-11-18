@@ -94,7 +94,7 @@ export default function YearWatch() {
             tickLabelInterval: () => true,
             valueFormatter: (v) => String(v)
           }]}
-          yAxis={[{ position: 'none', min: 0, max: 215 }]}
+          yAxis={[{ position: 'none', min: 0, max: 300 }]}
           series={[{ dataKey: 'itemsNum', valueFormatter: (v) => String(v) }]}
           layout="vertical"
           height={350}
