@@ -1,6 +1,7 @@
 package com.example.imdb_backend.service;
 
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -27,7 +28,8 @@ public class ImdbCsvImporter {
 
         String fileDate = filename.replace(".csv", "").trim();
 
-        try (CSVReader reader = new CSVReader(new InputStreamReader(file.getInputStream()))) {
+        try (CSVReader reader = new CSVReader(
+                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
             reader.readNext();
 
             String[] line;

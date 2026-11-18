@@ -1,0 +1,1 @@
+SELECT * FROM imdb_ratings WHERE year >= 2000 AND year <= 2020 ORDER BY rating DESC LIMIT 10;
